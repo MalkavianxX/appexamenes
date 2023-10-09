@@ -7,6 +7,9 @@ class User(AbstractUser):
 
     def set_session_key(self, key):
         if self.last_session_key and not self.last_session_key == key:
-            Session.objects.get(session_key=self.last_session_key).delete()
+            try:
+                Session.objects.get(session_key=self.last_session_key).delete()
+            except Session.DoesNotExist:
+                pass
         self.last_session_key = key
         self.save()

@@ -7,12 +7,8 @@ from . import views
 
 urlpatterns = [
     #vistas render
-    path('',views.view_login, name='view_login'),
-    path('signup',views.view_signup, name='view_signup'),
+    path('/view_dashboard',views.view_dashboard, name='view_dashboard'),
 
-
-    #funciones js
-    path('function_login',views.function_login, name="function_login"),
     
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

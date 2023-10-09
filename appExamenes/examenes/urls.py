@@ -6,7 +6,7 @@ from . import views
 
 
 urlpatterns = [
-    path('',views.view_examenes, name='view_examenes'),
+    path('view_config_examenes',views.view_config_examenes, name='view_config_examenes'),
     
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,259 @@
+{% extends 'dashboard/dashboard.html' %}{% load static %}
+
+
+{% block title %}
+<title>Ad-mision| Dashboard - Configuracion de mi examen</title>
+
+{% endblock %}
+{% block descripcion %}
+    <meta name="description" content="Bienvenido a Ad-mision, tu portal personalizado para la preparación universitaria. Descubre tu progreso, estadísticas clave y más en nuestro completo panel de control. ¡Tu camino a la universidad comienza aquí!">
+    <meta name="author" content="Ad-mision s Team dev">
+{% endblock %}
+
+{% block content %}
+        <!-- Select2 css -->
+        <link href="{% static 'login/assets/vendor/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+
+        <!-- App css -->
+        <link href="{% static 'login/assets/css/app-modern.min.css' %}" rel="stylesheet" type="text/css" id="app-style" />
+    <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ad-min</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                                            <li class="breadcrumb-item active">Iniciar examen</li>
+                                        </ol>
+                                    </div>
+                                    <h4 class="page-title">Examen</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                         
+                            <div class="col-8">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <h4 class="header-title mb-3">Iniciemos configurando el examen</h4>
+
+                                        <for m>
+                                            <div id="progressbarwizard">
+
+                                                <ul class="nav nav-pills nav-justified form-wizard-header mb-3">
+                                                    <li class="nav-item">
+                                                        <a href="#account-2" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                                                            <i class="mdi mdi-account-circle font-18 align-middle me-1"></i>
+                                                            <span class="d-none d-sm-inline">Temas </span>
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="nav-item">
+                                                        <a href="#finish-2" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
+                                                            <i class="mdi mdi-checkbox-marked-circle-outline font-18 align-middle me-1"></i>
+                                                            <span class="d-none d-sm-inline">Finish</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            
+                                                <div class="tab-content b-0 mb-0">
+
+                                                    <div id="bar" class="progress mb-3" style="height: 7px;">
+                                                        <div class="bar progress-bar progress-bar-striped progress-bar-animated bg-success"></div>
+                                                    </div>
+                                            
+                                                    <div class="tab-pane" id="account-2">
+                                                        <div class="row justify-content-center mb-5">
+                                                          
+                
+                                                            <div class="col-lg-10">
+                                                                <p class="mb-1 fw-bold ">Selecciona los temas</p>
+                                                                <p class="text-muted font-14">
+                                                                    Puedes ser desde un tema.
+                                                                </p>
+                            
+                                                                <select class="select2 form-control select2-multiple fs-3" data-toggle="select2" multiple="multiple" data-placeholder="Temas ...">
+                                                                    <optgroup label="Alaskan/Hawaiian Time Zone">
+                                                                        <option value="AK">Alaska</option>
+                                                                        <option value="HI">Hawaii</option>
+                                                                    </optgroup>
+                                                                    <optgroup label="Pacific Time Zone">
+                                                                        <option value="CA">California</option>
+                                                                        <option value="NV">Nevada</option>
+                                                                        <option value="OR">Oregon</option>
+                                                                        <option value="WA">Washington</option>
+                                                                    </optgroup>
+                                                                    <optgroup label="Mountain Time Zone">
+                                                                        <option value="AZ">Arizona</option>
+                                                                        <option value="CO">Colorado</option>
+                                                                        <option value="ID">Idaho</option>
+                                                                        <option value="MT">Montana</option>
+                                                                        <option value="NE">Nebraska</option>
+                                                                        <option value="NM">New Mexico</option>
+                                                                        <option value="ND">North Dakota</option>
+                                                                        <option value="UT">Utah</option>
+                                                                        <option value="WY">Wyoming</option>
+                                                                    </optgroup>
+                                                                    <optgroup label="Central Time Zone">
+                                                                        <option value="AL">Alabama</option>
+                                                                        <option value="AR">Arkansas</option>
+                                                                        <option value="IL">Illinois</option>
+                                                                        <option value="IA">Iowa</option>
+                                                                        <option value="KS">Kansas</option>
+                                                                        <option value="KY">Kentucky</option>
+                                                                        <option value="LA">Louisiana</option>
+                                                                        <option value="MN">Minnesota</option>
+                                                                        <option value="MS">Mississippi</option>
+                                                                        <option value="MO">Missouri</option>
+                                                                        <option value="OK">Oklahoma</option>
+                                                                        <option value="SD">South Dakota</option>
+                                                                        <option value="TX">Texas</option>
+                                                                        <option value="TN">Tennessee</option>
+                                                                        <option value="WI">Wisconsin</option>
+                                                                    </optgroup>
+                                                                    <optgroup label="Eastern Time Zone">
+                                                                        <option value="CT">Connecticut</option>
+                                                                        <option value="DE">Delaware</option>
+                                                                        <option value="FL">Florida</option>
+                                                                        <option value="GA">Georgia</option>
+                                                                        <option value="IN">Indiana</option>
+                                                                        <option value="ME">Maine</option>
+                                                                        <option value="MD">Maryland</option>
+                                                                        <option value="MA">Massachusetts</option>
+                                                                        <option value="MI">Michigan</option>
+                                                                        <option value="NH">New Hampshire</option>
+                                                                        <option value="NJ">New Jersey</option>
+                                                                        <option value="NY">New York</option>
+                                                                        <option value="NC">North Carolina</option>
+                                                                        <option value="OH">Ohio</option>
+                                                                        <option value="PA">Pennsylvania</option>
+                                                                        <option value="RI">Rhode Island</option>
+                                                                        <option value="SC">South Carolina</option>
+                                                                        <option value="VT">Vermont</option>
+                                                                        <option value="VA">Virginia</option>
+                                                                        <option value="WV">West Virginia</option>
+                                                                    </optgroup>
+                                                                </select>
+                                                            </div> <!-- end col -->
+                                                            <div class="col-lg-10 mt-3">
+                                                                <div class="mb-3">
+                                                                    <label for="example-select" class="form-label">Selecciona el numero de preguntas</label>
+                                                                    <p class="text-muted font-14">
+                                                                        Sera la cantidad total de preguntas en tu examen.
+                                                                    </p>
+                                                                    <select class="form-select" id="example-select">
+                                                                        <option>10</option>
+                                                                        <option>15</option>
+                                                                        <option>20</option>
+                                                                        <option>25</option>
+                                                                        <option>30</option>
+                                                                        <option>35</option>
+                                                                        <option>40</option>
+                                                                        <option>45</option>
+                                                                        <option>50</option>
+                                                                   
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div> <!-- end row -->   
+
+                                                        <ul class="list-inline wizard mb-0">
+                                                            <li class="next list-inline-item float-end">
+                                                                <a href="javascript:void(0);" class="btn btn-info">Siguiente <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                   
+
+                                                    <div class="tab-pane" id="finish-2">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="text-center mb-3">
+                                                                    <h2 class="mt-0"><i class="mdi mdi-check-all"></i></h2>
+                                                                    <h3 class="mt-0">El examen esta listo!</h3>
+
+                                                                    <p class="w-75 mb-2 mx-auto">Ahora solo da click en el boton "iniciar examen" para realizarlo. ¡Mucho exito! </p>
+
+                                                                
+                                                                </div>
+                                                            </div> <!-- end col -->
+                                                        </div> <!-- end row -->
+                                                        <ul class="pager wizard mb-0 list-inline mt-1">
+                                                            <li class="previous list-inline-item">
+                                                                <button type="button" class="btn btn-light"><i class="mdi mdi-arrow-left me-1"></i> Regresar a configurar</button>
+                                                            </li>
+                                                            <li class="next list-inline-item float-end">
+                                                                <button type="button" class="btn btn-primary">Iniciar examen</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                </div> <!-- tab-content -->
+                                            </div> <!-- end #progressbarwizard-->
+                                        </form>
+
+                                    </div> <!-- end card-body -->
+                                </div> <!-- end card-->
+                            </div>
+                        </div> 
+                        <!-- end row-->
+
+
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <script>document.write(new Date().getFullYear())</script> © Hyper - Coderthemes.com
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-md-end footer-links d-none d-md-block">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- end Footer -->
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+        <!-- Vendor js -->
+        <script src="{% static 'login/assets/js/vendor.min.js' %}"></script>
+
+        <!--  Select2 Plugin Js -->
+        <script src="{% static 'login/assets/vendor/select2/js/select2.min.js' %}"></script>
+
+        <!-- Bootstrap Wizard Form js -->
+        <script src="{% static 'login/assets/vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+
+        <!-- Wizard Form Demo js -->
+        <script src="{% static 'login/assets/js/pages/demo.form-wizard.js' %}"></script>
+
+        <!-- App js -->
+        <script src="{% static 'login/assets/js/app.min.js' %}"></script>
+{% endblock %}

@@ -59,18 +59,18 @@
                                     <p class="text-muted mb-4">Ingrese su correo electrónico y contraseña para acceder al dashboard.</p>
                                 </div>
 
-                                <form action="#">
+                                <form method="post" > {% csrf_token %}
 
                                     <div class="mb-3">
                                         <label for="emailaddress" class="form-label">Correo electrónico</label>
-                                        <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email">
+                                        <input class="form-control" type="email" id="emailaddress" autocomplete="username" required  placeholder="Ingresa tu correo">
                                     </div>
 
                                     <div class="mb-3">
                                         <a href="pages-recoverpw.html" class="text-muted float-end"><small>¿Olvidaste tu contraseña?</small></a>
                                         <label for="password" class="form-label">Contraseña</label>
                                         <div class="input-group input-group-merge">
-                                            <input type="password" id="password" class="form-control" placeholder="Enter your password">
+                                            <input type="password" id="password" class="form-control" autocomplete="current-password" required placeholder="Ingresa tu contraseña">
                                             <div class="input-group-text" data-password="false">
                                                 <span class="password-eye"></span>
                                             </div>
@@ -80,19 +80,20 @@
                                     <div class="mb-3 mb-3">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="checkbox-signin" checked>
-                                            <label class="form-check-label" for="checkbox-signin">Acuérdate de mí</label>
+                                            <label class="form-check-label" for="checkbox-signin">Recuerdame</label>
                                         </div>
                                     </div>
 
                                     <div class="mb-3 mb-0 text-center">
-                                        <button class="btn btn-primary" type="submit">Inicar sesion  </button>
+                                        <button class="btn btn-primary" onclick="login()" id="btn_login_submit" type="button">Inicar sesion </button>
                                     </div>
 
                                 </form>
                             </div> <!-- end card-body -->
+                            <div id="alert_placeholder"></div>
+
                         </div>
                         <!-- end card -->
-
                         <div class="row mt-3">
                             <div class="col-12 text-center">
                                 <p class="text-muted">¿No tienes una cuenta? <a href="{% url 'view_signup' %}" class="text-muted ms-1"><b>Crea una cuenta</b></a></p>
@@ -116,6 +117,9 @@
         
         <!-- App js -->
         <script src="{% static 'login/assets/js/app.min.js' %}"></script>
+
+        <!--Funciones js-->
+        <script src="{% static 'login/js/login.js' %}"></script>
 
     </body>
     {% endblock %}

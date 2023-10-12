@@ -43,7 +43,7 @@
 
                         <div class="row justify-content-center">
                          
-                            <div class="col-8">
+                            <div class="col-lg-8 col-md-12 col-12">
                                 <div class="card">
                                     <div class="card-body">
 
@@ -186,7 +186,7 @@
                                                                     <h3 class="mt-0">El examen esta listo!</h3>
 
                                                                     <p class="w-75 mb-2 mx-auto">Ahora solo da click en el boton "iniciar examen" para realizarlo. ¡Mucho exito! </p>
-
+ 
                                                                 
                                                                 </div>
                                                             </div> <!-- end col -->
@@ -196,7 +196,7 @@
                                                                 <button type="button" class="btn btn-light"><i class="mdi mdi-arrow-left me-1"></i> Regresar a configurar</button>
                                                             </li>
                                                             <li class="next list-inline-item float-end">
-                                                                <button type="button" class="btn btn-primary">Iniciar examen</button>
+                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#primary-header-modal">Iniciar examen</button>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -216,7 +216,31 @@
                     </div> <!-- container -->
 
                 </div> <!-- content -->
-
+                <div id="primary-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="primary-header-modalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h4 class="modal-title" id="primary-header-modalLabel" style="color: white;">Estas a punto de iniciar</h4>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            </div>
+                            <div class="modal-body ">
+                                <h3 class="text-muted">Tu examen contendra:</h3>
+                                <ul class="text">
+                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-timer-sand-complete "></i> 15 minutos</p></li>
+                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-notebook-outline"></i> 15 preguntas</p></li>
+                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-pencil-box-multiple-outline"></i> 2 temas</p></li>
+                                </ul>
+                                
+                                
+                      
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                                <a type="button" href="{% url 'view_start_test' %}" class="btn btn-primary">Empezar examen</a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
                 <!-- Footer Start -->
                 <footer class="footer">
                     <div class="container-fluid">

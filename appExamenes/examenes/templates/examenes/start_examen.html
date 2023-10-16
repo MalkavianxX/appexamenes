@@ -1,174 +1,319 @@
-{% extends 'dashboard/dashboard.html' %}{% load static %}
-
-
-{% block title %}
+{% extends 'dashboard/dashboard.html' %}{% load static %} {% block title %}
 <title>Ad-mision| Dashboard - Pagina principal</title>
 
-{% endblock %}
+{% endblock %} {% block descripcion %}
+<meta name="description"
+    content="Bienvenido a Ad-mision, tu portal personalizado para la preparación universitaria. Descubre tu progreso, estadísticas clave y más en nuestro completo panel de control. ¡Tu camino a la universidad comienza aquí!" />
+<meta name="author" content="Ad-mision s Team dev" />
+{% endblock %} {% block content %}
+<!-- SimpleMDE css -->
 
-{% block descripcion %}
-    <meta name="description" content="Bienvenido a Ad-mision, tu portal personalizado para la preparación universitaria. Descubre tu progreso, estadísticas clave y más en nuestro completo panel de control. ¡Tu camino a la universidad comienza aquí!">
-    <meta name="author" content="Ad-mision s Team dev">
-{% endblock %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
-{% block content %}
-        <!-- SimpleMDE css -->
-    
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<!-- Quill css -->
+<link href="{% static 'login/assets/vendor/quill/quill.core.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'login/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'login/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet" type="text/css" />
+<style>
+    .slider-container {
+        width: 100%;
+        /* Ajusta el ancho según tus necesidades */
+        overflow: hidden;
+    }
 
-        <!-- Quill css -->
-        <link href="{% static 'login/assets/vendor/quill/quill.core.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'login/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'login/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet" type="text/css" />
-    <div class="content-page">
-        <div class="content">
+    .slider-wrapper {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
 
-            <!-- Start Content-->
-            <div class="container-fluid">
-
-                <!-- start page title -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page-title-box">
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Examen</a></li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Personalizado</a></li>
-                                    <li class="breadcrumb-item active">Iniciar</li>
-                                </ol>
-                            </div>
-                            <h4 class="page-title">Examen personalizado</h4>
+    .slider-item {
+        flex: 0 0 auto;
+        width: 100%;
+        /* Ajusta el ancho según tus necesidades */
+    }
+</style>
+<div class="content-page">
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item">
+                                    <a href="javascript: void(0);">Examen</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="javascript: void(0);">Personalizado</a>
+                                </li>
+                                <li class="breadcrumb-item active">Iniciar</li>
+                            </ol>
                         </div>
+                        <h4 class="page-title">Examen personalizado</h4>
                     </div>
                 </div>
-                <!-- end page title -->
-                <div class="row card">
-                    <div class="col-12 card-body">
-                        <div class="row ">
-                            <div class="col-lg-4 col-md-3 col-sm-3 col-3 d-lg-block d-none">
-                                <div class="progress " style="height: 50px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><h2>5 de 20</h2></div>
+            </div>
+            <!-- end page title -->
+            <!--ITEM SLIDE 1-->
+            <div class="row card mb-3">
+                <div class="col-12 card-body">
+                    <!--CONTENIDO DE BARRA DE NAVEGACION-->
+                    <div class="row">
+                        <!--PORCENTAJE -->
+                        <div class="col-lg-4 col-md-3 col-sm-3 col-3 d-lg-block d-none">
+                            <div class="progress" style="height: 50px">
+                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    <h2>0 de 0</h2>
                                 </div>
                             </div>
-                      
-                            <div class="col-lg-4 col-10">
-                                <div class="w-100 d-flex justify-content-lg-between justify-content-md-between justify-content-start ">
-                                    <a title="Regresar a la pregunta anterior" class="fs-2 link-secondary me-lg-1 me-5" ><i class="mdi mdi-arrow-collapse-left"></i>Ant</a> 
+                        </div>
+                        <!-- BOTONES ANT - SIG -->
+                        <div class="col-lg-4 col-10">
+                            <div
+                                class="w-100 d-flex justify-content-lg-between justify-content-md-between justify-content-start">
+                                <button title="Regresar a la pregunta anterior" id="prevLink"
+                                    class="fs-3 btn btn-outline-primary me-lg-1 me-5" disabled>
+                                    <i class="mdi mdi-arrow-collapse-left" ></i>Ant
+                                </button>
 
-                                    <a title="Ir a la siguiente pregunta" class="fs-2 link-secondary" >Sig<i class="mdi mdi-arrow-collapse-right"></i></a>     
+                                <button id="nextLink" title="Ir a la siguiente pregunta"
+                                    class="fs-3 btn btn-outline-primary">
+                                    Sig<i class="mdi mdi-arrow-collapse-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!--TIEMPO-->
+                        <div class="col-lg-4 col-2 d-flex justify-content-end">
+                            <p id="countdown" class="fs-2 fw-bold">
+                                <strong>15:00</strong>
+                            </p>
+                            <i class="fs-2 mdi mdi-timer-sand-complete"></i>
+                        </div>
+                    </div>
+                    <!--CONTENIDO ASKS and SLIDER-->
+                    <div class="slider-container">
+                        <div class="slider-wrapper">
+                            <div class="slider-item pregunta" data-pregunta="pregunta-1">
+                                <!--CONTENIDO PREGUNTA IMAGEN-->
+                                <div class="row">
+                                    <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
+                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div id="snow-editor" style="height: 300px">
+                                            F(x) = Σ (sin(nx) / n²) desde n=1 hasta ∞ Lorem ipsum
+                                            dolor sit amet consectetur adipisicing elit. Dolorem
+                                            nesciunt maxime neque
+                                        </div>
+                                        <!-- end Snow-editor-->
+                                    </div>
                                 </div>
-                             </div>
-                            <div class="col-lg-4 col-2 d-flex justify-content-end">
-                                <p id="countdown" class="fs-2 fw-bold">
-                                  <strong>15:00</strong>
-                                </p>
-                                <i class="fs-2 mdi mdi-timer-sand-complete"></i>
+                                <!--CONTENIDO RESPUESTAS-->
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
+                                            <span class="input-group-text" id="basic-addon1">A</span>
+                                            <input class="form-control form-control-lg" value="Primera opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon1" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
+                                            <span class="input-group-text" id="basic-addon2">B</span>
+                                            <input class="form-control form-control-lg" value="Segunda opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon2" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
+                                            <span class="input-group-text" id="basic-addon3">C</span>
+                                            <input class="form-control form-control-lg" value="Terca opcion" type="text"
+                                                readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon3" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
+                                            <span class="input-group-text" id="basic-addon4">D</span>
+                                            <input class="form-control form-control-lg" value="Cuarta opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon4" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--CONTENIDO PARA CEL IMAGEN-->
+                                <div class="row d-lg-none d-md-none d-sm-flex d-flex">
+                                    <div class="col-lg-4">
+                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                </div>
                             </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
-                                <img src="{% static 'examenes/img/testimg.jpg' %}"  alt="" class="img-fluid rounded">
+                            <div class="slider-item pregunta" data-pregunta="pregunta-2">
+                                <!--CONTENIDO PREGUNTA IMAGEN-->
+                                <div class="row">
+                                    <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
+                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div id="snow-editor" style="height: 300px">
+                                            F(x) = Σ (sin(nx) / n²) desde n=1 hasta ∞ Lorem ipsum
+                                            dolor sit amet consectetur adipisicing elit. Dolorem
+                                            nesciunt maxime neque
+                                        </div>
+                                        <!-- end Snow-editor-->
+                                    </div>
+                                </div>
+                                <!--CONTENIDO RESPUESTAS-->
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
+                                            <span class="input-group-text" id="basic-addon1">A</span>
+                                            <input class="form-control form-control-lg" value="Primera opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon1" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
+                                            <span class="input-group-text" id="basic-addon2">B</span>
+                                            <input class="form-control form-control-lg" value="Segunda opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon2" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
+                                            <span class="input-group-text" id="basic-addon3">C</span>
+                                            <input class="form-control form-control-lg" value="Terca opcion" type="text"
+                                                readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon3" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
+                                            <span class="input-group-text" id="basic-addon4">D</span>
+                                            <input class="form-control form-control-lg" value="Cuarta opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon4" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--CONTENIDO PARA CEL IMAGEN-->
+                                <div class="row d-lg-none d-md-none d-sm-flex d-flex">
+                                    <div class="col-lg-4">
+                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-8">
-                                <div id="snow-editor" style="height: 300px;">
-                                    F(x) = Σ (sin(nx) / n²) desde n=1 hasta ∞
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem nesciunt maxime neque doloribus corrupti harum saepe autem aliquam rem dolore, esse laboriosam eaque eius quisquam delectus. Architecto maiores vel ex.
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus fugiat enim non ea debitis reiciendis ipsam voluptate architecto quod reprehenderit. Aspernatur, placeat! Aperiam magnam minima quos veniam ipsam facilis culpa.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, doloremque. Blanditiis expedita eligendi odio aliquid totam labore mollitia doloribus. Nihil iure enim cupiditate repudiandae ipsam impedit labore exercitationem asperiores fuga.
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus vel aut repudiandae amet illum nisi dignissimos, maxime repellendus sed sapiente, tempore numquam error! Tenetur, ea dolorum magni a reprehenderit beatae.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio consectetur similique ipsam, voluptate soluta iure laborum placeat velit delectus reiciendis tempore incidunt deserunt in non ad molestiae at cumque minus.
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus soluta placeat rem hic earum, rerum dicta perspiciatis eaque quidem maiores est incidunt, assumenda alias laboriosam. Obcaecati consequatur ullam perspiciatis deserunt.
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur temporibus in quod qui nobis autem omnis cumque ex mollitia, voluptates tempora accusamus rerum! Ducimus iure unde id, quam vel sint.
-                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nobis, dolorem temporibus corrupti beatae aliquid ipsam, magni quisquam nihil molestias rem, neque dolorum fugiat! Rem neque quod odit illum adipisci.
-
-                                </div><!-- end Snow-editor-->
+                            <div class="slider-item pregunta" data-pregunta="pregunta-3">
+                                <!--CONTENIDO PREGUNTA IMAGEN-->
+                                <div class="row">
+                                    <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
+                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div id="snow-editor" style="height: 300px">
+                                            F(x) = Σ (sin(nx) / n²) desde n=1 hasta ∞ Lorem ipsum
+                                            dolor sit amet consectetur adipisicing elit. Dolorem
+                                            nesciunt maxime neque
+                                        </div>
+                                        <!-- end Snow-editor-->
+                                    </div>
+                                </div>
+                                <!--CONTENIDO RESPUESTAS-->
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
+                                            <span class="input-group-text" id="basic-addon1">A</span>
+                                            <input class="form-control form-control-lg" value="Primera opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon1" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
+                                            <span class="input-group-text" id="basic-addon2">B</span>
+                                            <input class="form-control form-control-lg" value="Segunda opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon2" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
+                                            <span class="input-group-text" id="basic-addon3">C</span>
+                                            <input class="form-control form-control-lg" value="Terca opcion" type="text"
+                                                readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon3" />
+                                        </div>
+                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
+                                            <span class="input-group-text" id="basic-addon4">D</span>
+                                            <input class="form-control form-control-lg" value="Cuarta opcion"
+                                                type="text" readonly placeholder=".form-control-lg"
+                                                aria-describedby="basic-addon4" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--CONTENIDO PARA CEL IMAGEN-->
+                                <div class="row d-lg-none d-md-none d-sm-flex d-flex">
+                                    <div class="col-lg-4">
+                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-12">
-                              <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">A</span>
-                                <input class="form-control  form-control-lg" value="Primera opcion" type="text" readonly placeholder=".form-control-lg" aria-describedby="basic-addon1">
-                              </div>
-                              <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon2">B</span>
-                                <input class="form-control form-control-lg" value="Segunda opcion" type="text" readonly placeholder=".form-control-lg" aria-describedby="basic-addon2">
-                              </div>
-                              <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon3">C</span>
-                                <input class="form-control form-control-lg" value="Terca opcion" type="text" readonly placeholder=".form-control-lg" aria-describedby="basic-addon3">
-                              </div>
-                              <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon4">D</span>
-                                <input class="form-control form-control-lg" value="Cuarta opcion" type="text" readonly placeholder=".form-control-lg" aria-describedby="basic-addon4">
-                              </div>
-                            </div>
-                          </div>
-                       
-                        <div class="row d-lg-none d-md-none d-sm-flex d-flex">
-                            <div class="col-lg-4 ">
-                                <img src="{% static 'examenes/img/testimg.jpg' %}" alt="" class="img-fluid rounded">
-                            </div>
-                        </div>
-                        
-                          
-                    </div>
-                </div>
-                
-            </div> <!-- container -->
-
-        </div> <!-- content -->
-
-        <!-- Footer Start -->
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6">
-                        <script>document.write(new Date().getFullYear())</script> © Hyper - Coderthemes.com
-                    </div>
-                    <div class="col-md-6">
-                        <div class="text-md-end footer-links d-none d-md-block">
-                            <a href="javascript: void(0);">About</a>
-                            <a href="javascript: void(0);">Support</a>
-                            <a href="javascript: void(0);">Contact Us</a>
+                           
                         </div>
                     </div>
                 </div>
             </div>
-        </footer>
-        <!-- end Footer -->
-
+        </div>
     </div>
+
+    <!-- Footer Start -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <script>
+                        document.write(new Date().getFullYear());
+                    </script>
+                    © Hyper - Coderthemes.com
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-end footer-links d-none d-md-block">
+                        <a href="javascript: void(0);">About</a>
+                        <a href="javascript: void(0);">Support</a>
+                        <a href="javascript: void(0);">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- end Footer -->
+</div>
 <!-- Modal -->
-    <div class="modal fade" id="imgmodal" tabindex="-1" aria-labelledby="imgmodal" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
+<div class="modal fade" id="imgmodal" tabindex="-1" aria-labelledby="imgmodal" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-            <h1 class="modal-title fs-5" id="imgmodal">Imagen de referencia</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="imgmodal">Imagen de referencia</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-               
-                <img class=" img-fluid" src="{% static 'examenes/img/testimg.jpg' %}" alt="First slide">
-
+                <img class="img-fluid" src="{% static 'examenes/img/testimg.jpg' %}" alt="First slide" />
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
             </div>
         </div>
-        </div>
     </div>
-    <!--FUNCIONES DEL EXAMEN-->
-    <script src="{% static 'examenes/js/funcionexamen.js' %}"></script>
-    <!-- Vendor js -->
-    <script src="{% static 'login/assets/js/vendor.min.js' %}"></script>
+</div>
+<!--FUNCIONES DEL EXAMEN-->
+<script src="{% static 'examenes/js/funcionexamen.js' %}"></script>
+<!-- Vendor js -->
+<script src="{% static 'login/assets/js/vendor.min.js' %}"></script>
 
-    <!-- Quill Editor js -->
-    <script src="{% static 'login/assets/vendor/quill/quill.min.js' %}"></script>
+<!-- Quill Editor js -->
+<script src="{% static 'login/assets/vendor/quill/quill.min.js' %}"></script>
 
-    <!-- Quill Demo js -->
-    <script src="{% static 'login/assets/js/pages/demo.quilljs.js' %}"></script>
-    <!-- App js -->
-    <script src="{% static 'login/assets/js/app.min.js' %}"></script>
+<!-- Quill Demo js -->
+<script src="{% static 'login/assets/js/pages/demo.quilljs.js' %}"></script>
+<!-- App js -->
+<script src="{% static 'login/assets/js/app.min.js' %}"></script>
 {% endblock %}

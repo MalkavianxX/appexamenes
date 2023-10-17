@@ -27,18 +27,18 @@ class MiExamen(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) #Quien hizo el examen
     test = models.ForeignKey(Examen, on_delete=models.CASCADE)  #Que examen hizo
     score = models.FloatField(default=0.0) #calificacion que obtuvo
-    time = models.TimeField() #tiempo que le llevo hacerlo
-    status = models.CharField(max_length=50) #estado del examen (aprobado, reprobado, incompleto)
+    time = models.CharField(max_length=1000000) #tiempo que le llevo hacerlo
+    status = models.CharField(max_length=50, blank=True, null=True ) #estado del examen (aprobado, reprobado, incompleto)
     date = models.DateTimeField(auto_now_add=True) #fecha que hizo el examen
-    asnwers = models.ManyToManyField(Respuesta) #respuestas que seleccionó
-    time_ans = models.CharField(max_length=10000) #lista del intervalo de tiempo entre preguntas (osea el tiempo que tardo en responder cada pregunta)
+    asnwers = models.ManyToManyField(Respuesta,blank=True, null=True) #respuestas que seleccionó
+    time_ans = models.CharField(max_length=10000, blank=True, null=True) #lista del intervalo de tiempo entre preguntas (osea el tiempo que tardo en responder cada pregunta)
 
     class Meta:
         ordering = ["score"]
         verbose_name_plural = 'MisExamenes'  
 
     def __str__(self):
-        return str(self.test - self.score)          
+        return str(self.test)          
 
 class MiPerfil(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

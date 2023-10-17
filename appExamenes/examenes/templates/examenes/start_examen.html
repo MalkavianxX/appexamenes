@@ -51,12 +51,14 @@
                                 <li class="breadcrumb-item active">Iniciar</li>
                             </ol>
                         </div>
-                        <h4 class="page-title">Examen personalizado</h4>
+                        <h4 class="page-title">{{ examen.title }}</h4>
                     </div>
                 </div>
             </div>
             <!-- end page title -->
             <!--ITEM SLIDE 1-->
+            {% csrf_token %}
+            <input type="text" id="id_examen" class="d-none" value="{{examen.id}}">
             <div class="row card mb-3">
                 <div class="col-12 card-body">
                     <!--CONTENIDO DE BARRA DE NAVEGACION-->
@@ -83,6 +85,13 @@
                                     class="fs-3 btn btn-outline-primary">
                                     Sig<i class="mdi mdi-arrow-collapse-right"></i>
                                 </button>
+                                <button id="terminar_examen" 
+                                        title="Terminar el examen"
+                                        style="display: none;"
+                                        class="fs-3 btn btn-primary">
+                                        Terminar 
+                                        <i class="mdi mdi-check"></i>
+                                </button>
                             </div>
                         </div>
                         <!--TIEMPO-->
@@ -96,18 +105,17 @@
                     <!--CONTENIDO ASKS and SLIDER-->
                     <div class="slider-container">
                         <div class="slider-wrapper">
+                            {% for pregunta, respuestas in preguntas_con_respuestas.items %}
                             <div class="slider-item pregunta" data-pregunta="pregunta-1">
                                 <!--CONTENIDO PREGUNTA IMAGEN-->
                                 <div class="row">
                                     <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
-                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                        <img src="{{pregunta.imgage.url}}" alt=""
                                             class="img-fluid rounded" />
                                     </div>
                                     <div class="col-lg-8">
                                         <div id="snow-editor" style="height: 300px">
-                                            F(x) = Σ (sin(nx) / n²) desde n=1 hasta ∞ Lorem ipsum
-                                            dolor sit amet consectetur adipisicing elit. Dolorem
-                                            nesciunt maxime neque
+                                            {{ pregunta.text }}
                                         </div>
                                         <!-- end Snow-editor-->
                                     </div>
@@ -115,30 +123,21 @@
                                 <!--CONTENIDO RESPUESTAS-->
                                 <div class="row mt-3">
                                     <div class="col-12">
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
+                                        {% for respuesta in respuestas %}
+
+                                        <div class="input-group mb-3 respuesta" data-id="{{pregunta.id}}" data-respuesta="pregunta-{{pregunta.id}}">
                                             <span class="input-group-text" id="basic-addon1">A</span>
-                                            <input class="form-control form-control-lg" value="Primera opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon1" />
+                                            <input class="form-control form-control-lg" 
+                                                    value="{{ respuesta.text }}"
+                                                    type="text" 
+                                                    readonly 
+                                                    placeholder=".form-control-lg"
+                                                    aria-describedby="basic-addon1" 
+                                                    id="{{ respuesta.id}}"
+                                                    />
                                         </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
-                                            <span class="input-group-text" id="basic-addon2">B</span>
-                                            <input class="form-control form-control-lg" value="Segunda opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon2" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
-                                            <span class="input-group-text" id="basic-addon3">C</span>
-                                            <input class="form-control form-control-lg" value="Terca opcion" type="text"
-                                                readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon3" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-1">
-                                            <span class="input-group-text" id="basic-addon4">D</span>
-                                            <input class="form-control form-control-lg" value="Cuarta opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon4" />
-                                        </div>
+                                        {% endfor %}
+                                       
                                     </div>
                                 </div>
                                 <!--CONTENIDO PARA CEL IMAGEN-->
@@ -149,112 +148,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="slider-item pregunta" data-pregunta="pregunta-2">
-                                <!--CONTENIDO PREGUNTA IMAGEN-->
-                                <div class="row">
-                                    <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
-                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
-                                            class="img-fluid rounded" />
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div id="snow-editor" style="height: 300px">
-                                            F(x) = Σ (sin(nx) / n²) desde n=1 hasta ∞ Lorem ipsum
-                                            dolor sit amet consectetur adipisicing elit. Dolorem
-                                            nesciunt maxime neque
-                                        </div>
-                                        <!-- end Snow-editor-->
-                                    </div>
-                                </div>
-                                <!--CONTENIDO RESPUESTAS-->
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
-                                            <span class="input-group-text" id="basic-addon1">A</span>
-                                            <input class="form-control form-control-lg" value="Primera opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon1" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
-                                            <span class="input-group-text" id="basic-addon2">B</span>
-                                            <input class="form-control form-control-lg" value="Segunda opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon2" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
-                                            <span class="input-group-text" id="basic-addon3">C</span>
-                                            <input class="form-control form-control-lg" value="Terca opcion" type="text"
-                                                readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon3" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-2">
-                                            <span class="input-group-text" id="basic-addon4">D</span>
-                                            <input class="form-control form-control-lg" value="Cuarta opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon4" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--CONTENIDO PARA CEL IMAGEN-->
-                                <div class="row d-lg-none d-md-none d-sm-flex d-flex">
-                                    <div class="col-lg-4">
-                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
-                                            class="img-fluid rounded" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="slider-item pregunta" data-pregunta="pregunta-3">
-                                <!--CONTENIDO PREGUNTA IMAGEN-->
-                                <div class="row">
-                                    <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
-                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
-                                            class="img-fluid rounded" />
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div id="snow-editor" style="height: 300px">
-                                            F(x) = Σ (sin(nx) / n²) desde n=1 hasta ∞ Lorem ipsum
-                                            dolor sit amet consectetur adipisicing elit. Dolorem
-                                            nesciunt maxime neque
-                                        </div>
-                                        <!-- end Snow-editor-->
-                                    </div>
-                                </div>
-                                <!--CONTENIDO RESPUESTAS-->
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
-                                            <span class="input-group-text" id="basic-addon1">A</span>
-                                            <input class="form-control form-control-lg" value="Primera opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon1" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
-                                            <span class="input-group-text" id="basic-addon2">B</span>
-                                            <input class="form-control form-control-lg" value="Segunda opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon2" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
-                                            <span class="input-group-text" id="basic-addon3">C</span>
-                                            <input class="form-control form-control-lg" value="Terca opcion" type="text"
-                                                readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon3" />
-                                        </div>
-                                        <div class="input-group mb-3 respuesta" data-respuesta="pregunta-3">
-                                            <span class="input-group-text" id="basic-addon4">D</span>
-                                            <input class="form-control form-control-lg" value="Cuarta opcion"
-                                                type="text" readonly placeholder=".form-control-lg"
-                                                aria-describedby="basic-addon4" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--CONTENIDO PARA CEL IMAGEN-->
-                                <div class="row d-lg-none d-md-none d-sm-flex d-flex">
-                                    <div class="col-lg-4">
-                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
-                                            class="img-fluid rounded" />
-                                    </div>
-                                </div>
-                            </div>
+
+                            {% endfor %}
+                            
                            
                         </div>
                     </div>

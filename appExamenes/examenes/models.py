@@ -15,7 +15,7 @@ class Categoria(models.Model):
 class Pregunta(models.Model):
     category = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     text = models.CharField(max_length=100000)
-    imgage = models.ImageField(upload_to='pregunta_images/')
+    imgage = models.ImageField(upload_to='pregunta_images/',blank=True, null=True)
     weight = models.IntegerField(default=1)
     answer = models.TextField(max_length=100000 , blank=True, null=True)
     date = models.DateField(auto_now_add=True)

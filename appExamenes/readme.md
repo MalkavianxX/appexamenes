@@ -1,9 +1,6 @@
 # appexamenes
 
-# El siguiente paso es hacer la view para mostrar la evalucacion del examen la cual consta de 
-puntaje en float, puntaje en letras
-las preguntas que el seleccionó  compraradas con las correctas
+# la vista ya esta lista, el siguiente paso es configrar bien la visdta del resultado de examenes la vista ya ersta terminada
 
-esta deeb ser una vista general para que desde el back respondas con el id de la instancia miExamen
+esta es la url http://127.0.0.1:8000/examenesview_result_examen/1
 
-y se muestre dicha evualicon 

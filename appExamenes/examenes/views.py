@@ -132,3 +132,9 @@ def evaluate_examan(request):
    
     else:
         return JsonResponse(data= {'error': 'Método no permitido'}, status=400)
+    
+
+def view_result_examen(request,id_miexamen):
+    mi_examen = get_object_or_404(MiExamen,id=id_miexamen)
+    examen = mi_examen.test
+    return render(request,"examenes/view_result_examen.html",{'miexamen':mi_examen,"examen":examen})    

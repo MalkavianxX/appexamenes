@@ -234,6 +234,9 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(data => {
         // Manejar la respuesta de Django si es necesario
         console.log(data);
+        // Redirigir a la siguiente URL con el ID del examen
+        const miexamenId = data.miexamen_id;
+        window.location.href = `/examenesview_result_examen/${miexamenId}`;
       })
       .catch(error => {
         console.error('Error al enviar los datos:', error);

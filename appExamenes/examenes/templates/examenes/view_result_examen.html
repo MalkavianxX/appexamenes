@@ -2,11 +2,11 @@
 
 
 {% block title %}
-<title>Ad-mision| Dashboard - Configuracion de mi examen</title>
+<title>Ad-mision| Dashboard - Mi resultado</title>
 
 {% endblock %}
 {% block descripcion %}
-    <meta name="description" content="Bienvenido a Ad-mision, tu portal personalizado para la preparación universitaria. Descubre tu progreso, estadísticas clave y más en nuestro completo panel de control. ¡Tu camino a la universidad comienza aquí!">
+    <meta name="description" content="Mi resultado, descubre cuanto obtuviste en tu examen.">
     <meta name="author" content="Ad-mision s Team dev">
 {% endblock %}
 
@@ -33,10 +33,11 @@
                                             <li class="breadcrumb-item active">Resultado</li>
                                         </ol>
                                     </div>
-                                    <h4 class="page-title">{{examen.title}}</h4>
+                                    <h4 class="page-title">{{resumen_data.titulo_examen}}</h4>
                                 </div>
                             </div>
                         </div>
+                        <input type="text" value="{{resumen_data.examen_resultado}}" id="examen_resultado" class="d-none">
                         <div class="row justify-content-between">
                             <div class="col-xl-6 col-lg-5 col-12">
                                 <div class="card">
@@ -58,10 +59,10 @@
                                                     <i class="mdi mdi-pulse widget-icon"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Growth">Total de preguntas</h5>
-                                                <h3 class="mt-3 mb-3">30 preguntas</h3>
+                                                <h3 class="mt-3 mb-3">{{resumen_data.num_preguntas}} preguntas</h3>
                                                 <p class="mb-0 text-muted">
                                                     <span class="text-success me-2">
-                                                        <i class="mdi mdi-arrow-up-bold"></i> 100%</span>
+                                                        <i class="mdi mdi-arrow-up-bold"></i> {{ resumen_data.prc_preguntas }}%</span>
                                                     <span class="text-nowrap">Preguntas respondidas</span>
                                                 </p>
                                             </div>
@@ -74,10 +75,10 @@
                                                     <i class="mdi mdi-timer-sand-complete widget-icon"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Growth">Tiempo total</h5>
-                                                <h3 class="mt-3 mb-3">30 minutos</h3>
+                                                <h3 class="mt-3 mb-3">{{ resumen_data.tiempo_total }} minutos</h3>
                                                 <p class="mb-0 text-muted">
                                                     <span class="text-success me-2">
-                                                        <i class="mdi mdi-arrow-up-bold"></i>75.5%</span>
+                                                        <i class="mdi mdi-arrow-up-bold"></i>{{ resumen_data.prc_tiempo }}%</span>
                                                     <span class="text-nowrap">Tiempo usado</span>
                                                 </p>
                                             </div>
@@ -90,199 +91,62 @@
                                 <div class="row">
                                     <div class="col ">
                                         <div class="py-0 mb-3 text-start" data-simplebar style="max-height: 80vh">
-                                            <div class="card ribbon-box align-items-start mt-1 p-2">
-                                                <div class="card-body">
-                                                    <div class="ribbon ribbon-danger float-end"><i class="mdi mdi-access-point me-1"></i> Incorrecta</div>
-                                                    <h5 class="text-primary float-start mt-0">Pregunta 2</h5>
-                                                    <div class="ribbon-content">
-                                                        <div class="tab-content">
-                                                            <div class="tab-pane show active" id="justified-tabs-preview">
-                                                                <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
-                                                                    <li class="nav-item">
-                                                                        <a href="#home1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
-                                                                            <i class="mdi mdi-comment-text d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Pregunta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#profile1" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
-                                                                            <i class="mdi mdi-comment-flash d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Tu respuesta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#settings1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                                                                            <i class="mdi mdi-comment-check d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Respuesta correcta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                        
-                                                                <div class="tab-content">
-                                                                    <div class="tab-pane" id="home1">
-                                                                        <p>Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane show active" id="profile1">
-                                                                        <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                        <p class="mb-0">Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane" id="settings1">
-                                                                        <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                        <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                    </div>
-                                                                </div>                                           
-                                                            </div> <!-- end preview-->
-                                                        
+                                            {% for resultado in resumen_data.resultados %}
+
+                                                <div class="card ribbon-box align-items-start mt-1 p-2 ">
+                                                    <div class="card-body w-100">
+                                                        {% if resultado.resultado  == "Correcto" %}
+                                                        <div class="ribbon ribbon-success float-end"><i class="mdi mdi-check-bold me-1"></i> Correcta</div>
+                                                        {% elif resultado.resultado  == "Vacio" %}
+                                                        <div class="ribbon ribbon-secondary float-end"><i class="mdi mdi-alert me-1"></i> Sin responder</div>
+                                                        {% else %}
+                                                        <div class="ribbon ribbon-danger float-end"><i class="mdi mdi-close-thick me-1"></i> Incorrecta</div>
+                                                        {% endif %}
+                                                        <h5 class="text-primary float-start mt-0">Pregunta {{ resultado.numero_pregunta }}</h5>
+                                                        <div class="ribbon-content">
+                                                            <div class="tab-content">
+                                                                <div class="tab-pane show active" id="justified-tabs-preview">
+                                                                    <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                                                                        <li class="nav-item">
+                                                                            <a href="#p{{resultado.numero_pregunta}}" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
+                                                                                <i class="mdi mdi-comment-text d-md-none d-block"></i>
+                                                                                <span class="d-none d-md-block">Pregunta</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="#rs{{resultado.numero_pregunta}}" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
+                                                                                <i class="mdi mdi-comment-flash d-md-none d-block"></i>
+                                                                                <span class="d-none d-md-block">Tu respuesta</span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="#r{{resultado.numero_pregunta}}" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                                                                                <i class="mdi mdi-comment-check d-md-none d-block"></i>
+                                                                                <span class="d-none d-md-block">Respuesta correcta</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                            
+                                                                    <div class="tab-content">
+                                                                        <div class="tab-pane show active" id="p{{resultado.numero_pregunta}}">
+                                                                            <p >{{ resultado.texto_pregunta }}</p>
+                                                                        </div>
+                                                                        <div class="tab-pane  " id="rs{{resultado.numero_pregunta}}">
+                                                                            <p>{{ resultado.texto_respuesta_seleccionada|join:", "  }}</p>
+                                                                        </div>
+                                                                        <div class="tab-pane" id="r{{resultado.numero_pregunta}}">
+                                                                            <p>{{ resultado.texto_respuesta_correcta|join:", "  }}</p>
+                                                                        </div>
+                                                                    </div>                                           
+                                                                </div> <!-- end preview-->
                                                             
-                                                        </div> <!-- end tab-content-->
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div> <!-- end card-->
-                                            <div class="card ribbon-box align-items-start mt-1 p-2">
-                                                <div class="card-body " >
-                                                    <div class="ribbon ribbon-success float-end"><i class="mdi mdi-access-point me-1"></i> Correcta</div>
-                                                    <h5 class="text-primary float-start mt-0">Pregunta 1</h5>
-                                                    <div class="ribbon-content">
-                                                        <div class="tab-content">
-                                                            <div class="tab-pane show active" id="justified-tabs-preview">
-                                                                <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
-                                                                    <li class="nav-item">
-                                                                        <a href="#home1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
-                                                                            <i class="mdi mdi-comment-text d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Pregunta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#profile1" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
-                                                                            <i class="mdi mdi-comment-flash d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Tu respuesta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#settings1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                                                                            <i class="mdi mdi-comment-check d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Respuesta correcta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                        
-                                                                <div class="tab-content">
-                                                                    <div class="tab-pane" id="home1">
-                                                                        <p>Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane show active" id="profile1">
-                                                                        <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                        <p class="mb-0">Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane" id="settings1">
-                                                                        <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                        <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                    </div>
-                                                                </div>                                           
-                                                            </div> <!-- end preview-->
-                                                        
-                                                            
-                                                        </div> <!-- end tab-content-->
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div> <!-- end card-->
-                                            <div class="card ribbon-box align-items-start mt-1 p-2">
-                                                <div class="card-body">
-                                                    <div class="ribbon ribbon-danger float-end"><i class="mdi mdi-access-point me-1"></i> Incorrecta</div>
-                                                    <h5 class="text-primary float-start mt-0">Pregunta 2</h5>
-                                                    <div class="ribbon-content">
-                                                        <div class="tab-content">
-                                                            <div class="tab-pane show active" id="justified-tabs-preview">
-                                                                <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
-                                                                    <li class="nav-item">
-                                                                        <a href="#home1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
-                                                                            <i class="mdi mdi-comment-text d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Pregunta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#profile1" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
-                                                                            <i class="mdi mdi-comment-flash d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Tu respuesta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#settings1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                                                                            <i class="mdi mdi-comment-check d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Respuesta correcta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                        
-                                                                <div class="tab-content">
-                                                                    <div class="tab-pane" id="home1">
-                                                                        <p>Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane show active" id="profile1">
-                                                                        <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                        <p class="mb-0">Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane" id="settings1">
-                                                                        <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                        <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                    </div>
-                                                                </div>                                           
-                                                            </div> <!-- end preview-->
-                                                        
-                                                            
-                                                        </div> <!-- end tab-content-->
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div> <!-- end card-->
-                                            <div class="card ribbon-box align-items-start mt-1 p-2">
-                                                <div class="card-body " >
-                                                    <div class="ribbon ribbon-success float-end"><i class="mdi mdi-access-point me-1"></i> Correcta</div>
-                                                    <h5 class="text-primary float-start mt-0">Pregunta 1</h5>
-                                                    <div class="ribbon-content">
-                                                        <div class="tab-content">
-                                                            <div class="tab-pane show active" id="justified-tabs-preview">
-                                                                <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
-                                                                    <li class="nav-item">
-                                                                        <a href="#home1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0 active">
-                                                                            <i class="mdi mdi-comment-text d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Pregunta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#profile1" data-bs-toggle="tab" aria-expanded="true" class="nav-link rounded-0 ">
-                                                                            <i class="mdi mdi-comment-flash d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Tu respuesta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a href="#settings1" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                                                                            <i class="mdi mdi-comment-check d-md-none d-block"></i>
-                                                                            <span class="d-none d-md-block">Respuesta correcta</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                        
-                                                                <div class="tab-content">
-                                                                    <div class="tab-pane" id="home1">
-                                                                        <p>Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane show active" id="profile1">
-                                                                        <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                        <p class="mb-0">Leggings occaecat dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                    </div>
-                                                                    <div class="tab-pane" id="settings1">
-                                                                        <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                                        <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                                                                    </div>
-                                                                </div>                                           
-                                                            </div> <!-- end preview-->
-                                                        
-                                                            
-                                                        </div> <!-- end tab-content-->
-                                                    </div>
-                                                </div> <!-- end card-body -->
-                                            </div> <!-- end card-->
-                                            
+                                                                
+                                                            </div> <!-- end tab-content-->
+                                                        </div>
+                                                    </div> <!-- end card-body -->
+                                                </div> <!-- end card-->
+                                            {% endfor %}
+
                                         </div>
                                       
                                     </div>

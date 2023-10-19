@@ -1,3 +1,5 @@
+var resultado = document.getElementById('examen_resultado').value;
+console.log(resultado);
 var colors = ["#727cf5"],
 dataColors = $("#gradient-chart").data("colors"),
 options = {
@@ -50,9 +52,9 @@ options = {
         stops: [0, 100],
       },
     },
-    series: [100],
+    series: [parseInt(resultado)],
     stroke: { lineCap: "round" },
-    labels: ["Resultado"],
+    labels: ["Calificación"],
   },
   colors =
     ((chart = new ApexCharts(

@@ -1,1 +1,69 @@
-$(document).ready(function(){"use strict";$("#basic-datatable").DataTable({keys:!0,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});var a=$("#datatable-buttons").DataTable({lengthChange:!1,buttons:["copy","print"],language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});$("#selection-datatable").DataTable({select:{style:"multi"},language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)"),$("#alternative-page-datatable").DataTable({pagingType:"full_numbers",drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),$("#scroll-vertical-datatable").DataTable({scrollY:"350px",scrollCollapse:!0,paging:!1,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),$("#scroll-horizontal-datatable").DataTable({scrollX:!0,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),$("#complex-header-datatable").DataTable({language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")},columnDefs:[{visible:!1,targets:-1}]}),$("#row-callback-datatable").DataTable({language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")},createdRow:function(a,e,t){15e4<+e[5].replace(/[\$,]/g,"")&&$("td",a).eq(5).addClass("text-danger")}}),$("#state-saving-datatable").DataTable({stateSave:!0,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}}),$("#fixed-columns-datatable").DataTable({scrollY:300,scrollX:!0,scrollCollapse:!0,paging:!1,fixedColumns:!0}),$(".dataTables_length select").addClass("form-select form-select-sm"),$(".dataTables_length label").addClass("form-label")}),$(document).ready(function(){var a=$("#fixed-header-datatable").DataTable({responsive:!0,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});new $.fn.dataTable.FixedHeader(a)});
+$(document).ready(function () {
+  "use strict";
+  var a = $("#datatable-buttons").DataTable({
+    lengthChange: !1,
+    buttons: ["copy", "print"],
+    language: {
+      paginate: {
+        previous: "<i class='mdi mdi-chevron-left'>",
+        next: "<i class='mdi mdi-chevron-right'>",
+      },
+    },
+    drawCallback: function () {
+      $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+    },
+  });
+
+    a
+      .buttons()
+      .container()
+      .appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)"),
+    $("#alternative-page-datatable").DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                previous: "<i class='mdi mdi-chevron-left'>",
+                next: "<i class='mdi mdi-chevron-right'>",
+            }
+        },
+      pagingType: "full_numbers",
+      drawCallback: function () {
+        $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+      },
+    }),
+    $(".dataTables_length select").addClass("form-select form-select-sm"),
+    $(".dataTables_length label").addClass("form-label");
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const examenRows = document.querySelectorAll('[id^="examenRow_"]');
+  
+  examenRows.forEach(row => {
+      row.addEventListener('mouseover', function () {
+          this.classList.add('bg-primary-lighten', 'cursor-pointer','text-primary');
+      });
+
+      row.addEventListener('mouseout', function () {
+          this.classList.remove('bg-primary-lighten', 'cursor-pointer','text-primary');
+      });
+
+      row.addEventListener('click', function () {
+          const examenId = this.id.split('_')[1];
+          window.location.href = `/examenesview_result_examen/${examenId}`;
+      });
+  });
+});

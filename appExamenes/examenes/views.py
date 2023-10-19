@@ -5,6 +5,7 @@ from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
 
+
 # Create your views here.
 def view_examenes(request):
     return render(request, 'view_examenes.html')
@@ -89,7 +90,7 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
 
     mi_examen.status = determinar_estado(estado,calificacion)  # Debes definir la función determinar_estado
 
-
+    mi_examen.save()
 
     return mi_examen
 
@@ -128,13 +129,79 @@ def evaluate_examan(request):
         print(miexamen.status)
         print(miexamen.asnwers.all())
 
-        return JsonResponse(data= {'mensaje': 'Datos recibidos correctamente'})
+        return JsonResponse(data= {'mensaje': 'Datos recibidos correctamente','miexamen_id': miexamen.id})
    
     else:
         return JsonResponse(data= {'error': 'Método no permitido'}, status=400)
     
 
 def view_result_examen(request,id_miexamen):
-    mi_examen = get_object_or_404(MiExamen,id=id_miexamen)
-    examen = mi_examen.test
-    return render(request,"examenes/view_result_examen.html",{'miexamen':mi_examen,"examen":examen})    
+    # Obtén la instancia de MiExamen usando el ID
+    mi_examen = MiExamen.objects.get(id=id_miexamen)
+
+    # Información que enviarás a la plantilla
+    resumen_data = {
+        'examen_resultado': mi_examen.score,
+        'titulo_examen': mi_examen.test.title,
+        'num_preguntas': mi_examen.test.asks.count(),
+        'tiempo_total': mi_examen.test.time,
+        'prc_preguntas': 0.0,  # Porcentaje de preguntas respondidas
+        'prc_tiempo': 0.0,  # Porcentaje de tiempo utilizado
+        'resultados': []
+    }
+
+    # Itera sobre las preguntas del examen
+    for idx, pregunta in enumerate(mi_examen.test.asks.all(), start=1):
+        # Obtiene las respuestas seleccionadas por el usuario
+        respuestas_seleccionadas = mi_examen.asnwers.filter(ask=pregunta)
+
+        # Verifica si las respuestas seleccionadas son correctas
+        respuestas_correctas = pregunta.respuesta_set.filter(correct=True)
+        respuestas_correctas_ids = set(respuesta.id for respuesta in respuestas_correctas)
+        respuestas_seleccionadas_ids = set(respuesta.id for respuesta in respuestas_seleccionadas)
+        es_correcto = respuestas_correctas_ids == respuestas_seleccionadas_ids
+
+        # Agrega detalles de la pregunta al resumen_data
+        resumen_data['resultados'].append({
+            'numero_pregunta': idx,
+            'texto_pregunta': pregunta.text,
+            'texto_respuesta_seleccionada': [respuesta.text for respuesta in respuestas_seleccionadas],
+            'texto_respuesta_correcta': [respuesta.text for respuesta in respuestas_correctas],
+            'resultado': 'Correcto' if es_correcto else 'Incorrecto' if respuestas_seleccionadas else 'Vacio'
+        })
+
+    # Calcula el porcentaje de preguntas respondidas
+    prc_preguntas_respondidas = (len([r for r in resumen_data['resultados'] if r['resultado'] != 'Vacio']) / resumen_data['num_preguntas']) * 100
+    resumen_data['prc_preguntas'] = round(prc_preguntas_respondidas, 2)
+
+    # Calcula el porcentaje de tiempo utilizado
+    tiempo_usado = float(mi_examen.time) / 1000  # Convierte de milisegundos a segundos
+    prc_tiempo_usado = (tiempo_usado / float(mi_examen.test.time)) * 100
+    resumen_data['prc_tiempo'] = round(prc_tiempo_usado, 2)
+
+    return render(request,"examenes/view_result_examen.html",{'resumen_data': resumen_data})    
+
+
+
+
+def view_test_complete(request):
+    # Obtén todos los exámenes realizados
+    examenes_realizados = MiExamen.objects.all().order_by('date')
+
+    # Lista para almacenar la información de cada examen
+    lista_examenes_info = []
+   
+    # Itera sobre cada examen y agrega la información relevante a la lista
+    for examen in examenes_realizados:
+        examen_info = {
+            'id':examen.id,
+            'nombre_examen': examen.test.title,
+            'calificacion': "{0:.2f}".format(examen.score),
+            'estado': examen.status,
+            'tiempo': "{0:.2f} minutos".format( float(examen.test.time) - (int(examen.time)/60)) ,
+            'fecha': examen.date.strftime('%d-%m-%Y')
+        }
+        lista_examenes_info.append(examen_info)
+    print(lista_examenes_info)
+    # Pasa la lista a la plantilla para su renderización
+    return render(request, 'examenes/view_examenes_completados.html', {'examenes_realizados': lista_examenes_info})

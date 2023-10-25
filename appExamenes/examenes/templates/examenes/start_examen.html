@@ -59,6 +59,8 @@
             <!--ITEM SLIDE 1-->
             {% csrf_token %}
             <input type="text" id="id_examen" class="d-none" value="{{examen.id}}">
+            <input type="text" id="time_examen" class="d-none" value="{{examen.time}}">
+
             <div class="row card mb-3">
                 <div class="col-12 card-body">
                     <!--CONTENIDO DE BARRA DE NAVEGACION-->
@@ -97,7 +99,7 @@
                         <!--TIEMPO-->
                         <div class="col-lg-4 col-2 d-flex justify-content-end">
                             <p id="countdown" class="fs-2 fw-bold">
-                                <strong>15:00</strong>
+                                <strong>00:00</strong>
                             </p>
                             <i class="fs-2 mdi mdi-timer-sand-complete"></i>
                         </div>

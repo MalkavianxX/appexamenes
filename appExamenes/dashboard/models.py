@@ -18,7 +18,7 @@ class Universidad(models.Model):
     class Meta:
         ordering = ["name"]
         verbose_name_plural = 'Universidades'  
-
+ 
     #metodos para calcular la complejidad
     def __str__(self):
         return self.name      
@@ -45,6 +45,9 @@ class MiPerfil(models.Model):
     average = models.FloatField(default=0.0)
     objectives = models.ManyToManyField(Universidad)
     total_test = models.IntegerField(default=0)
+    test_aproval = models.IntegerField(default=0)
+    test_failures = models.IntegerField(default=0)
+    test_incomplete = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.average)
@@ -54,8 +57,70 @@ class MiPerfil(models.Model):
     def create_mi_perfil(sender, instance, created, **kwargs):
         if created:
             MiPerfil.objects.create(user=instance)
-
+ 
     # Señal para guardar automáticamente el perfil cuando se guarda el usuario
     @receiver(post_save, sender=settings.AUTH_USER_MODEL)
     def save_mi_perfil(sender, instance, **kwargs):
         instance.miperfil.save()
+
+    def actualizar_promedio_general(self):
+        # Obtén todos los exámenes asociados al usuario
+        examenes = MiExamen.objects.filter(user=self.user)
+
+        # Calcula el nuevo promedio general
+        total_examenes = examenes.count()
+        sumatoria_promedios = sum(examen.score for examen in examenes)
+        
+        if total_examenes > 0:
+            self.average = sumatoria_promedios / total_examenes
+        else:
+            self.average = 0.0
+        self.average = float("{0:.2f}".format(self.average))
+        # Guarda la instancia actualizada
+        self.save()
+
+    def actualizar_total_examenes(self):
+        # Obtén la cantidad total de exámenes realizados
+        total_examenes = MiExamen.objects.filter(user=self.user).count()
+
+        # Actualiza el campo total_test
+        self.total_test = total_examenes
+
+        # Guarda la instancia actualizada
+        self.save()        
+
+    def actualizar_estadisticas_examenes(self, examen):
+        # Actualiza las estadísticas en función de si el examen fue aprobado o reprobado
+        if examen.status == "Aprobado":
+            self.test_aproval += 1
+        elif examen.status == "Incompleto":
+            self.test_incomplete +=1
+        elif examen.status == "Reprobado":
+            self.test_failures += 1
+
+        # Guarda la instancia actualizada
+        self.save()        
+
+    @property
+    def categorias_diferentes(self):
+        return self.contar_categorias_diferentes()
+    
+
+    def contar_categorias_diferentes(self):
+        # Obtén todas las categorías de exámenes realizados por el usuario
+        categorias_diferentes = MiExamen.objects.filter(user=self.user).values_list('test__category__name', flat=True).distinct()
+
+        # Devuelve la cantidad de categorías diferentes
+        return len(categorias_diferentes)        
+    
+    @property
+    def porcentaje_aprobados(self):
+        return "{0:.1f}".format(MiExamen.objects.filter(status='Aprobado').count() / self.total_test * 100 if self.total_test > 0 else 0) 
+
+    @property
+    def porcentaje_tiempo_acabado(self):
+        return "{0:.1f}".format(MiExamen.objects.filter(status='Incompleto').count() / self.total_test * 100 if self.total_test > 0 else 0)
+
+    @property
+    def porcentaje_reprobados(self):
+        return "{0:.1f}".format(MiExamen.objects.filter(status='Reprobado').count() / self.total_test * 100 if self.total_test > 0 else 0)

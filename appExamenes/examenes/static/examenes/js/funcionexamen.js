@@ -1,61 +1,63 @@
-function getCSRFToken() {
-  const name = 'csrftoken=';
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const cookieArray = decodedCookie.split(';');
-
-  for (let i = 0; i < cookieArray.length; i++) {
-    let cookie = cookieArray[i].trim();
-    if (cookie.indexOf(name) === 0) {
-      return cookie.substring(name.length, cookie.length);
-    }
-  }
-
-  return null;
-}
-
-let tiempoRestante; // Declarar tiempoRestante en un ámbito más amplio
-
-$(document).ready(function () {
-
-
-  $('.img-fluid').click(function () {
-    // Abre el modal al hacer clic
-    $('#imgmodal').modal('show');
-  });
-
-  function startCountdown(minutes) {
-    var countdownElement = $("#countdown");
-    var totalSeconds = minutes * 60;
-
-    var interval = setInterval(function () {
-      if (totalSeconds >= 0) {
-        var formattedTime = formatTime(totalSeconds);
-        countdownElement.html("<strong>" + formattedTime + "</strong>");
-        tiempoRestante = totalSeconds; // Actualizar tiempoRestante
-        totalSeconds--;
-
-        if (totalSeconds < 0) {
-          // El tiempo se agotó, llamar a recabarInformacion
-          recabarInformacion();
-          clearInterval(interval); // Detener el intervalo
-        }
-      }
-    }, 1000); // Actualiza cada segundo (1000 milisegundos)
-  }
-
-  function formatTime(totalSeconds) {
-    var minutes = Math.floor(totalSeconds / 60);
-    var seconds = totalSeconds % 60;
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  }
-
-  // Inicia el temporizador con 15 minutos
-  startCountdown(15);
-});
 
 
 document.addEventListener('DOMContentLoaded', function () {
-
+  function getCSRFToken() {
+    const name = 'csrftoken=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+  
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+  
+    return null;
+  }
+  
+  let tiempoRestante; // Declarar tiempoRestante en un ámbito más amplio
+  
+  $(document).ready(function () {
+  
+  
+    $('.img-fluid').click(function () {
+      // Abre el modal al hacer clic
+      $('#imgmodal').modal('show');
+    });
+    var time = document.getElementById('time_examen').value;
+    alert(time);
+    function startCountdown(minutes) {
+      var countdownElement = $("#countdown");
+      var totalSeconds = minutes * 60;
+  
+      var interval = setInterval(function () {
+        if (totalSeconds >= 0) {
+          var formattedTime = formatTime(totalSeconds);
+          countdownElement.html("<strong>" + formattedTime + "</strong>");
+          tiempoRestante = totalSeconds; // Actualizar tiempoRestante
+          totalSeconds--;
+  
+          if (totalSeconds < 0) {
+            // El tiempo se agotó, llamar a recabarInformacion
+            console.log("El tiempo se agotó, llamar a recab");
+            recabarInformacion();
+            clearInterval(interval); // Detener el intervalo
+          }
+        }
+      }, 1000); // Actualiza cada segundo (1000 milisegundos)
+    }
+  
+    function formatTime(totalSeconds) {
+      var minutes = Math.floor(totalSeconds / 60);
+      var seconds = totalSeconds % 60;
+      return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    }
+  
+    // Inicia el temporizador con 15 minutos
+    startCountdown(parseFloat(time));
+  });
+  
   // Selecciona todos los elementos con la clase 'respuesta'
   const respuestas = document.querySelectorAll('.respuesta');
 

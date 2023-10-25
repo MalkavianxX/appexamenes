@@ -407,73 +407,90 @@
                             <span class="leftbar-user-name mt-2 ">{{request.user.first_name}}</span>
                         </a>
                     </div>
- 
 
-                        <!--- Sidemenu USER-->
-                        <ul class="side-nav">
-
-                            <li class="side-nav-title">Dashboard</li>
-
-                            <li class="side-nav-item">
-                                <a href="{% url 'view_dashboard' %}" class="side-nav-link">
-                                    <i class="uil-home-alt"></i>
-                                    <span> Dshboard </span>
-                                </a>
-                            </li>
+                    <!--- Sidemenu -->
+                    <ul class="side-nav">
                         
+                        <li class="side-nav-title">Dashboard</li>
 
-                            <li class="side-nav-title">Apps</li>
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_dashboard' %}" class="side-nav-link">
+                                <i class="uil-home-alt"></i>
+                                <span> Dshboard </span>
+                            </a>
+                        </li>
+                    
 
-                            <li class="side-nav-item">
-                                <a href="{% url 'view_config_examenes' %}" class="side-nav-link">
-                                    <i class="uil-file-edit-alt"></i>
-                                    <span> Iniciar examen </span>
-                                </a>
-                            </li>
+                        <li class="side-nav-title">Apps</li>
 
-                            <li class="side-nav-item">
-                                <a href="{% url 'view_simulator_start' %}" class="side-nav-link">
-                                    <i class="uil-message"></i>
-                                    <span> Simulador </span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{% url 'view_test_complete' %}" class="side-nav-link">
-                                    <i class="uil-clipboard-alt"></i>
-                                    <span> Mis resultados </span>
-                                </a>
-                            </li>
-                            <li class="side-nav-title">Soporte</li>
-                            
-                            <li class="side-nav-item">
-                                <a href="{% url 'view_test_complete' %}" class="side-nav-link">
-                                    <i class="uil-clipboard-alt"></i>
-                                    <span> Preguntas frecuentes </span>
-                                </a>
-                            </li>
-                
-                            <li class="side-nav-item">
-                                <a href="{% url 'view_test_complete' %}" class="side-nav-link">
-                                    <i class="uil-clipboard-alt"></i>
-                                    <span> Contactanos </span>
-                                </a>
-                            </li>
-                            <!-- Help Box -->
-                            <div class="help-box text-white text-center">
-                                <a href="javascript: void(0);" class="float-end close-btn text-white">
-                                    <i class="mdi mdi-close"></i>
-                                </a>
-                                <img src="{% static 'login/assets/images/svg/help-icon.svg' %}" height="90" alt="Helper Icon Image" />
-                                <h5 class="mt-3">Acceso ilimitado</h5>
-                                <p class="mb-3">Actualiza a un plan premiun para obtener total acceso a la plataforma</p>
-                                <a href="javascript: void(0);" class="btn btn-secondary btn-sm">Actualizar</a>
-                            </div>
-                            <!-- end Help Box -->
-                        </ul>
-                        <!--- End Sidemenu USER-->
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_admin_users' %}" class="side-nav-link">
+                                <i class="uil-file-edit-alt"></i>
+                                <span> Usuarios </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-title">Estadisticas</li>
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_admin_est_alumnos' %}" class="side-nav-link">
+                                <i class="uil-clipboard-alt"></i>
+                                <span> Alumnos </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_test_complete' %}" class="side-nav-link">
+                                <i class="uil-clipboard-alt"></i>
+                                <span> Categorias y temas </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_simulator_start' %}" class="side-nav-link">
+                                <i class="uil-message"></i>
+                                <span> Examenes </span>
+                            </a>
+                        </li>
 
+                        <li class="side-nav-title"> Gestion </li>
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_test_complete' %}" class="side-nav-link">
+                                <i class="uil-clipboard-alt"></i>
+                                <span> Contenido </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_test_complete' %}" class="side-nav-link">
+                                <i class="uil-clipboard-alt"></i>
+                                <span> Plataforma </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-title">Soporte</li>
+                        
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_test_complete' %}" class="side-nav-link">
+                                <i class="uil-clipboard-alt"></i>
+                                <span> Preguntas frecuentes </span>
+                            </a>
+                        </li>
+           
+                        <li class="side-nav-item">
+                            <a href="{% url 'view_test_complete' %}" class="side-nav-link">
+                                <i class="uil-clipboard-alt"></i>
+                                <span> Contactanos </span>
+                            </a>
+                        </li>
+                        <!-- Help Box -->
+                        <div class="help-box text-white text-center">
+                            <a href="javascript: void(0);" class="float-end close-btn text-white">
+                                <i class="mdi mdi-close"></i>
+                            </a>
+                            <img src="{% static 'login/assets/images/svg/help-icon.svg' %}" height="90" alt="Helper Icon Image" />
+                            <h5 class="mt-3">Acceso ilimitado</h5>
+                            <p class="mb-3">Actualiza a un plan premiun para obtener total acceso a la plataforma</p>
+                            <a href="javascript: void(0);" class="btn btn-secondary btn-sm">Actualizar</a>
+                        </div>
+                        <!-- end Help Box -->
+                    </ul>
+                    <!--- End Sidemenu -->
 
-         
                     <div class="clearfix"></div>
                 </div>
             </div>

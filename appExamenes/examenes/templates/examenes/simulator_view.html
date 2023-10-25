@@ -33,10 +33,10 @@
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Ad-min</a></li>
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                            <li class="breadcrumb-item active">Iniciar examen</li>
+                                            <li class="breadcrumb-item active">Simulador</li>
                                         </ol>
                                     </div>
-                                    <h4 class="page-title">Examen</h4>
+                                    <h4 class="page-title">Simulador</h4>
                                 </div>
                             </div>
                         </div>
@@ -56,20 +56,20 @@
                                                     <li class="nav-item">
                                                         <a href="#account-2" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                                                             <i class="mdi mdi-account-circle font-18 align-middle me-1"></i>
-                                                            <span class="d-none d-sm-inline">Temas </span>
+                                                            <span class="d-none d-sm-inline">Basica </span>
                                                         </a>
                                                     </li>
                                                     
                                                     <li class="nav-item">
                                                         <a href="#finish-2" data-bs-toggle="tab" data-toggle="tab" class="nav-link rounded-0 py-2">
                                                             <i class="mdi mdi-checkbox-marked-circle-outline font-18 align-middle me-1"></i>
-                                                            <span class="d-none d-sm-inline">Finish</span>
+                                                            <span class="d-none d-sm-inline">Finalizacion</span>
                                                         </a>
                                                     </li>
                                                 </ul>
                                             
                                                 <div class="tab-content b-0 mb-0">
-                                                    {% csrf_token %}
+
                                                     <div id="bar" class="progress mb-3" style="height: 7px;">
                                                         <div class="bar progress-bar progress-bar-striped progress-bar-animated bg-success"></div>
                                                     </div>
@@ -78,34 +78,25 @@
                                                         <div class="row justify-content-center mb-5">
                                                           
                 
-                                                            <div class="col-lg-10">
-                                                                <p class="mb-1 fw-bold ">Selecciona los temas</p>
-                                                                <p class="text-muted font-14">
-                                                                    Puedes ser desde un tema.
-                                                                </p>
-                            
-                                                                <select id="select_temas"  class="select2 form-control  fs-3" data-toggle="select2" data-placeholder="Temas ...">
-                                                                    
-                                                                    {% for categoria, examen in categorias_examenes %}
-                                                                    <optgroup label="{{ categoria.name }}">
-                                                                        {% for e in examen %}
-                                                                            <option data-id="{{ e.id }}" data-preguntas="{{e.asks.all|length}}" data-tiempo="{{ e.time }}" data-tema="{{ e.category.name }}" value="{{ e.title }}">{{ e.title }}</option>
-                                                                        {% endfor %}
-                                                                    </optgroup>
-                                                                {% endfor %}
-                                                                
-                                                                
-                                                              
-                                                                </select>
-                                                            </div> <!-- end col -->
+                                                     
                                                             <div class="col-lg-10 mt-3">
                                                                 <div class="mb-3">
-                                                                    <label for="example-select"  class="form-label">Selecciona el numero de preguntas</label>
+                                                                    <label for="example-select" class="form-label">Selecciona el numero de preguntas</label>
                                                                     <p class="text-muted font-14">
                                                                         Sera la cantidad total de preguntas en tu examen.
                                                                     </p>
-                                                                    <select class="form-select" id="select_preguntas">
-                                                                        <option value="0">Selecciona </option>
+                                                                    <select class="form-select" id="example-select">
+
+                                                                        <option>100</option>
+                                                                        <option>90</option>
+                                                                        <option>80</option>
+                                                                        <option>70</option>
+                                                                        <option>60</option>
+                                                                        <option>50</option>
+                                                                        <option>40</option>
+                                                                        <option>30</option>
+                                                                        <option>20</option>
+                                                                        
                                                                    
                                                                     </select>
                                                                 </div>
@@ -126,9 +117,12 @@
                                                             <div class="col-12">
                                                                 <div class="text-center mb-3">
                                                                     <h2 class="mt-0"><i class="mdi mdi-check-all"></i></h2>
-                                                                    <h3 class="mt-0">El examen esta listo!</h3>
+                                                                    <h3 class="mt-0">¡Todo listo!</h3>
 
-                                                                    <p class="w-75 mb-2 mx-auto">Ahora solo da click en el boton "iniciar examen" para realizarlo. ¡Mucho exito! </p>
+                                                                    <p class="w-75 mb-2 mx-auto text-start">
+                                                                        Este es un examen simulador, significa que contendrá temas y preguntas equivalentes a un <strong>examen de admision real</strong> .
+                                                                         Si deseas más información acerca de estos examenes haz click en el siguiente enlace <a href="#">Examenes simuladores</a> </p>
+                                                                    <p> Ahora solo da click en el boton "iniciar examen" para realizarlo. ¡Mucho exito! </p>
  
                                                                 
                                                                 </div>
@@ -139,7 +133,7 @@
                                                                 <button type="button" class="btn btn-light"><i class="mdi mdi-arrow-left me-1"></i> Regresar a configurar</button>
                                                             </li>
                                                             <li class="next list-inline-item float-end">
-                                                                <button type="button" class="btn btn-primary" id="boton_recopilar" data-bs-toggle="modal" data-bs-target="#primary-header-modal">Iniciar examen</button>
+                                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#primary-header-modal">Iniciar examen</button>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -169,17 +163,17 @@
                             <div class="modal-body ">
                                 <h3 class="text-muted">Tu examen contendra:</h3>
                                 <ul class="text">
-                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-timer-sand-complete "></i> 15 minutos</p></li>
-                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-notebook-outline"></i> 15 preguntas</p></li>
-                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-pencil-box-multiple-outline"></i> 2 temas</p></li>
+                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-timer-sand-complete "></i> 1h con 50min</p></li>
+                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-notebook-outline"></i> 100 preguntas</p></li>
+                                    <li><p class="fs-3 text-muted"> <i class="mdi mdi-pencil-box-multiple-outline"></i> 8 temas</p></li>
                                 </ul>
-                                  
+                                
                                 
                       
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                                <a type="button" id="btn_empezar_examen"  class="btn btn-primary">Empezar examen</a>
+                                <a type="button" href="{% url 'view_start_test' %}" class="btn btn-primary">Empezar simulador</a>
                             </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
@@ -208,7 +202,7 @@
             <!-- ============================================================== -->
             <!-- End Page content -->
             <!-- ============================================================== -->
- 
+
         <!-- Vendor js -->
         <script src="{% static 'login/assets/js/vendor.min.js' %}"></script>
 
@@ -220,9 +214,7 @@
 
         <!-- Wizard Form Demo js -->
         <script src="{% static 'login/assets/js/pages/demo.form-wizard.js' %}"></script>
-        <!--CONIFG JS-->
 
-        <script src="{% static 'examenes/js/configexamen.js' %}"></script>
         <!-- App js -->
         <script src="{% static 'login/assets/js/app.min.js' %}"></script>
 {% endblock %}

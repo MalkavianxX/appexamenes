@@ -1,12 +1,12 @@
-{% extends 'dashboard/dashboard.html' %}{% load static %}
+{% extends 'dashboard/admin/dash_admin_base.html' %}{% load static %}
 
 
 {% block title %}
-<title>Ad-mision| Dashboard - Resultados</title>
+<title>Ad-mision| Dashboard - Usuarios</title>
 
 {% endblock %}
 {% block descripcion %}
-    <meta name="description" content="Resultados, aquí puedes visualizar todos los examenes que haz hecho.">
+    <meta name="description" content="Aquí podras ver los usuarios activos">
     <meta name="author" content="Ad-mision s Team dev">
 {% endblock %}
 
@@ -41,10 +41,10 @@
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Ad-min</a></li>
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                            <li class="breadcrumb-item active">Resultados</li>
+                                            <li class="breadcrumb-item active">Usuarios</li>
                                         </ol>
                                     </div>
-                                    <h4 class="page-title">Mis resultados</h4>
+                                    <h4 class="page-title">Usuarios activos</h4>
                                 </div>
                             </div>
                         </div>
@@ -58,31 +58,30 @@
                                         <table id="alternative-page-datatable" class="table table-striped dt-responsive nowrap w-100">
                                             <thead class="bg-primary" >
                                                 <tr >
-                                                    <th>Nombre del Examen</th>
-                                                    <th>Calificación</th>
-                                                    <th>Estado</th>
-                                                    <th>Tiempo</th>
-                                                    <th>Fecha</th>
+                                                    <th>Usuario</th>
+                                                    <th>Nombres</th>
+                                                    <th>Apellidos</th>
+                                                    <th>Correo</th>
+                                                    <th>Rol</th>
                                                 </tr>
                                             </thead>
                                         
                                         
                                             <tbody>
-                                                {% for examen in examenes_realizados %}
-                                                <tr  id="examenRow_{{ examen.id }}">
-                                                    <td>{{ examen.nombre_examen }}</td>
-                                                    <td >{{ examen.calificacion }}</td>
+                                                {% for user in users %}
+                                                <tr  id="userrow_{{ user.id }}">
+                                                    <td>{{ user.username }}</td>
+                                                    <td >{{ user.first_name }}</td>
 
-                                                    {% if examen.estado == "Aprobado" %} 
-                                                        <td ><span class="badge badge-success-lighten">Aprobado</span></td>
-                                                    {% elif examen.estado == "Incompleto" %} 
-                                                    <td ><span class="badge badge-secondary-lighten">Incompleto</span></td>
+                                                    <td>{{ user.last_name}}</td>
+                                                    <td>{{ user.email }}</td>
+
+                                                    {% if user.is_staff %}
+
+                                                        <td>Administrador</td>
                                                     {% else %}
-                                                        <td ><span class="badge badge-danger-lighten">Reprobado</span></td>
+                                                        <td>Subscriptor</td>
                                                     {% endif %}
-                                                    
-                                                    <td>{{ examen.tiempo }}</td>
-                                                    <td>{{ examen.fecha }}</td>
                                                 </tr>
                                             {% endfor %}
                                             </tbody>

@@ -1,10 +1,9 @@
 from django.shortcuts import render
-from .models import Examen, Pregunta, Respuesta
-from dashboard.models import MiExamen
+from .models import Examen, Pregunta, Respuesta, Categoria
+from dashboard.models import MiExamen,MiPerfil
 from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
-
 
 # Create your views here.
 def view_examenes(request):
@@ -12,23 +11,23 @@ def view_examenes(request):
 
 
 def view_config_examenes(request):
-    return render(request, 'examenes/view_config_examenes.html')
+    categorias = Categoria.objects.all()
+    examenes = [Examen.objects.filter(category=categoria) for categoria in categorias]
+    return render(request, 'examenes/view_config_examenes.html',{'categorias_examenes': zip(categorias, examenes)})
 
 
-def view_start_test(request):
-    examen = Examen.objects.get(pk = 1)
+def view_start_test(request,id,numpreguntas):
+    examen = Examen.objects.get(pk = id)
     # Obtén todas las preguntas con respuestas asociadas al examen
     preguntas_con_respuestas = {}
 
-    for pregunta in examen.asks.all():
+    for pregunta in examen.asks.all()[:int(numpreguntas)]:
         # Accede directamente a las respuestas de cada pregunta
         respuestas = pregunta.respuesta_set.all()
 
         # Agrega la pregunta y sus respuestas al diccionario
         preguntas_con_respuestas[pregunta] = respuestas
     return render(request, 'examenes/start_examen.html',{'examen': examen, 'preguntas_con_respuestas': preguntas_con_respuestas})
-
-
 
 
 def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiempos_ans):
@@ -50,6 +49,7 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
         :param tiempos_ans: La lista de los tiempos que le tomo hacerlo
         :type tiempos_ans: list
     """
+    print(estado)
     # Obtener el examen
     examen = get_object_or_404(Examen, id=id_examen)
 
@@ -91,7 +91,11 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
     mi_examen.status = determinar_estado(estado,calificacion)  # Debes definir la función determinar_estado
 
     mi_examen.save()
-
+    # Llama a la función para actualizar el promedio general
+    perfil_usuario = MiPerfil.objects.get(user=request.user)
+    perfil_usuario.actualizar_promedio_general()
+    perfil_usuario.actualizar_total_examenes()
+    perfil_usuario.actualizar_estadisticas_examenes(mi_examen)
     return mi_examen
 
 def determinar_estado(estado,calificacion):
@@ -120,14 +124,8 @@ def evaluate_examan(request):
         tiempo_restante = data.get('tiempoRestante', 0)
 
         # Hacer lo que necesites con los datos (guardar en la base de datos, realizar cálculos, etc.)
-        print(respuestas, tiempos, termino, tiempo_restante)
         # Devolver una respuesta
         miexamen = evaluar_examen(request,id_examen,respuestas,tiempo_restante,termino,tiempos)
-        print(miexamen)
-        print(miexamen.score)
-        print(float(miexamen.time)/1000)
-        print(miexamen.status)
-        print(miexamen.asnwers.all())
 
         return JsonResponse(data= {'mensaje': 'Datos recibidos correctamente','miexamen_id': miexamen.id})
    
@@ -186,7 +184,7 @@ def view_result_examen(request,id_miexamen):
 
 def view_test_complete(request):
     # Obtén todos los exámenes realizados
-    examenes_realizados = MiExamen.objects.all().order_by('date')
+    examenes_realizados = MiExamen.objects.all().order_by('-date')
 
     # Lista para almacenar la información de cada examen
     lista_examenes_info = []
@@ -202,6 +200,9 @@ def view_test_complete(request):
             'fecha': examen.date.strftime('%d-%m-%Y')
         }
         lista_examenes_info.append(examen_info)
-    print(lista_examenes_info)
     # Pasa la lista a la plantilla para su renderización
     return render(request, 'examenes/view_examenes_completados.html', {'examenes_realizados': lista_examenes_info})
+
+
+def view_simulator_start(request):
+    return render(request, 'examenes/simulator_view.html')

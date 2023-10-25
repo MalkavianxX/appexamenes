@@ -7,9 +7,10 @@ from . import views
 
 urlpatterns = [
     path('view_config_examenes',views.view_config_examenes, name='view_config_examenes'),
-    path('view_start_test', views.view_start_test, name="view_start_test"),
+    path('view_start_test/<int:id>/<int:numpreguntas>/', views.view_start_test, name="view_start_test"),
     path('view_result_examen/<int:id_miexamen>', views.view_result_examen, name='view_result_examen'),
     path('view_test_complete', views.view_test_complete, name='view_test_complete'),
+    path('view_simulator_start', views.view_simulator_start, name='view_simulator_start'),
     #funciones js
     path('evaluate_examan', views.evaluate_examan, name='evaluate_examan'),
     

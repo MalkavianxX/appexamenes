@@ -1,10 +1,25 @@
-from django.shortcuts import render
-from .models import MiPerfil, MiExamen
+from django.shortcuts import render,redirect
+from .models import MiPerfil, MiExamen, Invitation
 from django.utils import timezone
 from django.db import models
 from login.models import User
-from examenes.models import Categoria, Pregunta, Examen
-from .fun_estats import obtener_dias_con_mas_examenes ,obtener_cantidad_usuarios_ultimos_7_dias,obtener_usuarios_mas_examenes
+from examenes.models import *
+from .fun_estats import *
+import json
+from django.db.models import Count
+import secrets
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from login.my_decorators import verificar_sesion
+
+def examenes_con_mas_respuestas_equivocadas():
+    # Obtener los 10 exámenes con más respuestas equivocadas
+    examenes_equivocados = MiExamen.objects.filter(asnwers__correct=False).values('test__title').annotate(cantidad=Count('asnwers__id')).order_by('-cantidad')[:10]
+
+    # Devolver la lista de exámenes con la cantidad de respuestas equivocadas
+    resultados = {examen['test__title']: examen['cantidad'] for examen in examenes_equivocados}
+    return json.dumps(resultados) 
+
 def contar_total_examenes_realizados():
     # Obtén la cantidad total de exámenes realizados
     total_examenes = MiExamen.objects.count()
@@ -53,7 +68,7 @@ def contar_usuarios_no_staff():
     return cantidad_usuarios
 
 
-
+@login_required
 def view_dashboard(request):
     if request.user.is_staff:
 
@@ -64,7 +79,7 @@ def view_dashboard(request):
             'prc_aprovacion':calcular_porcentaje_aprobacion(),
             'prc_reprobacion':calcular_porcentaje_reprobacion(),
             'numero_total_examenes': Examen.objects.count(),
-            'numero_total_categorias': Categoria.objects.count(),
+            'numero_total_categorias': Categoria.objects.count(), 
             'numero_total_preguntas': Pregunta.objects.count(),
             'numero_total_usuarios_staff': User.objects.filter(is_staff=True).count(),
         }
@@ -92,21 +107,72 @@ def view_dashboard(request):
 
         return render(request, 'dashboard/sumary.html', {'miperfil': miperfil, 'misexamenes': misexamenes})
 
-def view_admin_users(request):
 
-    return render(request, 'dashboard/admin/users.html',{'users':User.objects.all().order_by('-id')})
 
+@login_required
+@verificar_sesion
 def view_admin_est_alumnos(request):
+    alumnos = MiPerfil.objects.all()
     data_general = {
         'usuarios_total': contar_usuarios_no_staff(),
         'examenes_realizados':contar_total_examenes_realizados(),
-        'prom_general':calcular_promedio_general()
+        'prom_general':calcular_promedio_general(),
+        'examenes_por_dia':json.dumps(dict(obtener_examenes_ultimos_siete_dias())) ,
+        'usuarios_activos':obtener_cantidad_usuarios_ultimos_7_dias()
     }
-    print(data_general)
-    stats_test_per_week = obtener_dias_con_mas_examenes()
-    stats_user_per_week = obtener_cantidad_usuarios_ultimos_7_dias()
-    stats_user_more_tess = obtener_usuarios_mas_examenes()
-    print(stats_test_per_week)
-    print(stats_user_per_week)
-    print(stats_user_more_tess)
-    return render(request, 'dashboard/admin/estadistica/alumnos.html')
+ 
+    return render(request, 'dashboard/admin/estadistica/alumnos.html',{
+        'data_general':data_general,
+        'usuarios_examenes':alumnos.order_by('-total_test')[:5],
+        'usuariores_mejores':alumnos.order_by('-average')[:5],
+        'usuarios_peores':alumnos.order_by('average')[:5]
+        })
+ 
+@login_required
+@verificar_sesion
+def views_admin_est_contenido(request):
+    categorias = Categoria.objects.all()
+    examenes = Examen.objects.all()
+    preguntas = Pregunta.objects.all()
+    respuestas = Respuesta.objects.all()
+    data_general = {
+        'total_category': categorias.count(),
+        'total_test': examenes.count(),
+        'total_ask':preguntas.count(),
+        'total_ans':respuestas.count(),
+    }
+
+    # Supongamos que tienes un modelo llamado Examen con un campo 'categoria'
+    categorias_contadas = Examen.objects.values('category__name').annotate(num_examenes=Count('category'))
+
+    # Ahora, convierte el resultado a un diccionario
+    diccionario_categorias = {str(categoria["category__name"]): categoria['num_examenes'] for categoria in categorias_contadas}
+    diccionario_categorias = json.dumps(diccionario_categorias)
+
+    return render(request, 'dashboard/admin/estadistica/contenido.html',{
+        'data_general':data_general,
+        'categorias_label': diccionario_categorias,
+        'examenes_respuestas_equivocadas':examenes_con_mas_respuestas_equivocadas(),
+    })
+
+
+def generar_clave():
+    return secrets.token_hex(5)  # Genera una clave segura de 10 caracteres
+
+def fun_generar_link(request):
+    code = generar_clave()
+    invitacion = Invitation(
+        code = code,
+        admin = request.user,
+        link = 'http://127.0.0.1:8000/signup/' + str(code) +'/'
+    )
+    invitacion.save()
+    return redirect('views_invitations')
+
+def views_invitations(request):
+    my_invitations = Invitation.objects.all().order_by('status')
+
+    
+    return render(request, 'dashboard/admin/invitaciones/invitation.html',{
+        'inivitaciones': my_invitations,
+    })

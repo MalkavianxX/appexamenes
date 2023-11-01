@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'examenes',
     'login',
     'dashboard',
+    'usuario'
 ]
 
 MIDDLEWARE = [
@@ -118,7 +119,10 @@ USE_L10N = True
 USE_TZ = True
 
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440 # 2.5 MB
 
+
+LOGIN_URL = 'view_login'
 
 
 # Static files (CSS, JavaScript, Images)

@@ -38,25 +38,28 @@
                                 
                                 <div class="text-center w-75 m-auto">
                                     <h4 class="text-dark-50 text-center mt-0 fw-bold">Registrate</h4>
-                                    <p class="text-muted mb-4">¿No tienes una cuenta? Crea tu cuenta, te llevará menos de un minuto </p>
+                                    <p class="text-muted mb-4">Crea tu cuenta para acceder a la plataforma de Ad-mision</p>
                                 </div>
 
-                                <form action="#">
-
+                                <form method="post"  action="{% url 'create_user' %}"> {% csrf_token %}
+                                    <input type="text" name="code" value="{{invitacion}}" class="d-none">
                                     <div class="mb-3">
-                                        <label for="fullname" class="form-label">Nombre completo</label>
-                                        <input class="form-control" type="text" id="fullname" placeholder="Enter your name" required>
+                                        <label for="fullname" class="form-label">Nombre </label>
+                                        <input class="form-control" type="text" name="fullname" id="fullname" placeholder="Ingresa tu nombre " required>
                                     </div>
-
+                                    <div class="mb-3">
+                                        <label for="fullname" class="form-label">Apellidos </label>
+                                        <input class="form-control" type="text" name="apellidos" id="apellidos" placeholder="Ingresa tu nombre " required>
+                                    </div>
                                     <div class="mb-3">
                                         <label for="emailaddress" class="form-label">Correo electrónico</label>
-                                        <input class="form-control" type="email" id="emailaddress" required placeholder="Enter your email">
+                                        <input class="form-control" type="email" name="emailaddress" id="emailaddress" required placeholder="Correo">
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Contraseña</label>
                                         <div class="input-group input-group-merge">
-                                            <input type="password" id="password" class="form-control" placeholder="Enter your password">
+                                            <input type="password" id="password" name="password" class="form-control" placeholder="Ingresa tu contraseña">
                                             <div class="input-group-text" data-password="false">
                                                 <span class="password-eye"></span>
                                             </div>

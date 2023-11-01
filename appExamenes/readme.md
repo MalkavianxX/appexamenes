@@ -1,6 +1,8 @@
 # appexamenes
 
-# la vista ya esta lista, el siguiente paso es configrar bien la visdta del resultado de examenes la vista ya ersta terminada
+proximo paso
+arreglar bug cuando se selecciona un avatar predeterminado se buega y no aparece nada 
+enb el dashboard quitar las probabilidades de ambos
+agregar las universidades a elegir
 
-esta es la url http://127.0.0.1:8000/examenesview_result_examen/1
-
+hacer el logo

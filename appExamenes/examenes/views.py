@@ -4,18 +4,26 @@ from dashboard.models import MiExamen,MiPerfil
 from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from login.my_decorators import verificar_sesion
+from login.models import User
 
+
+@login_required
+@verificar_sesion
 # Create your views here.
 def view_examenes(request):
     return render(request, 'view_examenes.html')
 
-
+@login_required
+@verificar_sesion
 def view_config_examenes(request):
     categorias = Categoria.objects.all()
     examenes = [Examen.objects.filter(category=categoria) for categoria in categorias]
     return render(request, 'examenes/view_config_examenes.html',{'categorias_examenes': zip(categorias, examenes)})
 
-
+@login_required
+@verificar_sesion
 def view_start_test(request,id,numpreguntas):
     examen = Examen.objects.get(pk = id)
     # Obtén todas las preguntas con respuestas asociadas al examen
@@ -29,7 +37,8 @@ def view_start_test(request,id,numpreguntas):
         preguntas_con_respuestas[pregunta] = respuestas
     return render(request, 'examenes/start_examen.html',{'examen': examen, 'preguntas_con_respuestas': preguntas_con_respuestas})
 
-
+@login_required
+@verificar_sesion
 def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiempos_ans):
     """
         Evalúa un examen y guarda los resultados.
@@ -98,6 +107,8 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
     perfil_usuario.actualizar_estadisticas_examenes(mi_examen)
     return mi_examen
 
+@login_required
+@verificar_sesion
 def determinar_estado(estado,calificacion):
     # Puedes personalizar esta función según tus criterios para determinar el estado del examen
     if estado == "agotado":
@@ -109,7 +120,8 @@ def determinar_estado(estado,calificacion):
     else:
         return 'Reprobado'
 
-
+@login_required
+@verificar_sesion
 def evaluate_examan(request):
     if request.method == 'POST':
       
@@ -132,7 +144,8 @@ def evaluate_examan(request):
     else:
         return JsonResponse(data= {'error': 'Método no permitido'}, status=400)
     
-
+@login_required
+@verificar_sesion
 def view_result_examen(request,id_miexamen):
     # Obtén la instancia de MiExamen usando el ID
     mi_examen = MiExamen.objects.get(id=id_miexamen)
@@ -181,10 +194,12 @@ def view_result_examen(request,id_miexamen):
 
 
 
-
+@login_required
+@verificar_sesion
 def view_test_complete(request):
+
     # Obtén todos los exámenes realizados
-    examenes_realizados = MiExamen.objects.all().order_by('-date')
+    examenes_realizados = MiExamen.objects.filter(user = request.user).order_by('-date')
 
     # Lista para almacenar la información de cada examen
     lista_examenes_info = []
@@ -203,6 +218,7 @@ def view_test_complete(request):
     # Pasa la lista a la plantilla para su renderización
     return render(request, 'examenes/view_examenes_completados.html', {'examenes_realizados': lista_examenes_info})
 
-
+@login_required
+@verificar_sesion
 def view_simulator_start(request):
     return render(request, 'examenes/simulator_view.html')

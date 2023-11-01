@@ -4,9 +4,24 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 # Create your models here.
+class Invitation(models.Model):
+    status = models.BooleanField(default=False)
+    code = models.CharField(max_length=10)
+    admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) #Quien hizo el examen
+    date_create = models.DateTimeField(auto_now_add=True)
+    date_use = models.DateTimeField(blank=True, null=True)
+    link = models.CharField(max_length=1000,blank=True, null=True)
 
-
+    class Meta:
+        ordering = ["date_create"]
+        verbose_name_plural = 'Invitaciones'  
+ 
+    #metodos para calcular la complejidad
+    def __str__(self):
+        return self.code      
+    
 class Universidad(models.Model):
     name = models.CharField(max_length=250)
     logo = models.ImageField(upload_to='unis_images')
@@ -48,7 +63,7 @@ class MiPerfil(models.Model):
     test_aproval = models.IntegerField(default=0)
     test_failures = models.IntegerField(default=0)
     test_incomplete = models.IntegerField(default=0)
-
+    invitation_code = models.ForeignKey(Invitation,on_delete=models.CASCADE ,  null=True, blank=True)
     def __str__(self):
         return str(self.average)
 

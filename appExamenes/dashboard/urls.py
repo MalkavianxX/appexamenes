@@ -10,9 +10,11 @@ urlpatterns = [
     path('/view_dashboard',views.view_dashboard, name='view_dashboard'),
 
     #vistas render admin
-    path('view_admin_users',views.view_admin_users, name='view_admin_users'),
     path('view_admin_est_alumnos',views.view_admin_est_alumnos, name='view_admin_est_alumnos'),
-
+    path('views_admin_est_contenido',views.views_admin_est_contenido, name='views_admin_est_contenido'),
+    path('views_invitations',views.views_invitations, name="views_invitations"),
     
+    #funciones del sistema
+    path('fun_generar_link', views.fun_generar_link, name="fun_generar_link"),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

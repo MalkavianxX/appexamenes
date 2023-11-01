@@ -34,23 +34,18 @@
                     <!-- Start Content-->
                     <div class="container-fluid">
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box">
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ad-min</a></li>
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                            <li class="breadcrumb-item active">Usuarios</li>
-                                        </ol>
-                                    </div>
-                                    <h4 class="page-title">Usuarios activos</h4>
-                                </div>
+                        <!-- start page title -->
+                        <div class="row d-flex justify-content-between mb-3 mt-2">
+                            <div class="col-4">
+                                <h4 class="page-title">Usuarios</h4>
+        
+                            </div>
+                        <div class="col-lg-2">
+                            <div class="d-grid">
+                                <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal" data-bs-target="#modal-add-user">Agregar usuario</button>
                             </div>
                         </div>
-
-
-                                                
+                       </div>           
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -78,9 +73,12 @@
 
                                                     {% if user.is_staff %}
 
+                                                        <td>Colaborador</td>
+                                                    {% elif user.is_superuser %}
                                                         <td>Administrador</td>
                                                     {% else %}
                                                         <td>Subscriptor</td>
+
                                                     {% endif %}
                                                 </tr>
                                             {% endfor %}
@@ -96,6 +94,54 @@
 
             <!-- ============================================================== -->
             <!-- End Page content -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- MODAL ADD USER -->
+            <!-- ============================================================== -->
+
+            <div id="modal-add-user" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="primary-header-modalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <h4 class="modal-title" id="primary-header-modalLabel " style="color: white;">Agregar usuario</h4>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'fun_addUser' %}" id="form-add-user"  method="post"> {% csrf_token %}
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="nameuser" name="nameuser" placeholder="name@example.com">
+                                    <label for="floatingInput">Nombre de usuario</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="mailuser" name="mailuser" placeholder="name@example.com">
+                                    <label for="floatingInput">Correo electronico</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="roluser" name="roluser" aria-label="Seleccione rol">
+                                      <option value="0" selected>Colaborador</option>
+                                      <option value="1">Administrador</option>
+                                      <option value="2">Subscriptor</option>
+                                    </select>
+                                    <label for="floatingSelect">Rol</label>
+                                  </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" id="passworduser" name="passworduser" placeholder="Password">
+                                    <label for="floatingPassword">Contraseña</label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                   
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <!-- ============================================================== -->
+            <!-- END MODAL ADD USER -->
             <!-- ============================================================== -->
 
         <!-- Vendor js -->
@@ -115,10 +161,7 @@
         <script src="{% static 'login/assets/vendor/datatables.net-select/js/dataTables.select.min.js' %}"></script>
 
         <!-- Datatable Demo Aapp js -->
-        <script src="{% static 'login/assets/js/pages/demo.datatable-init.js' %}"></script>
-
-
-
+        <script src="{% static 'usuario/js/demo.datatable-init.js' %}"></script>
         <!-- Apex Chart js -->
         <script src="{% static 'login/assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
         <!-- Apex Chart RadialBar Demo js -->

@@ -12,8 +12,26 @@ function skipped(t, e) {
 function down(t, e) {
   return t.p0.parsed.y > t.p1.parsed.y ? e : void 0;
 }
+function convertirJsonString(jsonObj) {
+  // Obtiene las claves y valores
+  let jsonstring = JSON.parse(jsonObj.value);
+  console.log(jsonstring);
+  var keys = Object.keys(jsonstring);
+  var values = Object.values(jsonstring);
+
+  // Convierte las claves a un formato adecuado (capitalizando la primera letra)
+  var labels = keys.map(function(key) {
+    return key.charAt(0).toUpperCase() + key.slice(1);
+  });
+
+  // Devuelve un array con las etiquetas y datos
+  return [labels, values];
+}
+
 !(function (a) {
   "use strict";
+  var examen_dias = convertirJsonString(document.getElementById("examenes_por_dia"));
+
   function t() {
     (this.$body = a("body")),
       (this.charts = []),
@@ -28,11 +46,11 @@ function down(t, e) {
         t = new Chart(t, {
           type: "line",
           data: {
-            labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
+            labels: examen_dias[0],
             datasets: [
               {
                 label: "Examenes realizados",
-                data: [1,5,7,3,9,0,52],
+                data: examen_dias[1],
                 borderColor: e[0],
                 pointStyle: "circle",
                 pointRadius: 10,

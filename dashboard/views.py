@@ -166,7 +166,7 @@ def fun_generar_link(request):
     invitacion = Invitation(
         code = code,
         admin = request.user,
-        link = 'http://127.0.0.1:8000/signup/' + str(code) +'/'
+        link = 'https://ad-mision.cloud/signup/' + str(code) +'/'
     )
     invitacion.save()
     return redirect('views_invitations')

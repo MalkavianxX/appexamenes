@@ -24,6 +24,11 @@ SECRET_KEY = 'django-insecure-%wdo&-gz=cd8d4m!b9q%bwd8$%5*)u-ato#y9@_$hu@(jr97tn
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
 
@@ -72,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'appExamenes.wsgi.application'
+CSRF_TRUSTED_ORIGINS = ['https://ad-mision.cloud']
 
 
 # Database

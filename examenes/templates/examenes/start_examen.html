@@ -1,0 +1,227 @@
+{% extends 'dashboard/dashboard.html' %}{% load static %} {% block title %}
+<title>Ad-mision| Dashboard - Pagina principal</title>
+
+{% endblock %} {% block descripcion %}
+<meta name="description"
+    content="Bienvenido a Ad-mision, tu portal personalizado para la preparación universitaria. Descubre tu progreso, estadísticas clave y más en nuestro completo panel de control. ¡Tu camino a la universidad comienza aquí!" />
+<meta name="author" content="Ad-mision s Team dev" />
+{% endblock %} {% block content %}
+<!-- SimpleMDE css -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+<!-- Quill css -->
+<link href="{% static 'login/assets/vendor/quill/quill.core.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'login/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'login/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet" type="text/css" />
+<style>
+    .slider-container {
+        width: 100%;
+        /* Ajusta el ancho según tus necesidades */
+        overflow: hidden;
+    }
+
+    .slider-wrapper {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .slider-item {
+        flex: 0 0 auto;
+        width: 100%;
+        /* Ajusta el ancho según tus necesidades */
+    }
+</style>
+<div class="content-page">
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item">
+                                    <a href="javascript: void(0);">Examen</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="javascript: void(0);">Personalizado</a>
+                                </li>
+                                <li class="breadcrumb-item active">Iniciar</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">{{ examen.title }}</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <!--ITEM SLIDE 1-->
+            {% csrf_token %}
+            <input type="text" id="id_examen" class="d-none" value="{{examen.id}}">
+            <input type="text" id="time_examen" class="d-none" value="{{examen.time}}">
+
+            <div class="row card mb-3">
+                <div class="col-12 card-body">
+                    <!--CONTENIDO DE BARRA DE NAVEGACION-->
+                    <div class="row">
+                        <!--PORCENTAJE -->
+                        <div class="col-lg-4 col-md-3 col-sm-3 col-3 d-lg-block d-none">
+                            <div class="progress" style="height: 50px">
+                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    <h2>0 de 0</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- BOTONES ANT - SIG -->
+                        <div class="col-lg-4 col-10">
+                            <div
+                                class="w-100 d-flex justify-content-lg-between justify-content-md-between justify-content-start">
+                                <button title="Regresar a la pregunta anterior" id="prevLink"
+                                    class="fs-3 btn btn-outline-primary me-lg-1 me-5" disabled>
+                                    <i class="mdi mdi-arrow-collapse-left" ></i>Ant
+                                </button>
+
+                                <button id="nextLink" title="Ir a la siguiente pregunta"
+                                    class="fs-3 btn btn-outline-primary">
+                                    Sig<i class="mdi mdi-arrow-collapse-right"></i>
+                                </button>
+                                <button id="terminar_examen" 
+                                        title="Terminar el examen"
+                                        style="display: none;"
+                                        class="fs-3 btn btn-primary">
+                                        Terminar 
+                                        <i class="mdi mdi-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!--TIEMPO-->
+                        <div class="col-lg-4 col-2 d-flex justify-content-end">
+                            <p id="countdown" class="fs-2 fw-bold">
+                                <strong>00:00</strong>
+                            </p>
+                            <i class="fs-2 mdi mdi-timer-sand-complete"></i>
+                        </div>
+                    </div>
+                    <!--CONTENIDO ASKS and SLIDER-->
+                    <div class="slider-container">
+                        <div class="slider-wrapper">
+                            {% for pregunta, respuestas in preguntas_con_respuestas.items %}
+                            <div class="slider-item pregunta" data-pregunta="pregunta-1">
+                                <!--CONTENIDO PREGUNTA IMAGEN-->
+                                <div class="row justify-content-lg-center ">
+                                    {% if pregunta.image %}
+                                    <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
+                                        <img src="{{pregunta.imgage.url}}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                    <div class="col-lg-8 ">
+                                        <div id="snow-editor" style="height: 300px">
+                                            {{ pregunta.text }}
+                                        </div>
+                                        <!-- end Snow-editor-->
+                                    </div>
+                                    {% else %}
+                                    <div class="col-lg-12 ">
+                                        <div id="snow-editor" style="height: 300px">
+                                            {{ pregunta.text }}
+                                        </div>
+                                        <!-- end Snow-editor-->
+                                    </div>
+                                    {% endif %}
+                                   
+                                </div>
+                                <!--CONTENIDO RESPUESTAS-->
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        {% for respuesta in respuestas %}
+
+                                        <div class="input-group mb-3 respuesta" data-id="{{pregunta.id}}" data-respuesta="pregunta-{{pregunta.id}}">
+                                            <span class="input-group-text" id="basic-addon1">A</span>
+                                            <input class="form-control form-control-lg" 
+                                                    value="{{ respuesta.text }}"
+                                                    type="text" 
+                                                    readonly 
+                                                    placeholder=".form-control-lg"
+                                                    aria-describedby="basic-addon1" 
+                                                    id="{{ respuesta.id}}"
+                                                    />
+                                        </div>
+                                        {% endfor %}
+                                       
+                                    </div>
+                                </div>
+                                <!--CONTENIDO PARA CEL IMAGEN-->
+                                <div class="row d-lg-none d-md-none d-sm-flex d-flex">
+                                    <div class="col-lg-4">
+                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
+                                            class="img-fluid rounded" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Start -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <script>
+                        document.write(new Date().getFullYear());
+                    </script>
+                    © Ad-mision - Team´s Dev 
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-end footer-links d-none d-md-block">
+                        <a href="javascript: void(0);">About</a>
+                        <a href="javascript: void(0);">Support</a>
+                        <a href="javascript: void(0);">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- end Footer -->
+</div>
+<!-- Modal -->
+<div class="modal fade" id="imgmodal" tabindex="-1" aria-labelledby="imgmodal" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="imgmodal">Imagen de referencia</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img class="img-fluid" src="{% static 'examenes/img/testimg.jpg' %}" alt="First slide" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FUNCIONES DEL EXAMEN-->
+<script src="{% static 'examenes/js/funcionexamen.js' %}"></script>
+<!-- Vendor js -->
+<script src="{% static 'login/assets/js/vendor.min.js' %}"></script>
+
+<!-- Quill Editor js -->
+<script src="{% static 'login/assets/vendor/quill/quill.min.js' %}"></script>
+
+<!-- Quill Demo js -->
+<script src="{% static 'login/assets/js/pages/demo.quilljs.js' %}"></script>
+<!-- App js -->
+<script src="{% static 'login/assets/js/app.min.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends 'dashboard/admin/dash_admin_base.html' %}{% load static %}
+
+
+{% block title %}
+<title>Ad-mision| Dashboard - Pagina principal</title>
+
+{% endblock %}
+
+{% block descripcion %}
+    <meta name="description" content="Bienvenido a Ad-mision, tu portal personalizado para la preparación universitaria. Descubre tu progreso, estadísticas clave y más en nuestro completo panel de control. ¡Tu camino a la universidad comienza aquí!">
+    <meta name="author" content="Ad-mision s Team dev">
+{% endblock %}
+
+{% block content %}
+<link href="{% static 'login/assets/css/app-modern.min.css' %}" rel="stylesheet" type="text/css" id="app-style" />
+<!-- Datatables css -->
+<link href="{% static 'login/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'login/assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'login/assets/vendor/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'login/assets/vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css' %}" rel="stylesheet" type="text/css" />
+<style>
+    .cursor-pointer {
+      cursor: pointer;
+  }
+  th{
+      color: white !important;
+  }
+</style>
+
+
+                <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                       <div class="row d-flex justify-content-between mb-3 mt-2">
+                            <div class="col-4">
+                                <h4 class="page-title">Invitaciones</h4>
+        
+                            </div>
+                        <div class="col-lg-2">
+                            <div class="d-grid">
+                                <a type="button" href="{% url 'fun_generar_link' %}" id="btn_gen_link" class="btn btn-soft-primary"> <i class="mdi mdi-card-plus-outline"></i> Generar invitación</a>
+                            </div>
+                        </div>
+                       </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table id="alternative-page-datatable" class="table table-striped dt-responsive nowrap w-100">
+                                            <thead class="bg-primary" >
+                                                <tr >
+                                                    <th>Codigo</th>
+                                                    <th>Autorizó</th>
+                                                    <th>Fecha</th>
+                                                    <th>Estado</th>
+                                                    <th>Link</th>
+                                                </tr>
+                                            </thead>
+                                        
+                                        
+                                            <tbody>
+                                                {% for inv in inivitaciones %}
+                                                <tr  id="invrow_{{ inv.id }}">
+                                                    <td>{{ inv.code }}</td>
+                                                    <td >{{ inv.admin }}</td>
+
+                                                    <td>{{ inv.date_create}}</td>
+                                                    {% if inv.status %}
+                                                    <td>Usado</td>
+
+                                                    {% else %}
+                                                    <td>En espera</td>
+
+                                                    {% endif %}
+                                                    <td>{{inv.link}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>                                           
+                                    </div> <!-- end card body-->
+                                </div> <!-- end card -->
+                            </div><!-- end col-->
+                        </div> <!-- end row-->
+    
+                        
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <script>document.write(new Date().getFullYear())</script> © Ad-mision - Team´s Dev 
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-md-end footer-links d-none d-md-block">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- end Footer -->
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+
+
+    <!-- Vendor js -->
+    <script src="{% static 'login/assets/js/vendor.min.js' %}"></script>
+
+        <!-- Datatables js -->
+        <script src="{% static 'login/assets/vendor/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'login/assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+        <script src="{% static 'login/assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+        <script src="{% static 'login/assets/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js' %}"></script>
+   
+        <script src="{% static 'login/assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+        <script src="{% static 'login/assets/vendor/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js' %}"></script>
+        <script src="{% static 'login/assets/vendor/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+
+        <script src="{% static 'login/assets/vendor/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+        <script src="{% static 'login/assets/vendor/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+
+        <!-- Datatable Demo Aapp js -->
+        <script src="{% static 'dashboard/js/invitaciones/invitaciones.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'login/assets/js/app.min.js' %}"></script>
+{% endblock %}

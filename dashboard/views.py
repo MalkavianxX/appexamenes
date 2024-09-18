@@ -13,6 +13,33 @@ from django.contrib.auth.decorators import login_required
 from login.my_decorators import verificar_sesion
 import pandas as pd
 
+
+def cargar_preguntas():
+    print("comenzando proceso")
+    df = pd.read_excel('C:/Users/Admin/Documents/GitHub/appexamenes/dashboard/PyR - QUIMICA.xlsx')
+    categoria_quimica = Categoria.objects.get(id=2)
+    for index, row in df.iterrows():
+        # Crear la pregunta
+        print("\nPregunta: ", row['p'])
+
+        pregunta = Pregunta.objects.create(
+            category=categoria_quimica,
+            text=row['p'],
+            weight=1  # Puedes ajustar el peso según sea necesario
+        )
+
+        # Crear las respuestas
+        respuestas = ['a', 'b', 'c', 'd']
+        for letra in respuestas:
+            print("\tRespuesta: ",row[letra] )
+            Respuesta.objects.create(
+                text=row[letra],
+                correct=(letra == row['r']),
+                ask=pregunta
+            )
+
+    print("Datos cargados exitosamente")
+    
 def examenes_con_mas_respuestas_equivocadas():
     # Obtener los 10 exámenes con más respuestas equivocadas
     examenes_equivocados = MiExamen.objects.filter(asnwers__correct=False).values('test__title').annotate(cantidad=Count('asnwers__id')).order_by('-cantidad')[:10]
@@ -84,7 +111,7 @@ def view_dashboard(request):
             'numero_total_preguntas': Pregunta.objects.count(),
             'numero_total_usuarios_staff': User.objects.filter(is_staff=True).count(),
         }
-
+        
         return render(request, 'dashboard/admin/sumary-admin.html',{'data_general':data_general})
     
     else:

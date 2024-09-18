@@ -86,11 +86,11 @@ CSRF_TRUSTED_ORIGINS = ['https://ad-mision.cloud']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'admision',
-        'USER': 'root',
-        'PASSWORD': 'Rmpv54321',
-        'HOST': 'postgresql-156478-0.cloudclusters.net',  # Puedes cambiar esto según tu configuración de PostgreSQL
-        'PORT': '19998',       # Puerto predeterminado de PostgreSQL
+        'NAME': 'app',
+        'USER': 'doadmin',
+        'PASSWORD': 'AVNS_dPFD0isl6DjKxw4mGox',
+        'HOST': 'db-postgresql-nyc3-85485-do-user-17223122-0.k.db.ondigitalocean.com',  # Puedes cambiar esto según tu configuración de PostgreSQL
+        'PORT': '25060',       # Puerto predeterminado de PostgreSQL
     }
 }
 

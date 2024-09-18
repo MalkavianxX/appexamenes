@@ -50,7 +50,7 @@
                                        
                                     </div>
                                     <!-- end card body-->
-                                </div>
+                                </div> 
                                 <div class="row">
                                     <div class="col-lg-6 col-12">
                                         <div class="card widget-flat">
@@ -75,7 +75,7 @@
                                                     <i class="mdi mdi-timer-sand-complete widget-icon"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Growth">Tiempo total</h5>
-                                                <h3 class="mt-3 mb-3">{{ resumen_data.tiempo_total }} minutos</h3>
+                                                <h3 class="mt-3 mb-3">{{ resumen_data.tiempo_total }} </h3>
                                                 <p class="mb-0 text-muted">
                                                     <span class="text-success me-2">
                                                         <i class="mdi mdi-arrow-up-bold"></i>{{ resumen_data.prc_tiempo }}%</span>
@@ -132,10 +132,10 @@
                                                                             <p >{{ resultado.texto_pregunta }}</p>
                                                                         </div>
                                                                         <div class="tab-pane  " id="rs{{resultado.numero_pregunta}}">
-                                                                            <p>{{ resultado.texto_respuesta_seleccionada|join:", "  }}</p>
+                                                                            <p>{{ resultado.texto_respuesta_seleccionada }}</p>
                                                                         </div>
                                                                         <div class="tab-pane" id="r{{resultado.numero_pregunta}}">
-                                                                            <p>{{ resultado.texto_respuesta_correcta|join:", "  }}</p>
+                                                                            <p>{{ resultado.texto_respuesta_correcta }}</p>
                                                                         </div>
                                                                     </div>                                           
                                                                 </div> <!-- end preview-->

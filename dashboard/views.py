@@ -12,7 +12,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from login.my_decorators import verificar_sesion
 import pandas as pd
-
+from examenes.models import Pregunta, Respuesta
 
 def cargar_preguntas():
     print("comenzando proceso")
@@ -39,7 +39,23 @@ def cargar_preguntas():
             )
 
     print("Datos cargados exitosamente")
+
+from django.db import transaction
+
+def sincro():
+    preguntas = Pregunta.objects.all().prefetch_related('respuesta_set')
     
+    with transaction.atomic():
+        for item in preguntas:
+            print("\npregunta: ", item.text)
+            respuesta_correcta = next((r for r in item.respuesta_set.all() if r.correct), None)
+            if respuesta_correcta:
+                item.answer = respuesta_correcta.text
+                print("\trespuesta correcta:", respuesta_correcta.text)
+                item.save()
+                print("guardada")
+
+   
 def examenes_con_mas_respuestas_equivocadas():
     # Obtener los 10 exámenes con más respuestas equivocadas
     examenes_equivocados = MiExamen.objects.filter(asnwers__correct=False).values('test__title').annotate(cantidad=Count('asnwers__id')).order_by('-cantidad')[:10]
@@ -133,7 +149,7 @@ def view_dashboard(request):
                 examen.fecha_anotada = "Ayer"
             else:
                 examen.fecha_anotada = f"Hace {diferencia.days} días"
-
+        
         return render(request, 'dashboard/sumary.html', {'miperfil': miperfil, 'misexamenes': misexamenes})
 
 

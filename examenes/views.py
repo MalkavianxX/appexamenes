@@ -46,24 +46,7 @@ def view_start_test(request, id, numpreguntas):
 
 
 def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiempos_ans, numpreguntas):
-    """
-        Evalúa un examen y guarda los resultados.
 
-        :param request: El objeto de solicitud Django.
-        :type request: django.http.HttpRequest
-        :param id_examen: El ID del examen como cadena.
-        :type id_examen: str
-        :param respuestas_dict: Un diccionario con las respuestas del usuario.
-        :type respuestas_dict: dict
-        :param tiempo_examen: El tiempo total del examen en segundos como cadena.
-        :type tiempo_examen: str
-        :param estado: El estado de terminación del examen (hecho, agotado, error) como cadena.
-        :type estado: str
-        :return: Una instancia de la clase MiExamen que representa los resultados del examen.
-        :rtype: MiExamen
-        :param tiempos_ans: La lista de los tiempos que le tomo hacerlo
-        :type tiempos_ans: list
-    """
     print(estado)
     # Obtener el examen
     examen = get_object_or_404(Examen, id=id_examen)
@@ -85,7 +68,7 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
 
     for id_pregunta, id_respuesta in respuestas_dict.items():
         # Obtener la pregunta y la respuesta seleccionada
-        pregunta = get_object_or_404(Pregunta, id=id_pregunta)
+        
         respuesta = get_object_or_404(Respuesta, id=id_respuesta)
 
         # Verificar si la respuesta es correcta

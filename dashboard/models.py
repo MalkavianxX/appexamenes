@@ -3,7 +3,7 @@ from examenes.models import Examen, Respuesta
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from examenes.models import Pregunta
 
 # Create your models here.
 class Invitation(models.Model):
@@ -47,7 +47,7 @@ class MiExamen(models.Model):
     date = models.DateTimeField(auto_now_add=True) #fecha que hizo el examen
     asnwers = models.ManyToManyField(Respuesta,blank=True, null=True) #respuestas que seleccionó
     time_ans = models.CharField(max_length=10000, blank=True, null=True) #lista del intervalo de tiempo entre preguntas (osea el tiempo que tardo en responder cada pregunta)
-
+    pregunta = models.ManyToManyField(Pregunta,blank=True, null=True)
     #percent
     answers_response = models.FloatField(default=0, null=True, blank=True)
     percent_time_ussles = models.FloatField(default=0, null=True, blank=True)  
@@ -58,6 +58,7 @@ class MiExamen(models.Model):
 
     def __str__(self):
         return str(self.test)          
+
 
 class MiPerfil(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

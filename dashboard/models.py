@@ -48,6 +48,10 @@ class MiExamen(models.Model):
     asnwers = models.ManyToManyField(Respuesta,blank=True, null=True) #respuestas que seleccionó
     time_ans = models.CharField(max_length=10000, blank=True, null=True) #lista del intervalo de tiempo entre preguntas (osea el tiempo que tardo en responder cada pregunta)
 
+    #percent
+    answers_response = models.FloatField(default=0, null=True, blank=True)
+    percent_time_ussles = models.FloatField(default=0, null=True, blank=True)  
+    
     class Meta:
         ordering = ["score"]
         verbose_name_plural = 'MisExamenes'  

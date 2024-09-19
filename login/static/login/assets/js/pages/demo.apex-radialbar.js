@@ -1,4 +1,5 @@
-var resultado = document.getElementById('examen_resultado').value;
+var resultado = parseInt(document.getElementById('examen_resultado').value) *10;
+var numpreguntas = parseInt(document.getElementById('num_preguntas').value);
 console.log(resultado);
 var colors = ["#727cf5"],
 dataColors = $("#gradient-chart").data("colors"),
@@ -16,7 +17,7 @@ options = {
           imageOffsetX: 0,
           imageOffsetY: 0,
           position: "front",
-          dropShadow: { enabled: !0, top: 3, left: 0, blur: 4, opacity: 0.24 },
+          dropShadow: { enabled: true, top: 3, left: 0, blur: 4, opacity: 0.24 },
         },
         track: {
           background: "rgba(170,184,197, 0.2)",
@@ -25,14 +26,14 @@ options = {
         },
         dataLabels: {
           showOn: "always",
-          name: { offsetY: -10, show: !0, color: "#888", fontSize: "17px" },
+          name: { offsetY: -10, show: true, color: "#888", fontSize: "17px" },
           value: {
             formatter: function (a) {
               return parseInt(a);
             },
             color: "#111",
             fontSize: "36px",
-            show: !0,
+            show: true,
           },
         },
       },
@@ -46,20 +47,19 @@ options = {
         gradientToColors: (colors = dataColors
           ? dataColors.split(",")
           : colors),
-        inverseColors: !0,
+        inverseColors: true,
         opacityFrom: 1,
         opacityTo: 1,
         stops: [0, 100],
       },
     },
-    series: [parseInt(resultado)],
+    series: [resultado],
     stroke: { lineCap: "round" },
     labels: ["Calificación"],
-  },
-  colors =
-    ((chart = new ApexCharts(
-      document.querySelector("#gradient-chart"),
-      options
-    )).render(),
-    ["#8f75da", "#727cf5"]),
-  dataColors = $("#gradient-chart").data("colors")
+  };
+
+var chart = new ApexCharts(
+  document.querySelector("#gradient-chart"),
+  options
+);
+chart.render();

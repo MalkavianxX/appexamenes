@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from login.my_decorators import verificar_sesion
 from login.models import User
 import random
+from django.db import transaction
 
 
 # Create your views here.
@@ -112,7 +113,6 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
     perfil_usuario.actualizar_estadisticas_examenes(mi_examen)
     return mi_examen
 
-
 def determinar_estado(estado,calificacion):
     # Puedes personalizar esta función según tus criterios para determinar el estado del examen
     if estado == "agotado":
@@ -145,8 +145,7 @@ def evaluate_examan(request):
         print(termino)
         print(tiempo_restante)
         print(numpreguntas)
-        # Hacer lo que necesites con los datos (guardar en la base de datos, realizar cálculos, etc.)
-        # Devolver una respuesta
+  
         miexamen = evaluar_examen(request,id_examen,respuestas,tiempo_restante,termino,tiempos, numpreguntas)
 
         return JsonResponse(data= {'mensaje': 'Datos recibidos correctamente','miexamen_id': miexamen.id})
@@ -156,9 +155,9 @@ def evaluate_examan(request):
     
 
 @verificar_sesion
-def view_result_examen(request,id_miexamen):
+def view_result_examen(request, id_miexamen):
     # Obtén la instancia de MiExamen usando el ID
-    mi_examen = MiExamen.objects.get(id=id_miexamen)
+    mi_examen = MiExamen.objects.select_related('test').prefetch_related('asnwers__ask').get(id=id_miexamen)
     mi_examen.time = float(mi_examen.time)
     if mi_examen.time < 1:
         tiempo = "{:.2f} segundos".format(mi_examen.time * 60)
@@ -169,47 +168,44 @@ def view_result_examen(request,id_miexamen):
     resumen_data = {
         'examen_resultado': mi_examen.score,
         'titulo_examen': mi_examen.test.title,
-        'num_preguntas': mi_examen.asnwers.all().count(),
+        'num_preguntas': mi_examen.asnwers.count(),
         'tiempo_total': tiempo,
         'prc_preguntas': 0.0,  # Porcentaje de preguntas respondidas
         'prc_tiempo': 0.0,  # Porcentaje de tiempo utilizado
-        'resultados': []
+        'resultados': [],
+        'correctas':0,
+        'incorrectas':0
+        
     }
+
+    # Obtener todas las respuestas correctas de una vez
+    respuestas_correctas_dict = {respuesta.ask_id: respuesta.text for respuesta in Respuesta.objects.filter(correct=True)}
+    correctas = 0
+    incorrectas = 0
     # Itera sobre las preguntas del examen
-    count = 1
-    for item in mi_examen.asnwers.all():
-        pregunta = Pregunta.objects.get(pk = item.ask.id)
+    for count, item in enumerate(mi_examen.asnwers.all(), start=1):
+        pregunta = item.ask
 
         # Agrega detalles de la pregunta al resumen_data
         if item.correct:
             respuesta_correcta = item.text
             resultado = "Correcto"
+            correctas = correctas + 1
         else:
-            respuesta = Respuesta.objects.get(ask = pregunta, correct = True)
-            respuesta_correcta = respuesta.text
+            respuesta_correcta = respuestas_correctas_dict.get(pregunta.id, "No disponible")
             resultado = "Incorrecto"
-            
-            
+            incorrectas = incorrectas + 1
+        resumen_data['correctas'] = correctas
+        resumen_data['incorrectas'] = incorrectas
         resumen_data['resultados'].append({
             'numero_pregunta': count,
             'texto_pregunta': pregunta.text,
             'texto_respuesta_seleccionada': item.text,
-            'texto_respuesta_correcta': respuesta_correcta, 
+            'texto_respuesta_correcta': respuesta_correcta,
             'resultado': resultado
-        })        
-        count = count +1
+        })
 
-
-    # Calcula el porcentaje de preguntas respondidas
-    prc_preguntas_respondidas = (len([r for r in resumen_data['resultados'] if r['resultado'] != 'Vacio']) / resumen_data['num_preguntas']) * 100
-    resumen_data['prc_preguntas'] = round(prc_preguntas_respondidas, 2)
-
-    # Calcula el porcentaje de tiempo utilizado
-    tiempo_usado = float(mi_examen.time) / 1000  # Convierte de milisegundos a segundos
-    prc_tiempo_usado = (tiempo_usado / float(mi_examen.test.time)) * 100
-    resumen_data['prc_tiempo'] = round(prc_tiempo_usado, 2)
-
-    return render(request,"examenes/view_result_examen.html",{'resumen_data': resumen_data})    
+    return render(request, "examenes/view_result_examen.html", {'resumen_data': resumen_data}) 
 
 
 def view_test_complete(request):

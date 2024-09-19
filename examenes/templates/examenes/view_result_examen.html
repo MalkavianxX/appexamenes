@@ -17,6 +17,7 @@
             <!-- ============================================================== -->
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
+             <input type="hidden" name="num_preguntas" value="{{resumen_data.num_preguntas}}" id="num_preguntas">
             <div class="content-page">
                 <div class="content">
 
@@ -81,6 +82,30 @@
                                                         <i class="mdi mdi-arrow-up-bold"></i>{{ resumen_data.prc_tiempo }}%</span>
                                                     <span class="text-nowrap">Tiempo usado</span>
                                                 </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="card widget-flat">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <i class="mdi mdi-timer-sand-complete widget-icon"></i>
+                                                </div>
+                                                <h5 class="text-muted fw-normal mt-0" title="Growth">Respuestas correctas</h5>
+                                                <h3 class="mt-3 mb-3 text-success">{{ resumen_data.correctas }} </h3>
+                                      
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="card widget-flat">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <i class="mdi mdi-timer-sand-complete widget-icon"></i>
+                                                </div>
+                                                <h5 class="text-muted fw-normal mt-0" title="Growth">Respuestas erroneas</h5>
+                                                <h3 class="mt-3 mb-3 text-danger">{{ resumen_data.incorrectas }} </h3>
+                                                
                                             </div>
                                         </div>
                                     </div>

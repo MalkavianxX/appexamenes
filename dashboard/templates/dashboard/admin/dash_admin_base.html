@@ -421,6 +421,13 @@
                                                     <span> Invitaciones </span>
                                                 </a>
                                             </li>
+                                                               
+                                            <li class="side-nav-item">
+                                                <a href="{% url 'admin:index' %}" class="side-nav-link">
+                                                    <i class="uil-file-edit-alt"></i>
+                                                    <span> Administrador </span>
+                                                </a>
+                                            </li>
                                             <li class="side-nav-title">Estadisticas</li>
                                             <li class="side-nav-item">
                                                 <a href="{% url 'view_admin_est_alumnos' %}" class="side-nav-link">
@@ -436,17 +443,7 @@
                                             </li>
                     
                       
-                                            <!-- Help Box -->
-                                            <div class="help-box text-white text-center">
-                                                <a href="javascript: void(0);" class="float-end close-btn text-white">
-                                                    <i class="mdi mdi-close"></i>
-                                                </a>
-                                                <img src="{% static 'login/assets/images/svg/help-icon.svg' %}" height="90" alt="Helper Icon Image" />
-                                                <h5 class="mt-3">Acceso ilimitado</h5>
-                                                <p class="mb-3">Actualiza a un plan premiun para obtener total acceso a la plataforma</p>
-                                                <a href="javascript: void(0);" class="btn btn-secondary btn-sm">Actualizar</a>
-                                            </div>
-                                            <!-- end Help Box -->
+
                                         </ul>
                                         <!--- End Sidemenu -->
                     {% else %}

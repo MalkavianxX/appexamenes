@@ -209,7 +209,7 @@ def fun_generar_link(request):
     invitacion = Invitation(
         code = code,
         admin = request.user,
-        link = 'https://ad-mision.cloud/signup/' + str(code) +'/'
+        link = 'https://starfish-app-clgkk.ondigitalocean.app/signup/' + str(code) +'/'
     )
     invitacion.save()
     return redirect('views_invitations')

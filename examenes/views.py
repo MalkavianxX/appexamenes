@@ -75,7 +75,7 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
         if respuesta.correct:
             respuestas_correctas += 1
 
-   
+        print("pregunta evaluada")
 
         # Asociar la respuesta a la instancia de MiExamen
         mi_examen.asnwers.add(respuesta)

@@ -54,7 +54,7 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
     mi_examen = MiExamen(
         user=request.user,  # Asegúrate de que estás manejando el usuario correctamente
         test=examen,
-        time = float(tiempo_examen)/60000
+        time = float(tiempo_examen)/6000
     )
 
     # Guardar la instancia de MiExamen en la base de datos

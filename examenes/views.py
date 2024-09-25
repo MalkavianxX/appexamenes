@@ -37,7 +37,6 @@ def view_start_test(request, id, numpreguntas):
     for pregunta in preguntas_aleatorias:
         respuestas = pregunta.respuesta_set.all()
         preguntas_con_respuestas[pregunta] = respuestas
-    
     return render(request, 'examenes/start_examen.html', {
         'examen': examen,
         'preguntas_con_respuestas': preguntas_con_respuestas,

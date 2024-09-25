@@ -110,27 +110,28 @@
  
                     </div>
                     <!--CONTENIDO ASKS and SLIDER-->
-                    <div class="slider-container mt-lg-0 mt-3" >
+                    <div class="slider-container  mt-3" >
                         <div class="slider-wrapper">
                             {% for pregunta, respuestas in preguntas_con_respuestas.items %}
                             <div class="slider-item pregunta" data-pregunta="pregunta-1">
                                 <!--CONTENIDO PREGUNTA IMAGEN-->
-                                <div class="row justify-content-lg-center ">
-                                    {% if pregunta.image %}
-                                    <div class="col-lg-4 d-lg-flex d-md-flex d-sm-none d-none">
+                                <div class="row  ">
+                                    {% if pregunta.imgage %}
+                                    <div class="col-lg-4  text-center">
                                         <img src="{{pregunta.imgage.url}}" alt=""
-                                            class="img-fluid rounded" />
+                                            class="img-fluid rounded mx-auto p-2 mt-3 mb-3" 
+                                            />
                                     </div>
                                     <div class="col-lg-8 ">
-                                        <div id="snow-editor" class="text-center" style="height: 300px; vertical-align:middle;">
-                                            <h4 >{{ pregunta.text }}</h4>
+                                        <div  class="w-100 border border-dark-subtle text-center align-self-center " style=" vertical-align:middle;">
+                                            <h4 class="mx-auto p-2 mt-3 mb-3">{{ pregunta.text|linebreaks }}</h4>
                                         </div>
                                         <!-- end Snow-editor-->
                                     </div>
                                     {% else %}
                                     <div class="col-lg-12 ">
-                                        <div id="snow-editor" class="text-center align-self-center" style="height: 300px;vertical-align:middle">
-                                            <h3>{{ pregunta.text }}</h3> 
+                                        <div class="w-100 border border-dark-subtle text-center align-self-center " style="vertical-align:middle;">
+                                            <h3 class="mx-auto p-2 mt-3 mb-3 ">{{ pregunta.text|linebreaks }}</h3> 
                                         </div>
                                         <!-- end Snow-editor-->
                                     </div>
@@ -141,8 +142,8 @@
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         {% for respuesta in respuestas %}
-
-                                        <div class="input-group mb-3 respuesta" data-id="{{pregunta.id}}" data-respuesta="pregunta-{{pregunta.id}}">
+                                       
+                                        <div class="input-group mb-3 respuesta" data-id="{{pregunta.id}}" data-correct="{{respuesta.correct}}" data-respuesta="{{pregunta.answer}}">
                                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-record-circle"></i></span>
                                             <input class="form-control form-control-lg" 
                                                     value="{{ respuesta.text }}"
@@ -151,6 +152,7 @@
                                                     placeholder=".form-control-lg"
                                                     aria-describedby="basic-addon1" 
                                                     id="{{ respuesta.id}}"
+                                                    
                                                     />
                                         </div>
                                         {% endfor %}
@@ -158,12 +160,14 @@
                                     </div>
                                 </div>
                                 <!--CONTENIDO PARA CEL IMAGEN-->
-                                <div class="row d-lg-none d-md-none d-none d-flex">
+                                {% if pregunta.imgage %}
+                                <div class="row d-lg-none d-md-none text-center d-flex">
                                     <div class="col-lg-4">
-                                        <img src="{% static 'examenes/img/testimg.jpg' %}" alt=""
-                                            class="img-fluid rounded" />
+                                        <img src="{{pregunta.imgage.url}}" alt=""
+                                            class="rounded" />
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
 
                             {% endfor %}
@@ -207,7 +211,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img class="img-fluid" src="{% static 'examenes/img/testimg.jpg' %}" alt="First slide" />
+               
+                <img class="img-fluid" src="" alt="First slide" />
+            
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

@@ -3,45 +3,73 @@ from .models import MiPerfil, MiExamen, Invitation
 from django.utils import timezone
 from django.db import models
 from login.models import User
-from examenes.models import *
 from .fun_estats import *
 import json
 from django.db.models import Count
 import secrets
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
 from login.my_decorators import verificar_sesion
 import pandas as pd
-from examenes.models import Pregunta, Respuesta
+from examenes.models import Pregunta, Respuesta, Categoria, Examen
+from django.db import transaction
 
 def cargar_preguntas():
-    print("comenzando proceso")
-    df = pd.read_excel('C:/Users/Admin/Documents/GitHub/appexamenes/dashboard/PyR - QUIMICA.xlsx')
-    categoria_quimica = Categoria.objects.get(id=2)
+    print("Comenzando proceso")
+    df = pd.read_excel('C:/Users/Admin/Documents/GitHub/appexamenes/dashboard/Espanol.xlsx')
+    categoria_quimica = Categoria.objects.get(id=36)
+    
     for index, row in df.iterrows():
         # Crear la pregunta
         print("\nPregunta: ", row['p'])
-
+        
         pregunta = Pregunta.objects.create(
             category=categoria_quimica,
             text=row['p'],
             weight=1  # Puedes ajustar el peso según sea necesario
         )
-
+        
+        # Manejar la imagen si está presente
+        if pd.notna(row['i']):
+            image_data = row['i']
+            pregunta.imgage.save(f"pregunta_{index}.png", ContentFile(image_data))
+        
         # Crear las respuestas
-        respuestas = ['a', 'b', 'c', 'd']
+        respuestas = ['a', 'b', 'c']
         for letra in respuestas:
-            print("\tRespuesta: ",row[letra] )
+            print("\tRespuesta: ", row[letra])
             Respuesta.objects.create(
                 text=row[letra],
-                correct=(letra == row['r']),
+                correct=False,
                 ask=pregunta
             )
-
+        
+        # Crear la respuesta correcta
+        Respuesta.objects.create(
+            text=row['r'],
+            correct=True,
+            ask=pregunta
+        )
+    
     print("Datos cargados exitosamente")
 
-from django.db import transaction
-
+def crear_examen():
+    cat = Categoria.objects.get(pk=36)
+    preguntas = Pregunta.objects.filter(category=cat)
+    
+    # Crear el examen y guardarlo para obtener un ID
+    nuevo_examen = Examen.objects.create(
+        category=cat,
+        title="Español",
+        time=50.0
+    )
+    
+    # Asignar las preguntas al examen
+    nuevo_examen.asks.set(preguntas)
+    
+    # Guardar el examen con las preguntas asignadas
+    nuevo_examen.save()
+    
+    print("Examen creado exitosamente con las preguntas asignadas")
 def sincro():
     preguntas = Pregunta.objects.all().prefetch_related('respuesta_set')
     
@@ -127,6 +155,7 @@ def view_dashboard(request):
             'numero_total_preguntas': Pregunta.objects.count(),
             'numero_total_usuarios_staff': User.objects.filter(is_staff=True).count(),
         }
+        
         
         return render(request, 'dashboard/admin/sumary-admin.html',{'data_general':data_general})
     

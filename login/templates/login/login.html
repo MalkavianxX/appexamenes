@@ -25,6 +25,8 @@
 
         <!-- Icons css -->
         <link href="{% static 'login/assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     </head>
     {% block body %}
     <body class="authentication-bg position-relative">
@@ -88,7 +90,6 @@
                                     <div class="mb-3 mb-0 text-center">
                                         <button class="btn btn-primary" onclick="login()" id="btn_login_submit" type="button">Inicar sesion </button>
                                     </div>
-
                                 </form>
                             </div> <!-- end card-body -->
                             <div id="alert_placeholder"></div>

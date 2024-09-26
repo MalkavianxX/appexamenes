@@ -48,7 +48,7 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="header-title mb-3">Iniciemos configurando el examen</h4>
+                            <h4 class="header-title mb-3">¿Qué vamos a estudiar hoy?</h4>
 
                             <for m>
                                 <div id="progressbarwizard">
@@ -58,37 +58,24 @@
                                             <a href="#account-2" data-bs-toggle="tab" data-toggle="tab"
                                                 class="nav-link rounded-0 py-2">
                                                 <i class="mdi mdi-account-circle font-18 align-middle me-1"></i>
-                                                <span class="d-none d-sm-inline">Temas </span>
+                                                <span class="d-none d-sm-inline">Mi examen </span>
                                             </a>
                                         </li>
 
-                                        <li class="nav-item">
-                                            <a href="#finish-2" data-bs-toggle="tab" data-toggle="tab"
-                                                class="nav-link rounded-0 py-2">
-                                                <i
-                                                    class="mdi mdi-checkbox-marked-circle-outline font-18 align-middle me-1"></i>
-                                                <span class="d-none d-sm-inline">Finish</span>
-                                            </a>
-                                        </li>
+ 
                                     </ul>
 
                                     <div class="tab-content b-0 mb-0">
                                         {% csrf_token %}
-                                        <div id="bar" class="progress mb-3" style="height: 7px;">
-                                            <div
-                                                class="bar progress-bar progress-bar-striped progress-bar-animated bg-success">
-                                            </div>
-                                        </div>
+   
 
                                         <div class="tab-pane" id="account-2">
                                             <div class="row justify-content-center mb-5">
 
 
                                                 <div class="col-lg-10">
-                                                    <p class="mb-1 fw-bold ">Selecciona los temas</p>
-                                                    <p class="text-muted font-14">
-                                                        Puedes ser desde un tema.
-                                                    </p>
+                                                    <p class="mb-1 fw-bold ">Selecciona la materia</p>
+                                               
 
                                                     <select id="select_temas" class="form-control  "
                                                         data-placeholder="Temas ...">
@@ -118,11 +105,8 @@
                                                 </div> <!-- end col -->
                                                 <div class="col-lg-10 mt-3">
                                                     <div class="mb-3">
-                                                        <label for="example-select" class="form-label">Selecciona el
-                                                            numero de preguntas</label>
-                                                        <p class="text-muted font-14">
-                                                            Sera la cantidad total de preguntas en tu examen.
-                                                        </p>
+                                                        <label for="example-select" class="form-label">¿Cuantas preguntas responderas?</label>
+                                                    
                                                         <select class="form-select" id="select_preguntas">
                                                             <option value="0">0 </option>
 
@@ -133,40 +117,13 @@
 
                                             <ul class="list-inline wizard mb-0">
                                                 <li class="next list-inline-item float-end">
-                                                    <a href="javascript:void(0);" class="btn btn-info">Siguiente <i
-                                                            class="mdi mdi-arrow-right ms-1"></i></a>
+                                                    <button type="button" class="btn btn-primary" id="btn_empezar_examen">Iniciar examen</button>
                                                 </li>
                                             </ul>
                                         </div>
 
 
 
-                                        <div class="tab-pane" id="finish-2">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="text-center mb-3">
-                                                        <h2 class="mt-0"><i class="mdi mdi-check-all"></i></h2>
-                                                        <h3 class="mt-0">El examen esta listo!</h3>
-
-                                                        <p class="w-75 mb-2 mx-auto">Ahora solo da click en el boton
-                                                            "iniciar examen" para realizarlo. ¡Mucho exito! </p>
-
-
-                                                    </div>
-                                                </div> <!-- end col -->
-                                            </div> <!-- end row -->
-                                            <ul class="pager wizard mb-0 list-inline mt-1">
-                                                <li class="previous list-inline-item">
-                                                    <button type="button" class="btn btn-light"><i
-                                                            class="mdi mdi-arrow-left me-1"></i> Regresar</button>
-                                                </li>
-                                                <li class="next list-inline-item float-end">
-                                                    <button type="button" class="btn btn-primary" id="boton_recopilar"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#primary-header-modal">Iniciar examen</button>
-                                                </li>
-                                            </ul>
-                                        </div>
 
                                     </div> <!-- tab-content -->
                                 </div> <!-- end #progressbarwizard-->
@@ -183,40 +140,7 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
-    <div id="primary-header-modal" class="modal fade" tabindex="-1" role="dialog"
-        aria-labelledby="primary-header-modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h4 class="modal-title" id="primary-header-modalLabel" style="color: white;">Estas a punto de
-                        iniciar</h4>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-hidden="true"></button>
-                </div>
-                <div class="modal-body ">
-                    <h3 class="text-muted">Tu examen contendra:</h3>
-                    <ul class="text">
-                        <li>
-                            <p class="fs-3 text-muted"> <i class="mdi mdi-timer-sand-complete "></i> 15 minutos</p>
-                        </li>
-                        <li>
-                            <p class="fs-3 text-muted"> <i class="mdi mdi-notebook-outline"></i> 15 preguntas</p>
-                        </li>
-                        <li>
-                            <p class="fs-3 text-muted"> <i class="mdi mdi-pencil-box-multiple-outline"></i> 2 temas</p>
-                        </li>
-                    </ul>
 
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                    <a type="button" id="btn_empezar_examen" class="btn btn-primary">Empezar examen</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
     <!-- Footer Start -->
     <footer class="footer">
         <div class="container-fluid">

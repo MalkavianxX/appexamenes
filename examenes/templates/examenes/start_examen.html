@@ -9,6 +9,7 @@
 <!-- SimpleMDE css -->
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Quill css -->
 <link href="{% static 'login/assets/vendor/quill/quill.core.css' %}" rel="stylesheet" type="text/css" />
@@ -16,165 +17,98 @@
 <link href="{% static 'login/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
-    .slider-container {
-        width: 100%;
-        /* Ajusta el ancho según tus necesidades */
-        overflow: hidden;
-    }
 
-    .slider-wrapper {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
 
-    .slider-item {
-        flex: 0 0 auto;
-        width: 100%;
-        /* Ajusta el ancho según tus necesidades */
-    }
 </style>
 <input type="hidden" value="{{numpreguntas}}" id="numpreguntas" name="numpreguntas">
+<input type="hidden" id="id_examen" value="{{examen.id}}">
+<input type="hidden" id="time_examen" value="{{examen.time}}">
+
 <div class="content-page">
     <div class="content">
         <!-- Start Content-->
         <div class="container-fluid">
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item">
-                                    <a href="javascript: void(0);">Examen</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="javascript: void(0);">Personalizado</a>
-                                </li>
-                                <li class="breadcrumb-item active">Iniciar</li>
-                            </ol>
-                        </div>
-                        <h4 class="page-title d-lg-block d-md-block d-none">{{ examen.title }}</h4>
-                    </div>
-                </div>
-            </div>
-            <!-- end page title -->
-            <!--ITEM SLIDE 1-->
+
             {% csrf_token %}
-            <input type="text" id="id_examen" class="d-none" value="{{examen.id}}">
-            <input type="text" id="time_examen" class="d-none" value="{{examen.time}}">
 
-            <div class="row card mb-3">
-                <div class="col-12 card-body">
-                    <!--CONTENIDO DE BARRA DE NAVEGACION-->
-                    <div class="row">
-                        <!--PORCENTAJE -->
-                        <div class="col-lg-4 col-md-3 col-sm-3 col-3 d-lg-block d-none">
-                            <div class="progress" style="height: 50px">
-                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                    <h2>0 de 0</h2>
+            <div class="row mb-3 justify-content-center mt-3">
+                <div class="col-12 px-2 d-flex  navbar-custom align-items-center gap-lg-2 gap-1 sticky-top justify-content-between">
+                    <div class="d-flex text-white text-center  ">
+                        <p id="countdown" class="fs-2 fw-bold">
+                            <strong>00:00</strong>
+                        </p>
+                        <i class="fs-2 mdi mdi-timer-sand-complete"></i>
+                    </div>
+                    <button type="button" class="btn btn-outline-danger " id="cancelar-examen">Acabar examen</button>
+
+                </div>
+                <div class="col-12">
+                    
+                    {% for pregunta, respuestas in preguntas_con_respuestas.items %}
+                    <div class="mt-3 px-lg-2 px-1 card shadow mb-3 pregunta " data-pregunta="pregunta-1">
+                        <!--CONTENIDO PREGUNTA IMAGEN-->
+                        <h5 class="text-primary text-end  mb-2 mt-2">Pregunta {{ pregunta.num_pregunta }} &nbsp;</h5>
+                        <div class="row  " data-pregunta="pregunta-1">
+                            {% if pregunta.imgage %}
+                            <div class="col-lg-4  text-center">
+                                <img src="{{pregunta.imgage.url}}" alt=""
+                                    class="img-fluid rounded mx-auto p-2 mt-3 mb-3" />
+                            </div>
+                            <div class="col-lg-8 ">
+                                <div class="w-100  text-center align-self-center "
+                                    style=" vertical-align:middle;">
+                                    <h4 class="mx-auto p-2 mt-3 mb-3">{{ pregunta.text|linebreaks }}</h4>
                                 </div>
+                                <!-- end Snow-editor-->
+                            </div>
+                            {% else %}
+                            <div class="col-lg-12 ">
+                                <div class="w-100  text-center align-self-center "
+                                    style="vertical-align:middle;">
+                                    <h3 class="mx-auto p-2 mt-3 mb-3 ">{{ pregunta.text|linebreaks }}</h3>
+                                </div>
+                                <!-- end Snow-editor-->
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        <!--CONTENIDO RESPUESTAS-->
+                        <div class="row card-body mt-3">
+                            <div class="col-12">
+                                {% for respuesta in respuestas %}
+
+                                <div class="input-group mb-3 respuesta" data-id="{{pregunta.id}}"
+                                    data-correct="{{respuesta.correct}}" data-respuesta="{{pregunta.answer}}">
+                                    <span class="input-group-text" id="basic-addon1"><i
+                                            class="bi bi-record-circle"></i></span>
+                                    <input class="form-control form-control-lg" value="{{ respuesta.text }}" type="text"
+                                        readonly placeholder=".form-control-lg" aria-describedby="basic-addon1"
+                                        id="{{ respuesta.id}}" />
+                                </div>
+                                {% endfor %}
+
                             </div>
                         </div>
-                        <!-- BOTONES ANT - SIG -->
-                        <div class="col-lg-4 col-12  w-100 d-flex justify-content-lg-between justify-content-md-between justify-content-between">
-                           
-                                <button title="Regresar a la pregunta anterior" 
-                                        id="prevLink"
-                                        class="fs-3 btn btn-outline-primary " 
-                                        disabled>
-                                        <i class="mdi mdi-arrow-collapse-left" ></i>
-                                        
-                                </button>
-                                <div class="d-flex w-100 justify-content-center text-center mt-lg-0 mt-2 align-self-center">
-                                    <p id="countdown" class="fs-2 fw-bold">
-                                        <strong>00:00</strong>
-                                    </p>
-                                    <i class="fs-2 mdi mdi-timer-sand-complete"></i>
-                                </div>
-                                <button id="nextLink" title="Ir a la siguiente pregunta"
-                                    class="fs-3 btn btn-outline-primary">
-                                    
-                                    <i class="mdi mdi-arrow-collapse-right"></i>
-                                </button>
-                                <button id="terminar_examen" 
-                                        title="Terminar el examen"
-                                        style="display: none;"
-                                        class="fs-3 btn btn-primary">
-                                        Terminar 
-                                        <i class="mdi mdi-check"></i>
-                                </button>
-                           
-                        </div>
-                        <!--TIEMPO-->
- 
-                    </div>
-                    <!--CONTENIDO ASKS and SLIDER-->
-                    <div class="slider-container  mt-3" >
-                        <div class="slider-wrapper">
-                            {% for pregunta, respuestas in preguntas_con_respuestas.items %}
-                            <div class="slider-item pregunta" data-pregunta="pregunta-1">
-                                <!--CONTENIDO PREGUNTA IMAGEN-->
-                                <div class="row  ">
-                                    {% if pregunta.imgage %}
-                                    <div class="col-lg-4  text-center">
-                                        <img src="{{pregunta.imgage.url}}" alt=""
-                                            class="img-fluid rounded mx-auto p-2 mt-3 mb-3" 
-                                            />
-                                    </div>
-                                    <div class="col-lg-8 ">
-                                        <div  class="w-100 border border-dark-subtle text-center align-self-center " style=" vertical-align:middle;">
-                                            <h4 class="mx-auto p-2 mt-3 mb-3">{{ pregunta.text|linebreaks }}</h4>
-                                        </div>
-                                        <!-- end Snow-editor-->
-                                    </div>
-                                    {% else %}
-                                    <div class="col-lg-12 ">
-                                        <div class="w-100 border border-dark-subtle text-center align-self-center " style="vertical-align:middle;">
-                                            <h3 class="mx-auto p-2 mt-3 mb-3 ">{{ pregunta.text|linebreaks }}</h3> 
-                                        </div>
-                                        <!-- end Snow-editor-->
-                                    </div>
-                                    {% endif %}
-                                   
-                                </div>
-                                <!--CONTENIDO RESPUESTAS-->
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        {% for respuesta in respuestas %}
-                                       
-                                        <div class="input-group mb-3 respuesta" data-id="{{pregunta.id}}" data-correct="{{respuesta.correct}}" data-respuesta="{{pregunta.answer}}">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-record-circle"></i></span>
-                                            <input class="form-control form-control-lg" 
-                                                    value="{{ respuesta.text }}"
-                                                    type="text" 
-                                                    readonly 
-                                                    placeholder=".form-control-lg"
-                                                    aria-describedby="basic-addon1" 
-                                                    id="{{ respuesta.id}}"
-                                                    
-                                                    />
-                                        </div>
-                                        {% endfor %}
-                                       
-                                    </div>
-                                </div>
-                                <!--CONTENIDO PARA CEL IMAGEN-->
-                                {% if pregunta.imgage %}
-                                <div class="row d-lg-none d-md-none text-center d-flex">
-                                    <div class="col-lg-4">
-                                        <img src="{{pregunta.imgage.url}}" alt=""
-                                            class="rounded" />
-                                    </div>
-                                </div>
-                                {% endif %}
+                        <!--CONTENIDO PARA CEL IMAGEN-->
+                        {% if pregunta.imgage %}
+                        <div class="row d-lg-none d-md-none text-center d-flex">
+                            <div class="col-lg-4">
+                                <img src="{{pregunta.imgage.url}}" alt="" class="rounded" />
                             </div>
-
-                            {% endfor %}
-                            
-                           
                         </div>
+                        {% endif %}
                     </div>
+
+                    {% endfor %}
+                    <div class="d-grid gap-2">
+                        <button id="terminar_examen" title="Terminar el examen" 
+                            class="fs-3 btn btn-primary">
+                            Terminar
+                            <i class="mdi mdi-check"></i>
+                        </button>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -188,7 +122,7 @@
                     <script>
                         document.write(new Date().getFullYear());
                     </script>
-                    © Ad-mision - Team´s Dev 
+                    © Ad-mision - Team´s Dev
                 </div>
                 <div class="col-md-6">
                     <div class="text-md-end footer-links d-none d-md-block">
@@ -211,9 +145,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-               
+
                 <img class="img-fluid" src="" alt="First slide" />
-            
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

@@ -26,23 +26,27 @@ def view_signup(request,code):
         return render(request, 'login/error_signup.html')
 
 def function_login(request):
-    if request.method == 'POST': 
-        data = json.loads(request.body.decode('utf-8'))
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Datos de solicitud no válidos'}, status=400)
 
         username = data.get('username')
         password = data.get('password')
-        
+
+        if not username or not password:
+            return JsonResponse({'error': 'El nombre de usuario y la contraseña son obligatorios'}, status=400)
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            user.set_session_key(request.session.session_key)
-            
-            return JsonResponse(data={'mensaje': 'Inicio de sesion correcto'})
-
+            request.session.save()  # Asegura que la sesión se guarda correctamente
+            return JsonResponse({'mensaje': 'Inicio de sesión correcto'})
         else:
-            return JsonResponse(data={'error': 'El correo o la contraseña no son validos'}, status=401)
+            return JsonResponse({'error': 'El correo o la contraseña no son válidos'}, status=401)
     else:
-        return JsonResponse(data={'error': 'Método no permitido'}, status=400)
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def create_user(request):
     if request.method == 'POST':

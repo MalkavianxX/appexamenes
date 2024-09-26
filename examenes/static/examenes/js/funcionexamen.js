@@ -25,8 +25,31 @@ document.addEventListener('DOMContentLoaded', function () {
       // Abre el modal al hacer clic
       $('#imgmodal').modal('show');
     });
-    var time = document.getElementById('time_examen').value;
-    alert(time);
+    var time = document.getElementById('numpreguntas').value;
+    Swal.fire({
+      title: `Tienes ${time} minutos`,
+      showDenyButton: true,
+      
+      confirmButtonText: "Comenzar",
+      denyButtonText: `Cancelar`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("Mucho exito!", "", "success");
+        startCountdown(parseFloat(time));
+      } else if (result.isDenied) {
+        window.location.href = "/examenesview_config_examenes"
+        Swal.fire({
+          title: 'Cancelando examen',
+          text: 'Por favor, espera mientras cancelamos tu examen.',
+          allowOutsideClick: false,
+          didOpen: () => {
+              Swal.showLoading();
+          }
+      });
+        
+      }
+    });
     function startCountdown(minutes) {
       var countdownElement = $("#countdown");
       var totalSeconds = minutes * 60;
@@ -55,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Inicia el temporizador con 15 minutos
-    startCountdown(parseFloat(time));
+ 
   });
 
   // Selecciona todos los elementos con la clase 'respuesta'
@@ -88,109 +111,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
   });
-  const sliderContainer = document.querySelector('.slider-container');
-  const sliderWrapper = document.querySelector('.slider-wrapper');
-  const sliderItems = document.querySelectorAll('.slider-item');
-  const prevLink = document.getElementById('prevLink');
-  const nextLink = document.getElementById('nextLink');
-  const btn_terminar = document.getElementById('terminar_examen');
+
   const numpreguntas = document.getElementById('numpreguntas').value;
   //bara de navegacion
-  const progressBar = document.getElementById('progress-bar');
-  const totalSlides = parseInt(numpreguntas); // Coloca el total de slides aquí
-  let currentSlide = 1; // Coloca el slide actual aquí
-  let currentIndex = 0;
 
-  //marca de tiempo
-  var tiempoInicioPregunta = new Date().getTime();; // Marca de tiempo al iniciar una pregunta
   var tiemposRespuestas = [];
 
-  function updateSlider() {
-    const newPosition = -currentIndex * 100 + '%';
-    sliderWrapper.style.transform = 'translateX(' + newPosition + ')';
-  }
-
-  function nextSlide() {
-    currentIndex = (currentIndex + 1) % sliderItems.length;
-    updateSlider();
-  }
-
-  function prevSlide() {
-    currentIndex = (currentIndex - 1 + sliderItems.length) % sliderItems.length;
-    updateSlider();
-  }
-
-  nextLink.addEventListener('click', function (event) {
 
 
-    // Desactivar el enlace "Next" en el último slide
-    if ((currentSlide + 1) === totalSlides) {
-      btn_terminar.style.display = 'block';
-      nextLink.style.display = 'none';
-      nextLink.setAttribute('disabled', 'true');
-    }
-    // Obtener la pregunta actual
-    const preguntaActual = 'pregunta-' + currentSlide;
-
-    // Calcular el tiempo que tardó en seleccionar la respuesta
-    const tiempoFinPregunta = new Date().getTime();
-    const tiempoDiferencia = (tiempoFinPregunta - tiempoInicioPregunta) / 1000; // en segundos
-
-    // Agregar la información al array
-    tiemposRespuestas.push({ pregunta: preguntaActual, tiempo: tiempoDiferencia });
-    console.log(`Tiempo para seleccionar respuesta (${preguntaActual}): ${tiempoDiferencia} segundos`);
 
 
-    // Habilitar el enlace "Prev" después de hacer clic en "Next"
-    prevLink.removeAttribute('disabled');
-
-    // Actualizar la marca de tiempo al iniciar la siguiente pregunta
-    tiempoInicioPregunta = new Date().getTime();
-
-    nextSlide();
-    goToNextSlide();
-
-  });
-
-  // Eventos de clic para enlaces "Anterior" y "Siguiente"
-  prevLink.addEventListener('click', function (event) {
-    // Desactivar el enlace "Prev" en el primer slide
-    if ((currentSlide - 1) === 1) {
-
-      prevLink.setAttribute('disabled', 'true');
-    }
-
-    // Habilitar el enlace "Next" después de hacer clic en "Prev"
-    nextLink.removeAttribute('disabled');
-    nextLink.style.display = 'block';
-    btn_terminar.style.display = 'none';
-    prevSlide();
-    goToPrevSlide();
-
-  });
-
-  //FUNCIONES PROGEES BAR
-
-  function updateProgressBar() {
-    const percentage = (currentSlide / totalSlides) * 100;
-    progressBar.style.width = percentage + '%';
-    progressBar.setAttribute('aria-valuenow', percentage);
-    progressBar.querySelector('h2').innerText = currentSlide + ' de ' + totalSlides;
-  }
-
-  function goToNextSlide() {
-    if (currentSlide < totalSlides) {
-      currentSlide++;
-      updateProgressBar();
-    }
-  }
-
-  function goToPrevSlide() {
-    if (currentSlide > 1) {
-      currentSlide--;
-      updateProgressBar();
-    }
-  }
   function recabarInformacion() {
     // Recabar los IDs y valores de los input con la clase "text-bg-primary"
     const respuestasSeleccionadas = Array.from(document.querySelectorAll('.text-bg-primary input'))
@@ -292,5 +222,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+
+  document.getElementById('cancelar-examen').addEventListener('click', function() {
+    Swal.fire({
+        title: '¿Quieres terminar el examen?',
+        text: "¡Esto calificará las preguntas que respondiste",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, terminar examen',
+        cancelButtonText: 'No, continuar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                '¡Terminado!',
+                'Tu examen ha sido terminado.',
+                'success'
+            );
+         
+        }
+    });
+});
 });
 

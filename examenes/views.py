@@ -31,12 +31,15 @@ def view_start_test(request, id, numpreguntas):
     # Obtén todas las preguntas del examen y selecciona aleatoriamente el número especificado
     preguntas = list(examen.asks.all())
     preguntas_aleatorias = random.sample(preguntas, min(numpreguntas, len(preguntas)))
-    
+    count = 1
+
     # Obtén las respuestas para cada pregunta seleccionada
     preguntas_con_respuestas = {}
     for pregunta in preguntas_aleatorias:
+        pregunta.num_pregunta = count
         respuestas = pregunta.respuesta_set.all()
         preguntas_con_respuestas[pregunta] = respuestas
+        count = count + 1
     return render(request, 'examenes/start_examen.html', {
         'examen': examen,
         'preguntas_con_respuestas': preguntas_con_respuestas,
@@ -136,7 +139,7 @@ def evaluate_examan(request):
         return JsonResponse(data= {'error': 'Método no permitido'}, status=400)
     
 
-@verificar_sesion
+
 def view_result_examen(request, id_miexamen):
     # Obtén la instancia de MiExamen usando el ID
     mi_examen = MiExamen.objects.select_related('test').prefetch_related('asnwers__ask').get(id=id_miexamen)

@@ -1,12 +1,3 @@
-function showAlert(message, alertType) {
-    var alertPlaceholder = document.getElementById('alert_placeholder');
-    var alertBox = '<div class="alert ' +  alertType + ' alert-dismissible fade show" role="alert">' +
-        message +
-        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-        '</div>';
-    alertPlaceholder.innerHTML = alertBox;
-}
-
 
 function getCSRFToken() {
     const name = 'csrftoken=';
@@ -25,19 +16,28 @@ function getCSRFToken() {
 
 function login() {
     // Obtén los valores de los campos de entrada
-    var emailAddress = document.getElementById('emailaddress').value;
-    var password = document.getElementById('password').value;
+    const emailAddress = document.getElementById('emailaddress').value;
+    const password = document.getElementById('password').value;
     const csrfToken = getCSRFToken();
 
     // Crea un objeto FormData para almacenar los datos del formulario
-    var formData = {
+    const formData = {
         username: emailAddress,
         password: password
     };
-    
 
-    console.log(formData);
-    fetch('/function_login', {  
+    // Muestra un mensaje de inicio de sesión
+    Swal.fire({
+        title: 'Iniciando sesión...',
+        text: 'Por favor, espera un momento.',
+        icon: 'info',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    fetch('/function_login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -47,24 +47,35 @@ function login() {
     })
     .then(response => {
         if (!response.ok) {
-            // Si la respuesta no es OK, lanza un error
-            throw new Error(' las credenciales no son validas.');
+            throw new Error('Las credenciales no son válidas.');
         }
         return response.json();
     })
     .then(data => {
         if (data.error) {
-            // Si hay un error, muéstralo
-            alert("Error: " + data.error);
-            showAlert(error,'alert-danger');
+            Swal.fire({
+                title: 'Error',
+                text: data.error,
+                icon: 'error'
+            });
         } else {
-            // Aquí podrías hacer algo adicional si la autenticación es exitosa
-            console.log('Inicio de sesión exitoso');
-            window.location.href = '/dashboard/view_dashboard';
+            Swal.fire({
+                title: 'Éxito',
+                text: 'Inicio de sesión exitoso.',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = '/dashboard/view_dashboard';
+            });
         }
     })
     .catch(error => {
-        showAlert(error,'alert-danger');
+        Swal.fire({
+            title: 'Error',
+            text: error.message,
+            icon: 'error'
+        });
     });
-    
 }
+

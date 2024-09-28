@@ -13,6 +13,7 @@
 {% block content %}
         <!-- App css -->
         <link href="{% static 'login/assets/css/app-modern.min.css' %}" rel="stylesheet" type="text/css" id="app-style" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
             <!-- ============================================================== -->
             <!-- Start Page Content here -->
@@ -109,6 +110,27 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    
+                                    <div class="col-lg-12 col-12">
+                                        <div class="card widget-flat">
+                                            <div class="card-body">
+                                                <div class="float-end">
+                                                    <i class="mdi mdi-alert-outline widget-icon"></i>
+                                                </div>
+                                                <h4>¿Tuviste algun problema?</h4>
+                                                <div class="mb-3 mt-2">
+                                                    <label for="example-textarea" class="form-label">Escribe lo sucedido</label>
+                                                    <textarea class="form-control" id="comentarios-reporte" rows="5"></textarea>
+                                                </div> 
+                                                <div class="d-grid">
+                                                    <button type="submit" id="btn-enviar" class="btn btn-soft-primary rounded-pill">Enviar comentarios</button>
+                                                </div>
+                                                <!-- end d-grid -->
+                                            </div>
+                                        </div>
+                                    </div>
+   
                                 </div>
                                 <!-- end card -->
                             </div>
@@ -200,4 +222,58 @@
         <script src="{% static 'login/assets/js/pages/demo.apex-radialbar.js' %}"></script>    
         <!-- App js -->
         <script src="{% static 'login/assets/js/app.min.js' %}"></script>
+        <script>
+            const btn_comentario = document.getElementById('btn-enviar');
+            const textarea = document.getElementById('comentarios-reporte');
+            btn_comentario.addEventListener('click', function () {
+                // Obtener el comentario del textarea
+                const comentario = document.getElementById('comentarios-reporte').value;
+        
+                // Mostrar alerta de carga mientras se envía el comentario
+                Swal.fire({
+                    title: 'Enviando...',
+                    text: 'Por favor espera mientras enviamos tu comentario.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+        
+                // Simular el envío del comentario al servidor
+                fetch('/dashboardenviar_comentario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ comentario: comentario })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        // Mostrar alerta de éxito
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Tu comentario ha sido enviado correctamente.',
+                            icon: 'success'
+                        });
+                        textarea.value = "";
+                    } else {
+                        // Mostrar alerta de error
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al enviar tu comentario. Por favor, inténtalo de nuevo.',
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(error => {
+                    // Mostrar alerta de error en caso de fallo en la petición
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Hubo un problema al enviar tu comentario. Por favor, inténtalo de nuevo.',
+                        icon: 'error'
+                    });
+                });
+            });
+        </script>
 {% endblock %}

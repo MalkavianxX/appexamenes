@@ -144,3 +144,19 @@ class MiPerfil(models.Model):
     @property
     def porcentaje_reprobados(self):
         return "{0:.1f}".format(MiExamen.objects.filter(status='Reprobado').count() / self.total_test * 100 if self.total_test > 0 else 0)
+    
+class Reporte(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comentario = models.TextField(default="")
+    fecha_up = models.DateTimeField(auto_now_add=True)
+    fecha_re = models.DateTimeField(null=True, blank=True)
+    visto = models.BooleanField(default=False)
+    respuesta = models.TextField(default="")
+    
+    class Meta:
+        managed = True
+        verbose_name = 'Reporte'
+        verbose_name_plural = 'Reportes'
+    
+    def __str__(self):
+        return str(self.comentario)

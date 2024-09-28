@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import MiPerfil, MiExamen, Invitation
+from .models import MiPerfil, MiExamen, Invitation, Reporte
 from django.utils import timezone
 from django.db import models
 from login.models import User
@@ -12,7 +12,31 @@ from login.my_decorators import verificar_sesion
 import pandas as pd
 from examenes.models import Pregunta, Respuesta, Categoria, Examen
 from django.db import transaction
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
+def enviar_comentario(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            comentario = data.get('comentario', '')
+
+            if comentario:
+                reporte = Reporte.objects.create(
+                    usuario=request.user,
+                    comentario=comentario
+                )
+                return JsonResponse({'status': 'ok', 'message': 'Comentario enviado correctamente.'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'El comentario no puede estar vacío.'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Error al procesar los datos JSON.'}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido.'}, status=405)
+    
 def cargar_preguntas():
     print("Comenzando proceso")
     df = pd.read_excel('C:/Users/Admin/Documents/GitHub/appexamenes/dashboard/Espanol.xlsx')

@@ -4,11 +4,10 @@ from dashboard.models import MiExamen,MiPerfil
 from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from login.my_decorators import verificar_sesion
-from login.models import User
+
 import random
 from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -160,7 +159,6 @@ def view_result_examen(request, id_miexamen):
         'resultados': [],
         'correctas':0,
         'incorrectas':0
-        
     }
 
     # Obtener todas las respuestas correctas de una vez
@@ -223,3 +221,9 @@ def view_test_complete(request):
 
 def view_simulator_start(request):
     return render(request, 'examenes/simulator_view.html')
+
+
+def fun_terminar_examen(request,id):
+    examen = Examen.objects.get(pk = id)
+    examen.delete()
+    

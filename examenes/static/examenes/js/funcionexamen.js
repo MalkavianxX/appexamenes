@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     Swal.fire({
       title: `Tienes ${time} minutos`,
       showDenyButton: true,
-      
+
       confirmButtonText: "Comenzar",
       denyButtonText: `Cancelar`
     }).then((result) => {
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', function () {
           text: 'Por favor, espera mientras cancelamos tu examen.',
           allowOutsideClick: false,
           didOpen: () => {
-              Swal.showLoading();
+            Swal.showLoading();
           }
-      });
-        
+        });
+
       }
     });
     function startCountdown(minutes) {
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Inicia el temporizador con 15 minutos
- 
+
   });
 
   // Selecciona todos los elementos con la clase 'respuesta'
@@ -223,24 +223,28 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 
-  document.getElementById('cancelar-examen').addEventListener('click', function() {
+  document.getElementById('cancelar-examen').addEventListener('click', function () {
+    const button = this;
+
+    // Mostrar alerta de confirmación
     Swal.fire({
-        title: '¿Quieres terminar el examen?',
-        text: "¡Esto calificará las preguntas que respondiste",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, terminar examen',
-        cancelButtonText: 'No, continuar'
+      title: '¿Seguro que deseas terminar tu examen?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, terminar',
+      cancelButtonText: 'No, cancelar'
     }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire(
-                '¡Terminado!',
-                'Tu examen ha sido terminado.',
-                'success'
-            );
-         
-        }
+      if (result.isConfirmed) {
+        // Si el usuario confirma, marcamos que el examen ha sido terminado
+        button.dataset.terminado = 'true';
+
+        // Llamamos a la función para recabar la información
+        recabarInformacion();
+      } else {
+        // Si el usuario cancela, no hacemos nada
+        Swal.fire('Operación cancelada', 'Puedes continuar con tu examen.', 'info');
+      }
     });
-});
+  });
 });
 

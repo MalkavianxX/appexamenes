@@ -16,5 +16,6 @@ urlpatterns = [
     
     #funciones del sistema
     path('fun_generar_link', views.fun_generar_link, name="fun_generar_link"),
+    path('enviar_comentario', views.enviar_comentario, name="enviar_comentario"),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

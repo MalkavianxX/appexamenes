@@ -17,9 +17,11 @@
 
 <!-- App css -->
 <link href="{% static 'login/assets/css/app-modern.min.css' %}" rel="stylesheet" type="text/css" id="app-style" />
+<link rel="stylesheet" href="{% static 'dashboard/css/loader.css' %} " type="text/css">
 <!-- ============================================================== -->
 <!-- Start Page Content here -->
 <!-- ============================================================== -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="content-page">
     <div class="content">
@@ -48,9 +50,9 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="header-title mb-3">Iniciemos configurando el examen</h4>
+                            <h4 class="header-title mb-3">¿Cuantas preguntas estudiaremos hoy?</h4>
 
-                            <for m>
+                            <form>
                                 <div id="progressbarwizard">
 
                                     <ul class="nav nav-pills nav-justified form-wizard-header mb-3">
@@ -58,18 +60,11 @@
                                             <a href="#account-2" data-bs-toggle="tab" data-toggle="tab"
                                                 class="nav-link rounded-0 py-2">
                                                 <i class="mdi mdi-account-circle font-18 align-middle me-1"></i>
-                                                <span class="d-none d-sm-inline">Basica </span>
+                                                <span class="d-none d-sm-inline">Examen simulador </span>
                                             </a>
                                         </li>
 
-                                        <li class="nav-item">
-                                            <a href="#finish-2" data-bs-toggle="tab" data-toggle="tab"
-                                                class="nav-link rounded-0 py-2">
-                                                <i
-                                                    class="mdi mdi-checkbox-marked-circle-outline font-18 align-middle me-1"></i>
-                                                <span class="d-none d-sm-inline">Finalizacion</span>
-                                            </a>
-                                        </li>
+
                                     </ul>
 
                                     <div class="tab-content b-0 mb-0">
@@ -112,51 +107,21 @@
                                             </div> <!-- end row -->
 
                                             <ul class="list-inline wizard mb-0">
-                                                <li class="next list-inline-item float-end">
-                                                    <a href="javascript:void(0);" class="btn btn-info">Siguiente <i
-                                                            class="mdi mdi-arrow-right ms-1"></i></a>
+                                                <li class="list-inline-item float-end">
+                                                    <a type="button" href="{% url 'view_start_test' 35 20 %}"
+                                                        id="startsimulator" class="btn btn-primary">Empezar
+                                                        simulador</a>
                                                 </li>
                                             </ul>
                                         </div>
 
 
 
-                                        <div class="tab-pane" id="finish-2">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="text-center mb-3">
-                                                        <h2 class="mt-0"><i class="mdi mdi-check-all"></i></h2>
-                                                        <h3 class="mt-0">¡Todo listo!</h3>
 
-                                                        <p class="w-75 mb-2 mx-auto text-start">
-                                                            Este es un examen simulador, significa que contendrá temas y
-                                                            preguntas equivalentes a un <strong>examen de admision
-                                                                real</strong> .
-                                                            Si deseas más información acerca de estos examenes haz click
-                                                            en el siguiente enlace <a href="#">Examenes simuladores</a>
-                                                        </p>
-                                                        <p> Ahora solo da click en el boton "iniciar examen" para
-                                                            realizarlo. ¡Mucho exito! </p>
-
-
-                                                    </div>
-                                                </div> <!-- end col -->
-                                            </div> <!-- end row -->
-                                            <ul class="pager wizard mb-0 list-inline mt-1">
-                                                <li class="previous list-inline-item">
-                                                    <button type="button" class="btn btn-light"><i
-                                                            class="mdi mdi-arrow-left me-1"></i> Regresar</button>
-                                                </li>
-                                                <li class="next list-inline-item float-end">
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#primary-header-modal">Iniciar </button>
-                                                </li>
-                                            </ul>
-                                        </div>
 
                                     </div> <!-- tab-content -->
                                 </div> <!-- end #progressbarwizard-->
-                                </form>
+                            </form>
 
                         </div> <!-- end card-body -->
                     </div> <!-- end card-->
@@ -169,45 +134,7 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
-    <div id="primary-header-modal" class="modal fade" tabindex="-1" role="dialog"
-        aria-labelledby="primary-header-modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h4 class="modal-title" id="primary-header-modalLabel" style="color: white;">Estas a punto de
-                        iniciar</h4>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-hidden="true"></button>
-                </div>
-                <div class="modal-body ">
-                    <h3 class="text-muted">Tu examen contendra:</h3>
-                    <ul class="text">
-                        <li>
-                            <p class="fs-3 text-muted"><i class="mdi mdi-notebook-outline"></i> 
-                                <span id="tiempominutos">100</span> minutos.
-                            </p>
-                        </li>
-                        <li>
-                            <p class="fs-3 text-muted"><i class="mdi mdi-notebook-outline"></i> 
-                                <span id="numPreguntas">100</span> preguntas
-                            </p>
-                        </li>
-                        <li>
-                            <p class="fs-3 text-muted"> <i class="mdi mdi-pencil-box-multiple-outline"></i> 2 temas</p>
-                        </li>
-                    </ul>
 
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                    <a type="button" href="{% url 'view_start_test' 1 20 %}" id="startsimulator"
-                        class="btn btn-primary">Empezar simulador</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
     <!-- Footer Start -->
     <footer class="footer">
         <div class="container-fluid">
@@ -253,19 +180,46 @@
         document.getElementById('numPreguntas').textContent = selectedValue;
         document.getElementById('tiempominutos').textContent = selectedValue;
     });
-    document.getElementById('startsimulator').addEventListener('click', function(event) {
-            // Prevenir la acción por defecto del enlace
-            event.preventDefault();
-            
-            // Obtener el valor actual del href
-            var hrefValue = this.href;
-            
-            // Modificar el parámetro de la URL (por ejemplo, cambiar 20 a 30)
-            var newHrefValue = hrefValue.replace('20', document.getElementById('selectnumpreguntas').value);
-            
-            // Redirigir manualmente a la nueva URL
-            window.location.href = newHrefValue;
+    document.getElementById('startsimulator').addEventListener('click', function (event) {
+        // Prevent the default action of the link
+        event.preventDefault();
+
+        // Get the current href value
+        var hrefValue = this.href;
+        const num_preguntas = document.getElementById('selectnumpreguntas').value;
+        // Modify the URL parameter (e.g., change 20 to the selected value)
+        var newHrefValue = hrefValue.replace('20', num_preguntas);
+
+        // Use SweetAlert2 to ask for confirmation
+        Swal.fire({
+            title: '¿Seguro que deseas empezar tu examen?',
+            text: `Tendras ${num_preguntas} minutos para terminar`,
+            icon: 'warning',
+            showCancelButton: true,
+
+            confirmButtonText: 'Empezar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect to the new URL if confirmed
+                Swal.fire({
+                    title: 'Construyendo simulador...',
+                    text: 'Por favor, espera mientras preparamos tu examen simulador.',
+
+                    allowOutsideClick: false,
+  
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                window.location.href = newHrefValue;
+            } else {
+                // Close the modal if not confirmed
+                Swal.close();
+            }
         });
+    });
+
 
 </script>
 {% endblock %}

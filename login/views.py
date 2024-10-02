@@ -6,6 +6,7 @@ import json
 from django.utils import timezone
 from dashboard.models import MiPerfil
 from django.contrib.auth import logout
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def view_login(request):
@@ -25,28 +26,29 @@ def view_signup(request,code):
     except:
         return render(request, 'login/error_signup.html')
 
+@csrf_exempt
 def function_login(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Datos de solicitud no válidos'}, status=400)
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
 
-        username = data.get('username')
-        password = data.get('password')
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'message': 'Datos inválidos'}, status=400)
 
-        if not username or not password:
-            return JsonResponse({'error': 'El nombre de usuario y la contraseña son obligatorios'}, status=400)
+    username = data.get('username')
+    password = data.get('password')
 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            request.session.save()  # Asegura que la sesión se guarda correctamente
-            return JsonResponse({'mensaje': 'Inicio de sesión correcto'})
-        else:
-            return JsonResponse({'error': 'El correo o la contraseña no son válidos'}, status=401)
-    else:
-        return JsonResponse({'error': 'Método no permitido'}, status=405)
+    if not username or not password:
+        return JsonResponse({'success': False, 'message': 'Faltan credenciales'}, status=400)
+
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        request.session.save()  # Asegura que la sesión se guarda correctamente
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False, 'message': 'Credenciales inválidas'}, status=401)
 
 def create_user(request):
     if request.method == 'POST':

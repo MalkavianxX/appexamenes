@@ -17,7 +17,7 @@
 
         body {
             background-color: white;
-            background-image: url(" {% static '/login/assets/images/back.jpg' %}");
+            background-image: url(/login/static/login/assets/images/back.jpg);
             position: relative;
             width: 100%;
             height: 100%;
@@ -144,7 +144,7 @@
             width: 100%;
             height: 65px;
             font-size: 1.55em;
-            color: #353538 !important;
+            color: #353538;
             font-weight: 600;
             font-family: inherit;
             transition: box-shadow 0.2s linear, border-color 0.25s ease-out;
@@ -1120,7 +1120,7 @@
                             text: 'Inicio de sesión exitoso',
                             icon: 'success'
                         }).then(() => {
-                            window.location.href = '/dashboard/view_dashboard';  // Redirige a la vista deseada
+                            window.location.href = '/dashboard/';  // Redirige a la vista deseada
                         });
                     } else {
                         Swal.fire({

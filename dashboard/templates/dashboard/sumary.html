@@ -10,16 +10,19 @@
 <meta name="description"
     content="Bienvenido a Ad-mision, tu portal personalizado para la preparación universitaria. Descubre tu progreso, estadísticas clave y más en nuestro completo panel de control. ¡Tu camino a la universidad comienza aquí!">
 <meta name="author" content="Ad-mision s Team dev">
+<style>
+
+
+</style>
 {% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-<div class="content-page">
+<div class="content-page mybg">
     <div class="content">
 
         <!-- Start Content-->
-        <div class="container-fluid">
-
+        <div class="container-fluid " >
             <!-- start page title -->
             <div class="row">
                 <div class="col-12">
@@ -37,63 +40,118 @@
             </div>
             <!-- end page title -->
 
+
             <div class="row">
-                <div class="col-12">
-                    <div class="card widget-inline">
-                        <div class="card-body p-0">
-                            <div class="row g-0">
-                                <div class="col-sm-6 col-6 col-lg-3">
-                                    <div class="card rounded-0 shadow-none m-0">
-                                        <div class="card-body text-center">
-                                            <i class="ri-briefcase-line text-muted font-24"></i>
-                                            <h3><span>{{miperfil.total_test}}</span></h3>
-                                            <p class="text-muted font-15 mb-0">Total examenes</p>
-                                        </div>
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-primary-lighten text-primary rounded">
+                                            <i class="mdi mdi-file-document-edit font-24"></i>
+                                        </span>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-6 col-6 col-lg-3">
-                                    <div class="card rounded-0 shadow-none m-0 border-start border-light">
-                                        <div class="card-body text-center">
-                                            <i class="ri-list-check-2 text-muted font-24"></i>
-                                            <h3><span>{{miperfil.test_aproval}}</span></h3>
-                                            <p class="text-muted font-15 mb-0">Total aprobados</p>
-                                        </div>
-                                    </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="mt-0 mb-1">Examenes hechos</h5>
+                                    <p class="mb-0">{{miperfil.total_test}}</p>
                                 </div>
+                                <div class="dropdown float-end">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
 
-                                <div class="col-sm-6 col-6 col-lg-3">
-                                    <div class="card rounded-0 shadow-none m-0 border-start border-light">
-                                        <div class="card-body text-center">
-                                            <i class="ri-group-line text-muted font-24"></i>
-                                            <h3><span>{{miperfil.categorias_diferentes}}</span></h3>
-                                            <p class="text-muted font-15 mb-0">Temas</p>
-                                        </div>
-                                    </div>
                                 </div>
-
-                                <div class="col-sm-6 col-6 col-lg-3">
-                                    <div class="card rounded-0 shadow-none m-0 border-start border-light">
-                                        <div class="card-body text-center">
-                                            <i class="ri-line-chart-line text-muted font-24"></i>
-                                            <h3><span>{{miperfil.average}}</span> <i
-                                                    class="mdi mdi-arrow-up text-success"></i></h3>
-                                            <p class="text-muted font-15 mb-0">Promedio general</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div> <!-- end row -->
+                            </div>
                         </div>
-                    </div> <!-- end card-box-->
-                </div> <!-- end col-->
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-success-lighten text-success rounded">
+                                            <i class="mdi mdi-account-group font-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="mt-0 mb-1">Examenes aprobados</h5>
+                                    <p class="mb-0">{{miperfil.test_aproval}}</p>
+                                </div>
+                                <div class="dropdown float-end">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-info-lighten text-info rounded">
+                                            <i class="mdi mdi-account-star font-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="mt-0 mb-1">Promedio general</h5>
+                                    <p class="mb-0">{{miperfil.average}}</p>
+                                </div>
+                                <div class="dropdown float-end">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-warning-lighten text-warning rounded">
+                                            <i class="mdi mdi-folder-plus font-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="mt-0 mb-1">Temas vistos</h5>
+                                    <p class="mb-0">{{miperfil.categorias_diferentes}}</p>
+                                </div>
+                                <div class="dropdown float-end">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- end row-->
 
             <div class="row d-lg-none d-md-none d-flex mb-3 ">
                 <div class="col-12">
                     <div class="d-grid gap-2 ">
-                        <button class="btn btn-soft-success animate__animated animate__bounce animate__repeat-3" type="button">Iniciar examen</button>
+                        <button class="btn btn-soft-success animate__animated animate__bounce animate__repeat-3"
+                            type="button">Iniciar examen</button>
                     </div>
                 </div>
 
@@ -180,9 +238,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="card-header bg-light-lighten border-top border-bottom border-light py-1 text-center">
-                            <p class="m-0"><b>{{miperfil.total_test}}</b> examenes completados</p>
+                        <div class="card-header bg-primary border-top border-bottom border-light py-1 text-center">
+                            <p class="m-0 text-light"><b>{{miperfil.total_test}}</b> examenes completados</p>
                         </div>
                         <div class="card-body pt-2">
                             <div class="table-responsive">
@@ -196,29 +253,14 @@
                                                         class="text-body">{{examen.test.title}}</a></h5>
                                                 <span class="text-muted font-13">{{examen.fecha_anotada}}</span>
                                             </td>
-
-                                            {% if examen.status == "Aprobado" %}
-                                            <td>
-                                                <span class="text-muted font-13">Estado</span> <br />
-                                                <span class="badge badge-success-lighten">{{examen.status}}</span>
-                                            </td>
-                                            {% elif examen.status == "Reprobado" %}
-                                            <td>
-                                                <span class="text-muted font-13">Estado</span> <br />
-                                                <span class="badge badge-danger-lighten">{{examen.status}}</span>
-                                            </td>
-                                            {% elif examen.status == "Incompleto" %}
-                                            <td>
-                                                <span class="text-muted font-13">Estado</span> <br />
-                                                <span
-                                                    class="badge badge-primary-lighten text-capitalize">{{examen.status}}</span>
-                                            </td>
+                                            {% if examen.estado == "Aprobado" %}
+                                            <td><span class="badge badge-success-lighten">Aprobado</span></td>
+                                            {% elif examen.estado == "Incompleto" %}
+                                            <td><span class="badge badge-secondary-lighten">Incompleto</span></td>
                                             {% else %}
-                                            <td>
-                                                <span class="text-muted font-13">Estado</span> <br />
-                                                <span class="badge badge-secondary-lighten">{{examen.Incompleto}}</span>
-                                            </td>
+                                            <td><span class="badge badge-danger-lighten">Reprobado</span></td>
                                             {% endif %}
+
 
 
                                             <td>

@@ -32,8 +32,16 @@
     <link href="{% static 'login/assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
     <style>
         body {
-            background-image: url(" {% static '/login/assets/images/back.jpg' %}") !important;
+            background-image: url("{% static '/login/assets/images/back.jpg' %}") !important;
+        }
 
+        body.dark-theme {
+            background-color: #343a40 !important;
+            background-image: none !important;
+        }
+
+        body.light-theme {
+            background-image: url("{% static '/login/assets/images/back.jpg' %}") !important;
         }
     </style>
 </head>
@@ -388,18 +396,7 @@
                     </li>
 
 
-                    <!-- Help Box -->
-                    <div class="help-box text-white text-center">
-                        <a href="javascript: void(0);" class="float-end close-btn text-white">
-                            <i class="mdi mdi-close"></i>
-                        </a>
-                        <img src="{% static 'login/assets/images/svg/help-icon.svg' %}" height="90"
-                            alt="Helper Icon Image" />
-                        <h5 class="mt-3">Acceso ilimitado</h5>
-                        <p class="mb-3">Actualiza a un plan premiun para obtener total acceso a la plataforma</p>
-                        <a href="javascript: void(0);" class="btn btn-secondary btn-sm">Actualizar</a>
-                    </div>
-                    <!-- end Help Box -->
+
                 </ul>
                 <!--- End Sidemenu -->
                 {% else %}
@@ -488,7 +485,39 @@
     <!-- Projects Analytics Dashboard App js -->
     <script src="{% static 'login/assets/js/pages/demo.dashboard-projects.js' %}"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const body = document.body;
+            const theme = body.getAttribute('data-bs-theme');
 
+            if (theme === 'dark') {
+                body.classList.add('dark-theme');
+                body.classList.remove('light-theme');
+            } else if (theme === 'light') {
+                body.classList.add('light-theme');
+                body.classList.remove('dark-theme');
+            }
+
+            // Optional: Listen for changes in the theme attribute
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'data-bs-theme') {
+                        const newTheme = body.getAttribute('data-bs-theme');
+                        if (newTheme === 'dark') {
+                            body.classList.add('dark-theme');
+                            body.classList.remove('light-theme');
+                        } else if (newTheme === 'light') {
+                            body.classList.add('light-theme');
+                            body.classList.remove('dark-theme');
+                        }
+                    }
+                });
+            });
+
+            observer.observe(body, { attributes: true });
+        });
+
+    </script>
 </body>
 
 </html>

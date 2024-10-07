@@ -1,156 +1,166 @@
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://kit.fontawesome.com/63bc1a63be.js" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="{% static 'login/assets/images/favicon.ico' %}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="{% static 'login/css/login-style.css' %} " />
-    <title>Sign in & Sign up Form</title>
-  </head>
-  <body>
-    <div class="container">
-      <div class="forms-container">
-        <div class="signin-signup">
-          <form action="#" class="sign-in-form">
-            <h2 class="title">Inicia sesión</h2>
-            <div class="input-field">
-              <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" id="loginEmail"/>
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" id="loginPassword" />
-            </div>
-            <input type="submit" value="Iniciar sesion" id="btn-login" class="btn solid" />
-            <p class="social-text">O inicia sesion con tu cuenta de </p>
-            <div class="social-media">
-              <a href="#" class="social-icon">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-            </div>
-          </form>
-          <form action="#" class="sign-up-form">
-            <h2 class="title">Registrarse</h2>
-            <div class="input-field">
-              <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" />
-            </div>
-            <input type="submit" class="btn" value="Registrate" />
-            <p class="social-text">O inicia sesion con tu cuenta de</p>
-            <div class="social-media">
-              <a href="#" class="social-icon">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-            </div>
-          </form>
-        </div>
-      </div>
 
-      <div class="panels-container">
-        <div class="panel left-panel">
-          <div class="content">
-            <h3>Eres nuevo aquí?</h3>
-            <p>
-              Crea una cuenta y empieza a asegurar tu futuro
-            </p>
-            <button class="btn transparent" id="sign-up-btn">
-              Registrate
-            </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/63bc1a63be.js" crossorigin="anonymous"></script>
+  <link rel="shortcut icon" href="{% static 'login/assets/images/favicon.ico' %}">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="{% static 'login/css/login-style.css' %} " />
+  <title>Sign in & Sign up Form</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="forms-container">
+      <div class="signin-signup">
+        <form action="#" class="sign-in-form">
+          <h2 class="title">Inicia sesión</h2>
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="text" placeholder="Username" id="loginEmail" />
           </div>
-          <img src="{% static 'login/img/log.svg' %}" class="image" alt="" />
-        </div>
-        <div class="panel right-panel">
-          <div class="content">
-            <h3>Ya tienes una cuenta?</h3>
-            <p>
-              Puedes iniciar sesion dando click en el siguiente boton
-            </p>
-            <button class="btn transparent" id="sign-in-btn">
-              Iniciar sesion
-            </button>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" placeholder="Password" id="loginPassword" />
           </div>
-          <img src="{% static 'login/img/register.svg' %}" class="image" alt="" />
-        </div>
+          <input type="submit" value="Iniciar sesion" id="btn-login" class="btn solid" />
+          <p class="social-text">O inicia sesion con tu cuenta de </p>
+          <div class="social-media">
+            <a href="#" class="social-icon">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="social-icon">
+              <i class="fab fa-google"></i>
+            </a>
+          </div>
+        </form>
+        <form action="#" class="sign-up-form">
+          <h2 class="title">Registrarse</h2>
+          <div class="input-field">
+            <i class="fas fa-envelope"></i>
+            <input type="email" placeholder="Email" />
+          </div>
+          <input type="button" id="btn-registro" class="btn" value="Registrate" />
+          <p class="social-text">O inicia sesion con tu cuenta de</p>
+          <div class="social-media">
+            <a href="#" class="social-icon">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon">
+              <i class="fab fa-google"></i>
+            </a>
+          </div>
+        </form>
       </div>
     </div>
 
-    <script src="{% static 'login/js/loger.js' %}"></script>
-    <script>
-              document.getElementById('btn-login').addEventListener('click', function () {
-            const username = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+    <div class="panels-container">
+      <div class="panel left-panel">
+        <div class="content">
+          <h3>Eres nuevo aquí?</h3>
+          <p>
+            Crea una cuenta y empieza a asegurar tu futuro
+          </p>
+          <button class="btn transparent" id="sign-up-btn">
+            Registrate
+          </button>
+        </div>
+        <img src="{% static 'login/img/log.svg' %}" class="image" alt="" />
+      </div>
+      <div class="panel right-panel">
+        <div class="content">
+          <h3>Ya tienes una cuenta?</h3>
+          <p>
+            Puedes iniciar sesion dando click en el siguiente boton
+          </p>
+          <button class="btn transparent" id="sign-in-btn">
+            Iniciar sesion
+          </button>
+        </div>
+        <img src="{% static 'login/img/register.svg' %}" class="image" alt="" />
+      </div>
+    </div>
+  </div>
 
-            Swal.fire({
-                title: 'Iniciando sesiòn ...',
-                text: 'Por favor espera',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
+  <script src="{% static 'login/js/loger.js' %}"></script>
+  <script>
+    document.getElementById('btn-login').addEventListener('click', function () {
+      const username = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
 
-            fetch('/function_login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken('csrftoken')  // Asegúrate de incluir el token CSRF
-                },
-                body: JSON.stringify({ username: username, password: password })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    Swal.close();  // Cierra el cargador
-                    if (data.success) {
-                        Swal.fire({
-                            title: 'Éxito',
-                            text: 'Inicio de sesión exitoso',
-                            icon: 'success'
-                        }).then(() => {
-                            window.location.href = '/dashboard/view_dashboard';  // Redirige a la vista deseada
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Error',
-                            text: data.message,
-                            icon: 'error'
-                        });
-                    }
-                })
-                .catch(error => {
-                    Swal.close();  // Cierra el cargador
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Ocurrió un error inesperado',
-                        icon: 'error'
-                    });
-                });
-        });
-
-        function getCSRFToken() {
-            const name = 'csrftoken=';
-            const decodedCookie = decodeURIComponent(document.cookie);
-            const cookieArray = decodedCookie.split(';');
-
-            for (let i = 0; i < cookieArray.length; i++) {
-                let cookie = cookieArray[i].trim();
-                if (cookie.indexOf(name) === 0) {
-                    return cookie.substring(name.length, cookie.length);
-                }
-            }
-
-            return null;
+      Swal.fire({
+        title: 'Iniciando sesiòn ...',
+        text: 'Por favor espera',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
         }
+      });
 
+      fetch('/function_login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken('csrftoken')  // Asegúrate de incluir el token CSRF
+        },
+        body: JSON.stringify({ username: username, password: password })
+      })
+        .then(response => response.json())
+        .then(data => {
+          Swal.close();  // Cierra el cargador
+          if (data.success) {
+            Swal.fire({
+              title: 'Éxito',
+              text: 'Inicio de sesión exitoso',
+              icon: 'success'
+            }).then(() => {
+              window.location.href = '/dashboard/view_dashboard';  // Redirige a la vista deseada
+            });
+          } else {
+            Swal.fire({
+              title: 'Error',
+              text: data.message,
+              icon: 'error'
+            });
+          }
+        })
+        .catch(error => {
+          Swal.close();  // Cierra el cargador
+          Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error inesperado',
+            icon: 'error'
+          });
+        });
+    });
 
-    </script>
-  </body>
+    function getCSRFToken() {
+      const name = 'csrftoken=';
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookieArray = decodedCookie.split(';');
+
+      for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
+        }
+      }
+
+      return null;
+    }
+
+    document.getElementById('btn-registro').addEventListener('click', function() {
+            Swal.fire({
+                title: '¡Datos Enviados!',
+                text: 'Pronto nos pondremos en contacto para tu registro.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        });
+  </script>
+</body>
+
 </html>

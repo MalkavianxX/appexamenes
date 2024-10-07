@@ -13,7 +13,7 @@ def view_login(request):
     if request.user.is_authenticated:
         return redirect('view_dashboard')
     else:
-        return render(request, 'login/login.html')
+        return render(request, 'login/loger.html')
 
 def view_signup(request,code):
     try:

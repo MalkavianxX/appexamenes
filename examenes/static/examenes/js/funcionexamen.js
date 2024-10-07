@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('terminar_examen').addEventListener('click', function () {
     const button = this;
 
-    // Mostrar alerta de confirmación
+    // Mostrar alerta de confirmación 
     Swal.fire({
       title: '¿Seguro que deseas terminar tu examen?',
       icon: 'warning',

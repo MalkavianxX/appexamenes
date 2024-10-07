@@ -45,9 +45,14 @@ INSTALLED_APPS = [
     'examenes',
     'login',
     'dashboard',
-    'usuario'
+    'usuario',
+    'social_django',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware' # Add this line
+
 ]
 
 ROOT_URLCONF = 'appExamenes.urls'
@@ -71,6 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # Add this line 
+
             ],
         },
     },
@@ -145,3 +154,7 @@ MEDIA_ROOT =  os.path.join(BASE_DIR,'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'login.User'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='839179373465-suevh1hf22srmia5qr8k26m9jsj8fnss.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8080/complete/google-oauth2/'

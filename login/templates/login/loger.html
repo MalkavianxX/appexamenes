@@ -29,9 +29,7 @@
           <input type="submit" value="Iniciar sesion" id="btn-login" class="btn solid" />
           <p class="social-text">O inicia sesion con tu cuenta de </p>
           <div class="social-media">
-            <a href="#" class="social-icon">
-              <i class="fab fa-facebook-f"></i>
-            </a>
+
             <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="social-icon">
               <i class="fab fa-google"></i>
             </a>
@@ -46,9 +44,7 @@
           <input type="button" id="btn-registro" class="btn" value="Registrate" />
           <p class="social-text">O inicia sesion con tu cuenta de</p>
           <div class="social-media">
-            <a href="#" class="social-icon">
-              <i class="fab fa-facebook-f"></i>
-            </a>
+
             <a href="#" class="social-icon">
               <i class="fab fa-google"></i>
             </a>

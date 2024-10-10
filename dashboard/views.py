@@ -39,8 +39,8 @@ def enviar_comentario(request):
     
 def cargar_preguntas():
     print("Comenzando proceso")
-    df = pd.read_excel('C:/Users/Admin/Documents/GitHub/appexamenes/dashboard/Espanol.xlsx')
-    categoria_quimica = Categoria.objects.get(id=36)
+    df = pd.read_excel("C:/Users/Admin/Downloads/MATE.xlsx")
+    categoria_quimica = Categoria.objects.get(id=37)
     
     for index, row in df.iterrows():
         # Crear la pregunta
@@ -163,7 +163,41 @@ def contar_usuarios_no_staff():
 
     return cantidad_usuarios
 
+from django.shortcuts import get_object_or_404
 
+def crear_examen(nombre_examen, categoria):
+    print("Empezando a crear examen")
+    """
+    Creates an exam with all questions belonging to the specified category.
+
+    Args:
+        nombre_examen (str): The name of the exam to be created.
+        categoria (Categoria): The category object to which the questions belong.
+
+    Returns:
+        Examen: The created exam object.
+
+    Raises:
+        django.core.exceptions.ObjectDoesNotExist: If the specified category is not found.
+    """
+
+    # Retrieve the category object
+    categoria_obj = get_object_or_404(Categoria, pk=categoria)
+
+    # Filter questions belonging to the category
+    preguntas = Pregunta.objects.filter(category=categoria_obj)
+    print("Preguntas: ", len(preguntas))
+    # Create the exam object
+    examen = Examen.objects.create(
+        title=nombre_examen,
+        category=categoria_obj,
+        time=15.0,  # Adjust the default time as needed
+    )
+
+    # Add questions to the exam using ManyToManyField relationship
+    examen.asks.add(*preguntas)
+    print("examen creado")
+    return examen
 
 def view_dashboard(request):
     if request.user.is_staff:
@@ -202,7 +236,8 @@ def view_dashboard(request):
                 examen.fecha_anotada = "Ayer"
             else:
                 examen.fecha_anotada = f"Hace {diferencia.days} días"
-        
+
+
         return render(request, 'dashboard/sumary.html', {'miperfil': miperfil, 'misexamenes': misexamenes})
 
 

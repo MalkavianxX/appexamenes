@@ -1,4 +1,31 @@
+var respuestasSeleccionadas = {};
+function seleccionarRespuesta(elemento, idPregunta) {
+  // Obtener todas las respuestas de la misma pregunta
+  const respuestas = document.querySelectorAll(`button[data-id='${idPregunta}']`);
 
+  // Verificar si la respuesta ya está seleccionada
+  if (elemento.classList.contains('btn-primary')) {
+      // Deseleccionar la respuesta
+      elemento.classList.remove('btn-primary');
+      elemento.classList.add('btn-light');
+      // Eliminar la respuesta del diccionario
+      delete respuestasSeleccionadas[idPregunta];
+  } else {
+      // Desmarcar todas las respuestas
+      respuestas.forEach(respuesta => {
+          respuesta.classList.remove('btn-primary');
+          respuesta.classList.add('btn-light');
+      });
+
+      // Marcar la respuesta seleccionada
+      elemento.classList.remove('btn-light');
+      elemento.classList.add('btn-primary');
+
+      // Guardar la selección en el objeto
+      respuestasSeleccionadas[idPregunta] = elemento.id;
+      console.log(respuestasSeleccionadas);
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   function getCSRFToken() {
@@ -17,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   let tiempoRestante; // Declarar tiempoRestante en un ámbito más amplio
+  var tiemposRespuestas = [];
+
 
   $(document).ready(function () {
 
@@ -81,54 +110,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   });
 
-  // Selecciona todos los elementos con la clase 'respuesta'
-  const respuestas = document.querySelectorAll('.respuesta');
-
-
-  // Itera sobre cada respuesta
-  respuestas.forEach(function (respuesta) {
-    // Agrega un evento de clic a cada respuesta
-    respuesta.addEventListener('click', function () {
-      // Obtiene el valor del atributo 'data-respuesta'
-      const preguntaActual = respuesta.getAttribute('data-respuesta');
-
-      // Desactiva todas las respuestas de la pregunta actual
-      document.querySelectorAll('.respuesta[data-respuesta="' + preguntaActual + '"]').forEach(function (elemento) {
-        if (elemento !== respuesta) {
-          elemento.classList.remove('text-bg-primary');
-          elemento.querySelector('input').classList.remove('text-bg-primary');
-          elemento.querySelector('span').classList.remove('text-bg-primary');
-        }
-      });
-
-      // Activa o desactiva la respuesta actual dependiendo de su estado actual
-      respuesta.classList.toggle('text-bg-primary');
-
-      // Agrega o quita la clase 'text-bg-primary' al input y al span de la respuesta actual
-      respuesta.querySelector('input').classList.toggle('text-bg-primary');
-      respuesta.querySelector('span').classList.toggle('text-bg-primary');
-
-
-    });
-  });
-
-  const numpreguntas = document.getElementById('numpreguntas').value;
-  //bara de navegacion
-
-  var tiemposRespuestas = [];
-
-
-
 
 
   function recabarInformacion() {
-    // Recabar los IDs y valores de los input con la clase "text-bg-primary"
-    const respuestasSeleccionadas = Array.from(document.querySelectorAll('.text-bg-primary input'))
-      .reduce((acc, input) => {
-        const pregunta = input.closest('.respuesta').getAttribute('data-id');
-        acc[pregunta] = input.id;
-        return acc;
-      }, {});
+
 
     // Crear el objeto JSON con la información
     const id_examen = document.getElementById('id_examen').value;

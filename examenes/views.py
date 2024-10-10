@@ -14,11 +14,21 @@ from django.views.decorators.csrf import csrf_exempt
 def view_examenes(request):
     return render(request, 'view_examenes.html')
 
-
+def eliminar_dolares():
+    # Filtrar las preguntas de la categoría de Matemáticas
+    cat = Categoria.objects.get(pk = 37)
+    preguntas_matematicas = Pregunta.objects.filter(category=cat)
+    
+    for pregunta in preguntas_matematicas:
+        # Eliminar todos los '$$' del texto de la pregunta
+        pregunta.text = pregunta.text.replace("\newline", '\newline')
+        
+        pregunta.save()
+    print("eliminacion exitosa")
 def view_config_examenes(request):
-    categorias = Categoria.objects.all()
+    categorias = Categoria.objects.all().exclude(name = "Simulador")
     examenes = [Examen.objects.filter(category=categoria) for categoria in categorias]
-
+  
     
     print(examenes)
     return render(request, 'examenes/view_config_examenes.html',{'categorias_examenes': zip(categorias, examenes)})

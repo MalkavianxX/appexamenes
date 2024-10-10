@@ -17,8 +17,9 @@ class Pregunta(models.Model):
     text = models.TextField()
     imgage = models.ImageField(upload_to='pregunta_images/',blank=True, null=True)
     weight = models.IntegerField(default=1)
-    answer = models.TextField(max_length=100000 , blank=True, null=True)
+    answer = models.TextField(blank=True, null=True)
     date = models.DateField(auto_now_add=True)
+    has_latex = models.BooleanField(default=False)
 
 
     class Meta:
@@ -30,13 +31,15 @@ class Pregunta(models.Model):
 
 
 class Respuesta(models.Model):
-    text = models.CharField(max_length=10000)
+    text = models.TextField()
     correct = models.BooleanField(default=False)
     ask = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+    has_latex = models.BooleanField(default=False)
+
 
     class Meta:
-        ordering = ["text"]
+        ordering = ["date"]
         verbose_name_plural = 'respuestas'     
 
     def __str__(self):

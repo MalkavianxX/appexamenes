@@ -1,4 +1,5 @@
 var respuestasSeleccionadas = {};
+var tiempo_usado = 0;
 function seleccionarRespuesta(elemento, idPregunta) {
   // Obtener todas las respuestas de la misma pregunta
   const respuestas = document.querySelectorAll(`button[data-id='${idPregunta}']`);
@@ -89,7 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
           countdownElement.html("<strong>" + formattedTime + "</strong>");
           tiempoRestante = totalSeconds; // Actualizar tiempoRestante
           totalSeconds--;
+          tiempo_usado++;
 
+          
           if (totalSeconds < 0) {
             // El tiempo se agotó, llamar a recabarInformacion
             console.log("El tiempo se agotó, llamar a recab");
@@ -137,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Agregar el tiempo restante al objeto JSON
-    data.tiempoRestante = tiempoRestante;
+    data.tiempoRestante = tiempo_usado;
     const csrfToken = getCSRFToken();
     // Enviar el objeto JSON mediante Fetch a una función en Django
     Swal.fire({

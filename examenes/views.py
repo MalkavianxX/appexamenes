@@ -21,7 +21,8 @@ def eliminar_dolares():
     
     for pregunta in preguntas_matematicas:
         # Eliminar todos los '$$' del texto de la pregunta
-        pregunta.text = pregunta.text.replace("\newline", '\newline')
+        
+        pregunta.text = pregunta.text.replace("ewline", '\newline')
         
         pregunta.save()
     print("eliminacion exitosa")
@@ -57,8 +58,20 @@ def view_start_test(request, id, numpreguntas):
 
 
 def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiempos_ans, numpreguntas):
+    tiempo_usado =  float(tiempo_examen)/60
+    
+    # Conversión a minutos con parte decimal
+    minutos_con_decimal = float(tiempo_examen / 60)
 
-    print(estado)
+    # Obtener la parte entera de los minutos (sin usar math)
+    minutos_completos = int(minutos_con_decimal)
+
+    # Calcular los segundos restantes
+    segundos_restantes = (minutos_con_decimal - minutos_completos) * 60
+  
+
+    tiempo_usado = float(str(minutos_completos)+ "." + str(round(segundos_restantes)))
+
     # Obtener el examen
     examen = get_object_or_404(Examen, id=id_examen)
 
@@ -66,7 +79,7 @@ def evaluar_examen(request,id_examen, respuestas_dict,tiempo_examen,estado,tiemp
     mi_examen = MiExamen(
         user=request.user,  # Asegúrate de que estás manejando el usuario correctamente
         test=examen,
-        time = float(tiempo_examen)/6000
+        time = tiempo_usado
     )
 
     # Guardar la instancia de MiExamen en la base de datos
@@ -130,17 +143,17 @@ def evaluate_examan(request):
         respuestas = data.get('respuestas', [])
         tiempos = data.get('tiempos', [])
         termino = data.get('termino', '')
-        tiempo_restante = data.get('tiempoRestante', 0)
+        tiempo_usado_segundos = data.get('tiempoRestante', 0)
         numpreguntas = data.get('numpreguntas',0)
 
         print(id_examen)
         print(respuestas)
         print(tiempos)
         print(termino)
-        print(tiempo_restante)
+        print(tiempo_usado_segundos)
         print(numpreguntas)
   
-        miexamen = evaluar_examen(request,id_examen,respuestas,tiempo_restante,termino,tiempos, numpreguntas)
+        miexamen = evaluar_examen(request,id_examen,respuestas,tiempo_usado_segundos,termino,tiempos, numpreguntas)
 
         return JsonResponse(data= {'mensaje': 'Datos recibidos correctamente','miexamen_id': miexamen.id})
    
@@ -153,10 +166,7 @@ def view_result_examen(request, id_miexamen):
     # Obtén la instancia de MiExamen usando el ID
     mi_examen = MiExamen.objects.select_related('test').prefetch_related('asnwers__ask').get(id=id_miexamen)
     mi_examen.time = float(mi_examen.time)
-    if mi_examen.time < 1:
-        tiempo = "{:.2f} segundos".format(mi_examen.time * 60)
-    else:
-        tiempo = "{:.2f} minutos".format(mi_examen.time)
+    tiempo = "{:.2f} minutos".format(mi_examen.time)
 
     # Información que enviarás a la plantilla
     resumen_data = {
@@ -197,7 +207,8 @@ def view_result_examen(request, id_miexamen):
             'texto_respuesta_correcta': respuesta_correcta,
             'resultado': resultado
         })
-
+    resumen_data['prc_preguntas'] = "{:.2f}".format((int(resumen_data['incorrectas']) + int(resumen_data['correctas'])) / int(resumen_data['num_preguntas']) * 100 )
+    resumen_data['prc_tiempo'] = "{:.2f}".format((mi_examen.time / int(resumen_data['num_preguntas']))*100)
     return render(request, "examenes/view_result_examen.html", {'resumen_data': resumen_data}) 
 
 

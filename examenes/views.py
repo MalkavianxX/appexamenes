@@ -207,8 +207,12 @@ def view_result_examen(request, id_miexamen):
             'texto_respuesta_correcta': respuesta_correcta,
             'resultado': resultado
         })
-    resumen_data['prc_preguntas'] = "{:.2f}".format((int(resumen_data['incorrectas']) + int(resumen_data['correctas'])) / int(resumen_data['num_preguntas']) * 100 )
-    resumen_data['prc_tiempo'] = "{:.2f}".format((mi_examen.time / int(resumen_data['num_preguntas']))*100)
+    if int(resumen_data['num_preguntas']) > 0:
+        resumen_data['prc_preguntas'] = "{:.2f}".format((int(resumen_data['incorrectas']) + int(resumen_data['correctas'])) / int(resumen_data['num_preguntas']) * 100 )
+        resumen_data['prc_tiempo'] = "{:.2f}".format((mi_examen.time / int(resumen_data['num_preguntas']))*100)
+    else:
+        resumen_data['prc_preguntas'] = 0   
+        resumen_data['prc_tiempo'] = 0
     return render(request, "examenes/view_result_examen.html", {'resumen_data': resumen_data}) 
 
 

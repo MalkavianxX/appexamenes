@@ -39,8 +39,8 @@ def enviar_comentario(request):
     
 def cargar_preguntas():
     print("Comenzando proceso")
-    df = pd.read_excel("C:/Users/Admin/Downloads/MATE.xlsx")
-    categoria_quimica = Categoria.objects.get(id=37)
+    df = pd.read_excel("C:/Users/Admin/Documents/GitHub/appexamenes/dashboard/ESPAÑOL LECTURAS.xlsx")
+    categoria_quimica = Categoria.objects.get(id=36)
     
     for index, row in df.iterrows():
         # Crear la pregunta
@@ -164,7 +164,7 @@ def contar_usuarios_no_staff():
     return cantidad_usuarios
 
 from django.shortcuts import get_object_or_404
-
+from datetime import date
 def crear_examen(nombre_examen, categoria):
     print("Empezando a crear examen")
     """
@@ -213,8 +213,14 @@ def view_dashboard(request):
             'numero_total_preguntas': Pregunta.objects.count(),
             'numero_total_usuarios_staff': User.objects.filter(is_staff=True).count(),
         }
-        
-        
+
+
+
+                
+            
+                
+                
+                   
         return render(request, 'dashboard/admin/sumary-admin.html',{'data_general':data_general})
     
     else:

@@ -6,7 +6,7 @@ class CategoriaAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 class PreguntaAdmin(admin.ModelAdmin):
-    list_display = ('text', 'category', 'weight', 'date')
+    list_display = ('text', 'category', 'weight', 'date','answer')
     search_fields = ['text', 'category__name']
 
 class RespuestaAdmin(admin.ModelAdmin):
